@@ -8,7 +8,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "nooffice": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true --environment=test"
   },
   "private": true,
   "dependencies": {
