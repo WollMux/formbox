@@ -5,11 +5,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true",
-    "build": "ng build",
+    "build": "ng build && ng lint",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "nooffice": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true --environment=test"
+    "nooffice": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true --environment=test",
+    "sonar": "sonarqube-scanner-node"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "ngx-bootstrap": "^2.0.0-beta.8",
+    "protractor": "^5.1.2",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
@@ -46,8 +48,9 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "sonarqube-scanner-node": "0.0.7",
     "ts-node": "~3.2.0",
-    "tslint": "~5.7.0",
+    "tslint": "^5.8.0",
     "typescript": "~2.4.2"
   }
 }
