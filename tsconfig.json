@@ -15,7 +15,7 @@
       { "name": "tslint-language-service"}
     ],
     "lib": [
-      "es6",
+      "es2017",
       "dom"
     ]
   }
