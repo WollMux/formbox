@@ -27,6 +27,7 @@
     "@types/office-js": "0.0.50",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "dexie": "^2.0.1",
     "ngx-bootstrap": "^2.0.0-beta.8",
     "protractor": "^5.1.2",
     "rxjs": "^5.5.2",
@@ -51,6 +52,7 @@
     "sonarqube-scanner-node": "0.0.7",
     "ts-node": "~3.2.0",
     "tslint": "^5.8.0",
+    "tslint-language-service": "^0.9.7",
     "typescript": "~2.4.2"
   }
 }
