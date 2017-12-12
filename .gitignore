@@ -43,3 +43,6 @@ Thumbs.db
 
 # Sonar
 .scannerwork/
+
+cert/
+launch.cmd
