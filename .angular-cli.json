@@ -10,17 +10,17 @@
       "assets": [
         "assets",
         "favicon.ico",
-		{ "glob": "**/*", "input": "../node_modules/@microsoft/office-js/dist", "output": "./assets/officejs" }
+        { "glob": "**/*", "input": "../node_modules/@microsoft/office-js/dist", "output": "./assets/officejs" }
       ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
-      "test": "test.ts",
+      "test": "../test/test.ts",
       "tsconfig": "tsconfig.app.json",
-      "testTsconfig": "tsconfig.spec.json",
+      "testTsconfig": "../test/tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-		"../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "styles.css"
       ],
       "scripts": [],
