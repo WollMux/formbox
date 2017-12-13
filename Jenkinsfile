@@ -15,14 +15,20 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'npm run sonar'
-                }
-                timeout(time: 1, unit: 'HOURS') {
-                    script {
-                        def qg = waitForQualityGate()
-                        if (qg.status != 'OK') {
-                            error 'Pipeline abgebrochen auf Grund von Quality Gate Fehlern: ${qg.status}'
+                sh 'npm run test'
+            }
+            post {
+                always {
+                    junit 'test/.results/*.xml'
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'npm run sonar'
+                    }
+                    timeout(time: 1, unit: 'HOURS') {
+                        script {
+                            def qg = waitForQualityGate()
+                            if (qg.status != 'OK') {
+                                error 'Pipeline abgebrochen auf Grund von Quality Gate Fehlern: ${qg.status}'
+                            }
                         }
                     }
                 }
@@ -30,4 +36,3 @@ pipeline {
         }
     }
 }
-
