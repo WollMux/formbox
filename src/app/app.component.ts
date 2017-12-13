@@ -13,6 +13,8 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    // TODO: Das ist nur ein Beispiel für die Verwendung des LocalStorage und
+    // sollte wieder entfernt werden.
     this.db.reset().then(() => {
       this.db.getPAL().then(pal => {
         console.log(pal);

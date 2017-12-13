@@ -182,7 +182,10 @@
         ],
         "space-within-parens": 0,
         "import-spacing": true,
-        "no-trailing-whitespace": true,
+        "no-trailing-whitespace": [
+			true,
+			"ignore-comments"
+		],
         "newline-before-return": false,
         "no-var-keyword": true,
         "one-line": [
