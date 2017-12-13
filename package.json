@@ -1,7 +1,11 @@
 {
   "name": "formbox",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "EUPL-1.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WollMux/formbox"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true",
