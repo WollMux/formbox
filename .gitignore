@@ -46,3 +46,6 @@ Thumbs.db
 
 cert/
 launch.cmd
+
+# Tests
+test/.results/

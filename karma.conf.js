@@ -3,31 +3,40 @@
 
 module.exports = function (config) {
   config.set({
+    files: [
+      'node_modules',
+      'src/**/*.ts',
+      'test/**/*.spec.ts'
+    ],
     basePath: '',
     frameworks: ['jasmine', '@angular/cli'],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular/cli/plugins/karma'),
+      require('karma-junit-reporter'),
     ],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
+      reports: [ 'text-summary', 'lcov' ],
+      dir: 'test/.results/coverage',
       fixWebpackSourcePaths: true
     },
     angularCli: {
-      environment: 'dev'
+      environment: 'test'
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['progress', 'junit', 'coverage-istanbul'],
+    junitReporter: {
+      outputDir: 'test/.results'
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false
+    singleRun: true
   });
 };
