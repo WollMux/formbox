@@ -14,10 +14,7 @@ export class TemplateService {
   }
 
   async getTemplateUrl(name: string): Promise<any> {
-    const params: URLSearchParams = new URLSearchParams();
-    params.set('name', name);
-    // tslint:disable-next-line:object-literal-shorthand
-    return this.http.get(`${this.formboxapi}/config/vorlagen`, { responseType: ResponseContentType.Json, params: params })
+    return this.http.get(`${this.formboxapi}/config/vorlagen/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
         return res.json().path as string;
@@ -25,10 +22,7 @@ export class TemplateService {
   }
 
   async getFragmentUrl(name: string): Promise<string> {
-    const params: URLSearchParams = new URLSearchParams();
-    params.set('name', name);
-    // tslint:disable-next-line:object-literal-shorthand
-    return await this.http.get(`${this.formboxapi}/config/fragmente`, { responseType: ResponseContentType.Json, params: params })
+    return await this.http.get(`${this.formboxapi}/config/fragmente/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
         return res.json().path as string;
@@ -56,7 +50,6 @@ export class TemplateService {
 
   async insertFragments(): Promise<void> {
     await this.office.getFragmentNames().then(async names => {
-      console.log(names);
       if (names.length === 0) {
         return;
       }
