@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, ResponseContentType, URLSearchParams } from '@angular/http';
 import { environment } from '../../environments/environment';
+import { OfficeService } from './office.service';
 
 @Injectable()
 export class TemplateService {
@@ -8,7 +9,7 @@ export class TemplateService {
 
   private formboxapi: string;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private office: OfficeService) {
     this.formboxapi = environment.formboxapi;
   }
 
@@ -27,7 +28,7 @@ export class TemplateService {
     const params: URLSearchParams = new URLSearchParams();
     params.set('name', name);
     // tslint:disable-next-line:object-literal-shorthand
-    return this.http.get(`${this.formboxapi}/config/fragmente`, { responseType: ResponseContentType.Json, params: params })
+    return await this.http.get(`${this.formboxapi}/config/fragmente`, { responseType: ResponseContentType.Json, params: params })
       .toPromise()
       .then(res => {
         return res.json().path as string;
@@ -35,11 +36,40 @@ export class TemplateService {
   }
 
   async getFileAsBase64(url: string): Promise<string> {
-    return this.http.get(`${this.formboxapi}/${url}`, { responseType: ResponseContentType.ArrayBuffer })
+    return await this.http.get(`${this.formboxapi}/${url}`, { responseType: ResponseContentType.ArrayBuffer })
       .toPromise()
       .then(res => {
         return this.encode(res.arrayBuffer());
+      })
+      .catch(error => {
+        return undefined;
       });
+  }
+
+  async insertDocument(name: string): Promise<void> {
+    await this.getTemplateUrl(name).then(async path => {
+      await this.getFileAsBase64(path).then(async s => {
+        return await this.office.insertDocument(s, 'Replace');
+      });
+    });
+  }
+
+  async insertFragments(): Promise<void> {
+    await this.office.getFragmentNames().then(async names => {
+      console.log(names);
+      if (names.length === 0) {
+        return;
+      }
+      await Promise.all(names.map(async name => {
+        await this.getFragmentUrl(name).then(async url => {
+          await this.getFileAsBase64(url).then(async s => {
+            await this.office.insertFragment(name, s);
+          });
+        });
+      })).then(async () => {
+        await this.insertFragments();
+      });
+    });
   }
 
   /**
@@ -53,10 +83,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[ bytes[ i ] >> 2 ];
-      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
-      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
-      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
+      base64 += this.chars[bytes[i] >> 2];
+      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+      base64 += this.chars[bytes[i + 2] & 63];
     }
 
     if ((len % 3) === 2) {

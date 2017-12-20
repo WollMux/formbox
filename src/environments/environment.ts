@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
 
-  formboxapi: 'https://myarlt.com:4201'
+  formboxapi: 'https://127.0.0.1:4201'
 };

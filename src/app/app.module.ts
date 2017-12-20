@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 import { AppComponent } from './app.component';
 import { StorageService } from './services/storage.service';
@@ -15,7 +16,8 @@ import { OfficeService } from './services/office.service';
   ],
   imports: [
     HttpModule,
-    BrowserModule
+    BrowserModule,
+    AccordionModule.forRoot()
   ],
   providers: [
     DexieStorage,
@@ -23,7 +25,7 @@ import { OfficeService } from './services/office.service';
     TemplateService,
     OfficeService
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule { }
