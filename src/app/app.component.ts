@@ -6,19 +6,21 @@ import { OfficeService } from './services/office.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private templates: TemplateService, private office: OfficeService) {
+  constructor(private templates: TemplateService) {
   }
 
   async ngOnInit(): Promise<void> {
-    this.templates.getTemplateUrl('Externer_Briefkopf').then(path => {
-      this.templates.getFileAsBase64(path).then(s => {
-        this.office.insertDocument(s, 'Replace');
-      });
+    /* Empty */
+  }
+
+  onInsertDocument(): void {
+    this.templates.insertDocument('Externer_Briefkopf').then(() => {
+      this.templates.insertFragments();
     });
   }
 }
