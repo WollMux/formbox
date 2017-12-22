@@ -40,12 +40,8 @@ export class TemplateService {
       });
   }
 
-  async insertDocument(name: string): Promise<void> {
-    await this.getTemplateUrl(name).then(async path => {
-      await this.getFileAsBase64(path).then(async s => {
-        return await this.office.insertDocument(s, 'Replace');
-      });
-    });
+  async openDocument(base64: string): Promise<void> {
+    await this.office.insertDocument(base64, 'Replace');
   }
 
   async insertFragments(): Promise<void> {
@@ -76,10 +72,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[bytes[i] >> 2];
-      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
-      base64 += this.chars[bytes[i + 2] & 63];
+      base64 += this.chars[ bytes[ i ] >> 2 ];
+      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
+      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
+      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
     }
 
     if ((len % 3) === 2) {
