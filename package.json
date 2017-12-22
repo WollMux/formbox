@@ -19,6 +19,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-redux/store": "^7.0.2",
     "@angular/animations": "^5.0.0",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
@@ -34,7 +35,12 @@
     "core-js": "^2.4.1",
     "dexie": "^2.0.1",
     "ngx-bootstrap": "^2.0.0-beta.8",
+    "redux": "^3.7.2",
+    "redux-observable": "^0.17.0",
     "rxjs": "^5.5.2",
+    "tassign": "^1.0.0",
+    "typescript-fsa": "^2.5.0",
+    "typescript-fsa-reducers": "^0.4.5",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
