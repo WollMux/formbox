@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent any
+    agent {label 'formbox'}
 
     tools {nodejs 'node6.11.3'}
 
