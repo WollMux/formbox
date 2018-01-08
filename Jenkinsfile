@@ -5,10 +5,6 @@ pipeline {
 
     tools {nodejs 'node6.11.3'}
 
-    environment {
-        CHROME_BIN = '/usr/bin/chromium'
-    }
-
     stages {
         stage('Build') {
             steps {
@@ -21,6 +17,7 @@ pipeline {
             steps {
                 wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
                     sh 'npm run test || error=true'
+                    sh 'npm run webdriver-update -- --standalone false --chrome false'
                     sh 'npm run e2e'
                     sh 'if [ $error ]; then exit -1; fi'
                 }
