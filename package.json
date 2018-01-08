@@ -10,11 +10,12 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true",
     "build": "ng build && ng lint",
-    "test": "ng test --code-coverage",
+    "test": "ng test --code-coverage --progress false",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e --progress false",
     "nooffice": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true --environment=test",
-    "sonar": "sonarqube-scanner-node"
+    "sonar": "sonarqube-scanner-node",
+    "webdriver-update": "webdriver-manager clean && webdriver-manager update"
   },
   "private": true,
   "dependencies": {
@@ -33,7 +34,6 @@
     "core-js": "^2.4.1",
     "dexie": "^2.0.1",
     "ngx-bootstrap": "^2.0.0-beta.8",
-    "protractor": "^5.1.2",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
@@ -48,9 +48,9 @@
     "jasmine-reporters": "^2.2.1",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
-    "karma-chrome-launcher": "~2.1.1",
     "karma-cli": "~1.0.1",
     "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-firefox-launcher": "^1.1.0",
     "karma-jasmine": "~1.1.0",
     "karma-junit-reporter": "^1.2.0",
     "protractor": "~5.1.2",
