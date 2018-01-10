@@ -12,6 +12,10 @@ export class TemplateActions {
   static OPEN_TEMPLATE = actionCreator<string>('OPEN_TEMPLATE');
   static LOAD_TEMPLATE_FINISHED = actionCreator<string>('LOAD_TEMPLATE_FINISHED');
 
+  static INSERT_FRAGMENTS = actionCreator<any>('INSERT_FRAGMENTS');
+  static INSERT_FRAGMENT = actionCreator<{ name: string, url: string }>('INSERT_FRAGMENT');
+  static INSERTED_FRAGMENT = actionCreator<string>('INSERTED_FRAGMENT');
+
   constructor(private ngRedux: NgRedux<FormBoxState>) { }
 
   loadTemplate(name: string): void {

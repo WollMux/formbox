@@ -3,9 +3,15 @@ import { TemplateService } from '../../services/template.service';
 import { ActionsObservable, combineEpics } from 'redux-observable';
 import { TemplateActions } from '../actions/template-actions';
 
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/fromPromise';
 
 @Injectable()
 export class TemplateEpics {
@@ -42,7 +48,7 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.OPEN_TEMPLATE)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.openDocument(payload).then(base64 => {
-          const act = TemplateActions.LOAD_TEMPLATE_FINISHED('FINISHED');
+          const act = TemplateActions.INSERT_FRAGMENTS({});
           return act;
         }).catch(error => {
           console.log(error);
@@ -51,10 +57,35 @@ export class TemplateEpics {
       });
   }
 
+  insertingFragments = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.INSERT_FRAGMENTS)
+      .mergeMap((value, n: number) => {
+        return Observable.fromPromise(this.templates.getFragmentUrls())
+          .mergeMap((urls, index) => {
+            return Observable.from(urls.map(url => {
+              const act = TemplateActions.INSERT_FRAGMENT(url);
+              return act;
+            }));
+          });
+      });
+  }
+
+  insertingFragment = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.INSERT_FRAGMENT)
+      .mergeMap(({ payload }, n: number) => {
+        return this.templates.insertFragment(payload.name, payload.url).then(url => {
+          const act = TemplateActions.INSERTED_FRAGMENT(payload);
+          return act;
+        });
+      });
+  }
+
   rootEpic = () => combineEpics(
     this.loadingTemplate,
     this.gettingTemplateFromUrl,
-    this.openingTemplate
+    this.openingTemplate,
+    this.insertingFragments,
+    this.insertingFragment
   )
 
 }
