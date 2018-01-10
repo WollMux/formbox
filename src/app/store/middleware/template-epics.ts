@@ -5,13 +5,12 @@ import { TemplateActions } from '../actions/template-actions';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/concat';
 
 @Injectable()
 export class TemplateEpics {
@@ -62,10 +61,13 @@ export class TemplateEpics {
       .mergeMap((value, n: number) => {
         return Observable.fromPromise(this.templates.getFragmentUrls())
           .mergeMap((urls, index) => {
-            return Observable.from(urls.map(url => {
-              const act = TemplateActions.INSERT_FRAGMENT(url);
-              return act;
-            }));
+            return Observable.concat(
+              Observable.from(urls.map(url => {
+                const act = TemplateActions.INSERT_FRAGMENT(url);
+                return act;
+              })),
+              Observable.of(TemplateActions.LOAD_TEMPLATE_FINISHED(''))
+            );
           });
       });
   }
