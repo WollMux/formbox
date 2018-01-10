@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TemplateService } from '../../services/template.service';
 import { ActionsObservable, combineEpics } from 'redux-observable';
 import { TemplateActions } from '../actions/template-actions';
+import { Logger } from '@nsalaun/ng-logger';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
@@ -14,7 +15,10 @@ import 'rxjs/add/observable/concat';
 
 @Injectable()
 export class TemplateEpics {
-  constructor(private templates: TemplateService, private actions: TemplateActions) { }
+  constructor(
+    private log: Logger,
+    private templates: TemplateService,
+    private actions: TemplateActions) { }
 
   loadingTemplate = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.LOAD_TEMPLATE)
@@ -24,8 +28,9 @@ export class TemplateEpics {
           const act = TemplateActions.GET_TEMPLATE(url);
           return act;
         }).catch(error => {
-          console.log(error);
-          return undefined;
+          this.log.error(error);
+          const act = TemplateActions.ERROR(error);
+          return act;
         });
       });
   }
@@ -37,8 +42,9 @@ export class TemplateEpics {
           const act = TemplateActions.OPEN_TEMPLATE(base64);
           return act;
         }).catch(error => {
-          console.log(error);
-          return undefined;
+          this.log.error(error);
+          const act = TemplateActions.ERROR(error);
+          return act;
         });
       });
   }
@@ -50,8 +56,9 @@ export class TemplateEpics {
           const act = TemplateActions.INSERT_FRAGMENTS({});
           return act;
         }).catch(error => {
-          console.log(error);
-          return undefined;
+          this.log.error(error);
+          const act = TemplateActions.ERROR(error);
+          return act;
         });
       });
   }
@@ -68,6 +75,11 @@ export class TemplateEpics {
               })),
               Observable.of(TemplateActions.LOAD_TEMPLATE_FINISHED(''))
             );
+          })
+          .catch(error => {
+            this.log.error(error);
+            const act = TemplateActions.ERROR(error);
+            return Observable.of(act);
           });
       });
   }
@@ -77,6 +89,10 @@ export class TemplateEpics {
       .mergeMap(({ payload }, n: number) => {
         return this.templates.insertFragment(payload.name, payload.url).then(url => {
           const act = TemplateActions.INSERTED_FRAGMENT(payload);
+          return act;
+        }).catch(error => {
+          this.log.error(error);
+          const act = TemplateActions.ERROR(error);
           return act;
         });
       });
