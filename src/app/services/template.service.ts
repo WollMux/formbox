@@ -21,11 +21,22 @@ export class TemplateService {
       });
   }
 
-  async getFragmentUrl(name: string): Promise<string> {
+  async getFragmentUrls(): Promise<{ name: string, url: string }[]> {
+    return this.office.getFragmentNames().then(async names => {
+      if (names.length === 0) {
+        return undefined;
+      }
+      return Promise.all(names.map(name => {
+        return this.getFragmentUrl(name);
+      }));
+    });
+  }
+
+  async getFragmentUrl(name: string): Promise<{ name: string, url: string }> {
     return await this.http.get(`${this.formboxapi}/config/fragmente/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
-        return res.json().path as string;
+        return { name: name, url: res.json().path as string };
       });
   }
 
@@ -44,6 +55,12 @@ export class TemplateService {
     await this.office.insertDocument(base64, 'Replace');
   }
 
+  async insertFragment(name: string, url: string): Promise<void> {
+    await this.getFileAsBase64(url).then(async s => {
+      await this.office.insertFragment(name, s);
+    });
+  }
+
   async insertFragments(): Promise<void> {
     await this.office.getFragmentNames().then(async names => {
       if (names.length === 0) {
@@ -51,7 +68,7 @@ export class TemplateService {
       }
       await Promise.all(names.map(async name => {
         await this.getFragmentUrl(name).then(async url => {
-          await this.getFileAsBase64(url).then(async s => {
+          await this.getFileAsBase64(url.url).then(async s => {
             await this.office.insertFragment(name, s);
           });
         });
@@ -72,10 +89,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[ bytes[ i ] >> 2 ];
-      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
-      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
-      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
+      base64 += this.chars[bytes[i] >> 2];
+      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+      base64 += this.chars[bytes[i + 2] & 63];
     }
 
     if ((len % 3) === 2) {
