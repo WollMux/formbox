@@ -7,6 +7,8 @@ const actionCreator = actionCreatorFactory();
 
 @Injectable()
 export class TemplateActions {
+  static ERROR = actionCreator<any>('ERROR');
+
   static LOAD_TEMPLATE = actionCreator<string>('LOAD_TEMPLATE');
   static GET_TEMPLATE = actionCreator<string>('GET_TEMPLATE');
   static OPEN_TEMPLATE = actionCreator<string>('OPEN_TEMPLATE');

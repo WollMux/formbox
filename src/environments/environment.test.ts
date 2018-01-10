@@ -1,4 +1,7 @@
+import { Level } from '@nsalaun/ng-logger';
+
 export const environment = {
   production: false,
-  test: true
+  test: true,
+  loglevel: Level.LOG
 };
