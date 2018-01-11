@@ -13,6 +13,10 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/concat';
 
+
+/**
+ * Middleware für Templates und Fragmente.
+ */
 @Injectable()
 export class TemplateEpics {
   constructor(
@@ -20,6 +24,11 @@ export class TemplateEpics {
     private templates: TemplateService,
     private actions: TemplateActions) { }
 
+  /**
+   * Startet das Laden eines Templates.
+   * Action: LOAD_TEMPLATE
+   * Payload: Name des Templates
+   */
   loadingTemplate = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.LOAD_TEMPLATE)
       .mergeMap(({ payload }, n: number) => {
@@ -35,6 +44,11 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Lädt ein Template als Base64 über eine Url.
+   * Action: GET_TEMPLATE
+   * Payload: Url des Templates
+   */
   gettingTemplateFromUrl = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.GET_TEMPLATE)
       .mergeMap(({ payload }, n: number) => {
@@ -49,6 +63,11 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Öffnet das Template in Office und startet das Laden der Fragmente.
+   * Action: OPEN_TEMPLATE
+   * Payload: Template als Base64
+   */
   openingTemplate = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.OPEN_TEMPLATE)
       .mergeMap(({ payload }, n: number) => {
@@ -63,6 +82,14 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Startet das Einfügen von Fragmenten.
+   * Holt die Urls aller Fragmente und erzeugt für jede Url eine Action
+   * {@link TemplateActions.INSERT_FRAGMENT}. 
+   * 
+   * Action: INSERT_FRAGMENTS
+   * Payload: Keine
+   */
   insertingFragments = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.INSERT_FRAGMENTS)
       .mergeMap((value, n: number) => {
@@ -84,6 +111,12 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Fügt ein Fragment in das aktuelle Dokument ein.
+   * 
+   * Action: INSERT_FRAGMENT
+   * Payload: Name und Url des Fragments.
+   */
   insertingFragment = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.INSERT_FRAGMENT)
       .mergeMap(({ payload }, n: number) => {
