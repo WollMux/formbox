@@ -24,6 +24,11 @@ FormBox verwendet [typescript-fsa](https://github.com/aikoven/typescript-fsa), u
 
 Für die Epics wird [redux-observable](https://github.com/redux-observable/redux-observable) verwendet.
 
+## Redux Developer Tool
+
+FormBox unterstützt die [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension) für Firefox und Chrome. Dafür muss FormBox im Browser gestartet werden.
+Wenn die Extension installiert ist, hat das Kontextmenü des Browsers einen Eintrag 'Redux DevTools' über den man die DevTools öffnen kann.
+
 ## Dokumentation
 
 * [Redux](https://redux.js.org/)
