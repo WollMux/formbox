@@ -5,6 +5,9 @@ import { FormBoxState } from '../states/formbox-state';
 
 const actionCreator = actionCreatorFactory();
 
+/**
+ * Aktionen, die die Verarbeitung von Office-Templates und Fragmenten betreffen.
+ */
 @Injectable()
 export class TemplateActions {
   static ERROR = actionCreator<any>('ERROR');

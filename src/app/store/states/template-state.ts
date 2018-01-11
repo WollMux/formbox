@@ -4,6 +4,9 @@ export enum TemplateStatus {
   Finished
 }
 
+/**
+ * Status von Templates und Fragmenten.
+ */
 export interface TemplateState {
   name: string;
   url: string;
