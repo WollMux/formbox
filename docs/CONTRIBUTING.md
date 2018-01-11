@@ -22,7 +22,7 @@
     * Vertikales Alignment für Variablen, Anweisungen und Parameter (align)
     * Radix Parameter bei parseInt muss nicht immer angegeben werden (radix)
     * Geschweifte Klammern müssen immer gesetzt werden (curly)
-    * Es muss keine Leerzeile vor einer Return-Anweisung stehen (newline-before-return)
+    * Es muss eine Leerzeile vor einer Return-Anweisung stehen (newline-before-return)
     * Var Keyword ist verboten (no-var-keyword)
 * Codelyzer Regeln
     * Gelten nicht für FormBox-API, da es sich um spezielle Regeln für Angular handelt
