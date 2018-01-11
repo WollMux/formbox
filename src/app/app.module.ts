@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { NgRedux, NgReduxModule } from '@angular-redux/store';
+import { DevToolsExtension, NgRedux, NgReduxModule } from '@angular-redux/store';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 
@@ -38,14 +38,17 @@ import { environment } from '../environments/environment';
     TemplateEpics,
     OfficeService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule {
-  constructor(private ngRedux: NgRedux<FormBoxState>, private templateEpics: TemplateEpics) {
+  constructor(
+    private ngRedux: NgRedux<FormBoxState>,
+    private devTools: DevToolsExtension,
+    private templateEpics: TemplateEpics) {
     const middleware = [
       createEpicMiddleware(this.templateEpics.rootEpic())
     ];
-    ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
+    ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
   }
 }
