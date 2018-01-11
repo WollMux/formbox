@@ -3,7 +3,12 @@ import { TemplateState, TemplateStatus } from '../states/template-state';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { tassign } from 'tassign';
 import { TemplateActions } from '../actions/template-actions';
-
+/**
+ * Setzt den Status in {@link TemplateState} auf TemplateStatus.Loading.
+ * 
+ * @param state
+ * @param name
+ */
 const loadTemplate = (state: TemplateState, name: string): TemplateState => {
   if (state.name !== name) {
     return tassign(state, { name: name, status: TemplateStatus.Loading });
