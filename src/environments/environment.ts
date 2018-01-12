@@ -4,11 +4,11 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 import { Level } from '@nsalaun/ng-logger';
+import { OfficeService } from '../app/services/office.service';
 
 export const environment = {
   production: false,
-
   formboxapi: 'https://127.0.0.1:4201',
-
-  loglevel: Level.LOG
+  loglevel: Level.LOG,
+  officeServie: OfficeService
 };
