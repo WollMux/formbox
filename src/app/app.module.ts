@@ -36,7 +36,7 @@ import { environment } from '../environments/environment';
     TemplateService,
     TemplateActions,
     TemplateEpics,
-    OfficeService
+    { provide: OfficeService, useClass: environment.officeServie }
   ],
   bootstrap: [ AppComponent ]
 })
