@@ -12,7 +12,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/concat';
-
+import 'rxjs/add/observable/forkJoin';
 
 /**
  * Middleware für Templates und Fragmente.
@@ -94,40 +94,13 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.INSERT_FRAGMENTS)
       .mergeMap((value, n: number) => {
         return Observable.fromPromise(this.templates.getFragmentUrls())
-          .mergeMap((urls, index) => {
-            return Observable.concat(
-              Observable.from(urls.map(url => {
-                const act = TemplateActions.INSERT_FRAGMENT(url);
-                return act;
-              })),
-              Observable.of(TemplateActions.LOAD_TEMPLATE_FINISHED(''))
-            );
-          })
+          .map(urls => urls.map(url => this.templates.insertFragment(url.name, url.url)))
+          .mergeMap(p => Observable.forkJoin(p))
+          .map(m => TemplateActions.LOAD_TEMPLATE_FINISHED(''))
           .catch(error => {
             this.log.error(error);
-            const act = TemplateActions.ERROR(error);
-            return Observable.of(act);
+            return Observable.of(TemplateActions.ERROR(error));
           });
-      });
-  }
-
-  /**
-   * Fügt ein Fragment in das aktuelle Dokument ein.
-   * 
-   * Action: INSERT_FRAGMENT
-   * Payload: Name und Url des Fragments.
-   */
-  insertingFragment = (action: ActionsObservable<any>) => {
-    return action.ofType(TemplateActions.INSERT_FRAGMENT)
-      .mergeMap(({ payload }, n: number) => {
-        return this.templates.insertFragment(payload.name, payload.url).then(url => {
-          const act = TemplateActions.INSERTED_FRAGMENT(payload);
-          return act;
-        }).catch(error => {
-          this.log.error(error);
-          const act = TemplateActions.ERROR(error);
-          return act;
-        });
       });
   }
 
@@ -135,8 +108,7 @@ export class TemplateEpics {
     this.loadingTemplate,
     this.gettingTemplateFromUrl,
     this.openingTemplate,
-    this.insertingFragments,
-    this.insertingFragment
+    this.insertingFragments
   )
 
 }

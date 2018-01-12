@@ -11,12 +11,12 @@ import { Logger } from '@nsalaun/ng-logger';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  @select(['template', 'status']) templateStatus: Observable<TemplateStatus>;
+  @select([ 'template', 'status' ]) templateStatus: Observable<TemplateStatus>;
 
   constructor(
     private templates: TemplateService,
@@ -26,6 +26,9 @@ export class AppComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.log.debug('AppComponent.ngOnInit');
+    this.templateStatus.subscribe(status => {
+      this.log.debug(status);
+    });
   }
 
   onInsertDocument(): void {
