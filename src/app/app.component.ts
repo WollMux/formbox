@@ -1,24 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from './services/storage.service';
+import { TemplateService } from './services/template.service';
+import { OfficeService } from './services/office.service';
+import { TemplateActions } from './store/actions/template-actions';
+import { select } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
+import { TemplateStatus } from './store/states/template-state';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private db: StorageService) {
+  @select([ 'template', 'status' ]) templateStatus: Observable<TemplateStatus>;
+
+  constructor(
+    private templates: TemplateService,
+    private actions: TemplateActions,
+    private log: Logger) {
   }
 
   async ngOnInit(): Promise<void> {
-    // TODO: Das ist nur ein Beispiel für die Verwendung des LocalStorage und
-    // sollte wieder entfernt werden.
-    this.db.reset().then(() => {
-      this.db.getPAL().then(pal => {
-        console.log(pal);
-      });
+    this.log.debug('AppComponent.ngOnInit');
+    this.templateStatus.subscribe(status => {
+      this.log.debug(status);
     });
+  }
+
+  onInsertDocument(): void {
+    this.actions.loadTemplate('Externer_Briefkopf');
   }
 }
