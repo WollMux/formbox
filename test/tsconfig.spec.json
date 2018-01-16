@@ -4,10 +4,13 @@
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
     "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
     "target": "es5",
     "types": [
       "jasmine",
-      "node"
+      "node",
+      "office-js"
     ]
   },
   "files": [

@@ -21,7 +21,7 @@ export class TemplateService {
    * 
    * @param name Name des Templates
    */
-  async getTemplateUrl(name: string): Promise<any> {
+  async getTemplateUrl(name: string): Promise<string> {
     return this.http.get(`${this.formboxapi}/config/vorlagen/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
@@ -104,10 +104,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[ bytes[ i ] >> 2 ];
-      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
-      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
-      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
+      base64 += this.chars[bytes[i] >> 2];
+      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+      base64 += this.chars[bytes[i + 2] & 63];
     }
 
     if ((len % 3) === 2) {

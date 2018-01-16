@@ -48,8 +48,8 @@ cert/
 launch.cmd
 
 # Tests
-test/.results/
+.testresults/
 e2e/.results/
-=======
+
 src/environments/environment.home.ts
 /api

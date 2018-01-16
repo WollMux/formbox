@@ -4,6 +4,7 @@
 module.exports = function (config) {
   config.set({
     files: [
+      'node_modules',
       'src/**/*.ts',
       'test/**/*.spec.ts'
     ],
@@ -15,33 +16,27 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular/cli/plugins/karma'),
       require('karma-junit-reporter'),
-      require('karma-htmlfile-reporter')
     ],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    htmlReporter: {
-      outputFile: '.testresults/units.html',
-      
-      // Optional 
-      pageTitle: 'Unit Tests',
-      subPageTitle: 'A sample project description',
-      groupSuites: true,
-      useCompactStyle: true,
-      useLegacyStyle: true
+    coverageIstanbulReporter: {
+      reports: [ 'text-summary', 'lcov' ],
+      dir: 'test/.results/coverage',
+      fixWebpackSourcePaths: true
     },
     angularCli: {
-      environment: 'test',
+      environment: 'test'
     },
-    reporters: ['progress', 'junit', 'html'],
+    reporters: ['progress', 'junit', 'coverage-istanbul'],
     junitReporter: {
-      outputDir: '.testresults'
+      outputDir: 'test/.results'
     },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Firefox'],
-    singleRun: false
+    singleRun: true
   });
 };
