@@ -10,7 +10,7 @@ import { OfficeService } from '../../../../src/app/services/office.service';
 import { NgReduxModule } from '@angular-redux/store';
 import { TemplateMockService } from '../../services/mocks/template-mock.service';
 
-fdescribe('Template epics', () => {
+describe('Template epics', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
