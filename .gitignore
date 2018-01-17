@@ -53,3 +53,6 @@ e2e/.results/
 
 src/environments/environment.home.ts
 /api
+
+lint.json
+

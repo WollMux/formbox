@@ -10,6 +10,7 @@
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true",
     "build": "ng build && ng lint",
+    "build-jenkins": "ng build && ng lint --format json > lint.json",
     "test": "ng test",
     "test-jenkins": "ng test --config karma-jenkins.conf.js --code-coverage --progress false",
     "lint": "ng lint",
