@@ -35,10 +35,12 @@ export class TemplateEpics {
         return this.templates.getTemplateUrl(payload).then(url => {
           // Action muss einer Variable zugewiesen werden, sonst wird sie nicht als Plain Object erkannt.
           const act = TemplateActions.GET_TEMPLATE(url);
+
           return act;
         }).catch(error => {
           this.log.error(error);
           const act = TemplateActions.ERROR(error);
+
           return act;
         });
       });
@@ -54,10 +56,12 @@ export class TemplateEpics {
       .mergeMap(({ payload }, n: number) => {
         return this.templates.getFileAsBase64(payload).then(base64 => {
           const act = TemplateActions.OPEN_TEMPLATE(base64);
+
           return act;
         }).catch(error => {
           this.log.error(error);
           const act = TemplateActions.ERROR(error);
+
           return act;
         });
       });
@@ -73,10 +77,12 @@ export class TemplateEpics {
       .mergeMap(({ payload }, n: number) => {
         return this.templates.openDocument(payload).then(base64 => {
           const act = TemplateActions.INSERT_FRAGMENTS({});
+
           return act;
         }).catch(error => {
           this.log.error(error);
           const act = TemplateActions.ERROR(error);
+
           return act;
         });
       });
@@ -99,6 +105,7 @@ export class TemplateEpics {
           .map(m => TemplateActions.LOAD_TEMPLATE_FINISHED(''))
           .catch(error => {
             this.log.error(error);
+
             return Observable.of(TemplateActions.ERROR(error));
           });
       });

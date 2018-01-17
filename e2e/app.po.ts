@@ -1,4 +1,4 @@
-import { browser, by, element, promise } from 'protractor';
+import { browser, by, element, promise } from 'protractor'; // tslint:disable-line
 
 export class AppPage {
   navigateTo(): promise.Promise<string> {

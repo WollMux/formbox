@@ -92,7 +92,7 @@
             "array"
         ],
         "prefer-object-spread": true,
-        "object-literal-shorthand": true,
+        "object-literal-shorthand": false,
         "object-literal-key-quotes": [
             true,
             "as-needed"

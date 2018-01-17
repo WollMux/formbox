@@ -17,6 +17,7 @@ export class OfficeService {
     await Word.run(context => {
       const body = context.document.body;
       body.insertFileFromBase64(base64, 'Replace');
+
       return context.sync();
     });
   }
@@ -25,7 +26,7 @@ export class OfficeService {
    * Liefert eine Liste der Namen aller Fragmente im aktiven Dokument.
    */
   async getFragmentNames(): Promise<string[]> {
-    return await this.getAllContentControls().then(c => {
+    return this.getAllContentControls().then(c => {
       return c.items.map(it => it.title);
     });
   }
@@ -41,6 +42,7 @@ export class OfficeService {
       const doc = context.document;
       const controls = doc.contentControls.getByTitle(name);
       controls.load('items');
+
       return context.sync().then(() => {
         controls.items.forEach(c => {
           if (base64) {
@@ -53,6 +55,7 @@ export class OfficeService {
       });
     }).catch(error => {
       this.log.error(error);
+
       return undefined;
     });
   }
@@ -61,7 +64,7 @@ export class OfficeService {
    * Gibt eine Liste aller ContentControls im aktiven Dokument zurück.
    */
   private getAllContentControls = async (): Promise<Word.ContentControlCollection> => {
-    return await Word.run(context => {
+    return Word.run(context => {
       const doc = context.document;
       const controls = doc.contentControls;
       controls.load('items');

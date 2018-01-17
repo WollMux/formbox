@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class TemplateMockService {
 
-  constructor() { }
+  constructor() { /* Leer */ }
 
   async getTemplateUrl(name: string): Promise<string> {
     return Promise.resolve('');

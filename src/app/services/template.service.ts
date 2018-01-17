@@ -38,6 +38,7 @@ export class TemplateService {
       if (names.length === 0) {
         return undefined;
       }
+
       return Promise.all(names.map(name => {
         return this.getFragmentUrl(name);
       }));
@@ -50,7 +51,7 @@ export class TemplateService {
    * @param name Name des Fragments.
    */
   async getFragmentUrl(name: string): Promise<{ name: string, url: string }> {
-    return await this.http.get(`${this.formboxapi}/config/fragmente/${name}`, { responseType: ResponseContentType.Json })
+    return this.http.get(`${this.formboxapi}/config/fragmente/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
         return { name: name, url: res.json().path as string };
@@ -64,7 +65,7 @@ export class TemplateService {
    * @param url Url der Datei
    */
   async getFileAsBase64(url: string): Promise<string> {
-    return await this.http.get(`${this.formboxapi}/${url}`, { responseType: ResponseContentType.ArrayBuffer })
+    return this.http.get(`${this.formboxapi}/${url}`, { responseType: ResponseContentType.ArrayBuffer })
       .toPromise()
       .then(res => {
         return this.encode(res.arrayBuffer());
@@ -111,9 +112,9 @@ export class TemplateService {
     }
 
     if ((len % 3) === 2) {
-      base64 = base64.substring(0, base64.length - 1) + '=';
+      base64 = base64.substring(0, base64.length - 1) + '=';  // tslint:disable-line
     } else if (len % 3 === 1) {
-      base64 = base64.substring(0, base64.length - 2) + '==';
+      base64 = base64.substring(0, base64.length - 2) + '=='; // tslint:disable-line
     }
 
     return base64;
