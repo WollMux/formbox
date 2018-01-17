@@ -16,7 +16,7 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-                    sh 'npm run test || error=true'
+                    sh 'npm run test-jenkins || error=true'
                     sh 'npm run webdriver-update -- --standalone false --chrome false'
                     sh 'npm run e2e'
                     sh 'if [ $error ]; then exit -1; fi'
