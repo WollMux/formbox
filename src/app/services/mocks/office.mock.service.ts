@@ -12,6 +12,7 @@ export class OfficeMockService {
 
   async getFragmentNames(): Promise<string[]> {
     this.log.debug('OfficeMockService.getFragmentNames');
+
     return Promise.resolve([
       'Adresse_Angaben',
       'Email',

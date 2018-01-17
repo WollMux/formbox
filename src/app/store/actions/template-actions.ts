@@ -23,6 +23,7 @@ export class TemplateActions {
 
   loadTemplate(name: string): Action<string> {
     const action = TemplateActions.LOAD_TEMPLATE(name);
+
     return this.ngRedux.dispatch(action);
   }
 }
