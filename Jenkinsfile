@@ -3,6 +3,8 @@
 pipeline {
     agent {label 'formbox'}
 
+    options { disableConcurrentBuilds() }
+
     tools {nodejs 'node6.11.3'}
 
     stages {
