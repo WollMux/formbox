@@ -112,9 +112,9 @@ export class TemplateService {
     }
 
     if ((len % 3) === 2) {
-      base64 = base64.substring(0, base64.length - 1) + '=';  // tslint:disable-line
+      base64 = base64.substring(0, base64.length - 1) + '=';  // tslint:disable-line: prefer-template
     } else if (len % 3 === 1) {
-      base64 = base64.substring(0, base64.length - 2) + '=='; // tslint:disable-line
+      base64 = base64.substring(0, base64.length - 2) + '==';  // tslint:disable-line: prefer-template
     }
 
     return base64;

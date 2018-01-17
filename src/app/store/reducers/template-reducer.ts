@@ -3,7 +3,8 @@ import { TemplateState, TemplateStatus } from '../states/template-state';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { tassign } from 'tassign';
 import { TemplateActions } from '../actions/template-actions';
-/**
+
+/**
  * Setzt den Status in {@link TemplateState} auf TemplateStatus.Loading.
  * 
  * @param state Aktueller Status
