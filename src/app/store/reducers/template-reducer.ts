@@ -2,7 +2,7 @@ import { Action, Reducer } from 'redux';
 import { TemplateState, TemplateStatus } from '../states/template-state';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { tassign } from 'tassign';
-import { TemplateActions } from '../actions/template-actions';
+import { OverrideFrag, TemplateActions } from '../actions/template-actions';
 
 /**
  * Setzt den Status in {@link TemplateState} auf TemplateStatus.Loading.
@@ -34,9 +34,24 @@ const loadTemplateFinished = (state: TemplateState): TemplateState => {
   return state;
 };
 
+const overrideFragment = (state: TemplateState, payload: OverrideFrag): TemplateState => {
+  const val = { fragId: payload.fragId, newFragId: payload.newFragId };
+  const n = state.overrideFrags.findIndex(it => it.fragId === payload.fragId);
+  let arr;
+  if (n !== -1) {
+    arr = [ ...state.overrideFrags.slice(0, n), val, ...state.overrideFrags.slice(n + 1) ];
+  } else {
+    arr = state.overrideFrags.slice();
+    arr = arr.concat([ val ]);
+  }
+
+  return tassign(state, { overrideFrags: arr });
+};
+
 export const templateReducer: Reducer<TemplateState> = reducerWithInitialState({ status: TemplateStatus.None } as TemplateState)
   .case(TemplateActions.LOAD_TEMPLATE, (state, name) => loadTemplate(state, name))
   .case(TemplateActions.GET_TEMPLATE, (state, contents) => getTemplate(state, contents))
   .case(TemplateActions.OPEN_TEMPLATE, (state, payload) => state)
   .case(TemplateActions.LOAD_TEMPLATE_FINISHED, (state, payload) => loadTemplateFinished(state))
+  .case(TemplateActions.OVERRIDE_FRAGMENT, (state, payload) => overrideFragment(state, payload))
   .build();
