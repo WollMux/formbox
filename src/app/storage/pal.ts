@@ -3,7 +3,7 @@
  * 
  * Wird nur für Typinformationen benötigt.
  */
-export interface Pal {
+export interface Absender {
   id?: number;
   name: string;
   vorname: string;

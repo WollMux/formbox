@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Pal } from '../storage/pal';
+import { Absender } from '../storage/pal';
 
 /**
  * Wird zum Injizieren des StorageService benötigt, falls in Zukunft eine
@@ -21,5 +21,5 @@ export abstract class StorageService {
   /**
    * Liefert die Persönliche Absenderliste (PAL) zurück.
    */
-  abstract async getPAL(): Promise<Pal[]>;
+  abstract async getPAL(): Promise<Absender[]>;
 }
