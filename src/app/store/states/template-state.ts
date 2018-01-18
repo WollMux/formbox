@@ -12,4 +12,5 @@ export interface TemplateState {
   url: string;
   contents: string;
   status: TemplateStatus;
+  overrideFrags: { fragId: string, newFragId: string }[];
 }

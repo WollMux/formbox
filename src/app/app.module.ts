@@ -21,7 +21,8 @@ import { environment } from '../environments/environment';
 import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
 import { AbsenderlisteService } from './services/absenderliste.service';
 import { RootEpic } from './store/middleware/root-epic';
-import { AbsenderlisteEpics } from "./store/middleware/absenderliste-epics";
+import { AbsenderlisteEpics } from './store/middleware/absenderliste-epics';
+import { ExpressionsService } from './services/expressions.service';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { AbsenderlisteEpics } from "./store/middleware/absenderliste-epics";
     AbsenderlisteEpics,
     TemplateEpics,
     RootEpic,
+    ExpressionsService,
     { provide: OfficeService, useClass: environment.officeServie }
   ],
   bootstrap: [ AppComponent ]

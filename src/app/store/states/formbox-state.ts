@@ -18,6 +18,6 @@ export interface FormBoxState {
  */
 export const INITIAL_STATE: FormBoxState = {
   absenderliste: { selected: undefined, pal: [] },
-  template: { status: TemplateStatus.None } as TemplateState,
+  template: { status: TemplateStatus.None, overrideFrags: [] } as TemplateState,
   fragments: [] as TemplateState[]
 };
