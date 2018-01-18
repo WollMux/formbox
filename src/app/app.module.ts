@@ -18,6 +18,10 @@ import { createEpicMiddleware } from 'redux-observable';
 import { TemplateActions } from './store/actions/template-actions';
 import { applyMiddleware, createStore } from 'redux';
 import { environment } from '../environments/environment';
+import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
+import { AbsenderlisteService } from './services/absenderliste.service';
+import { RootEpic } from './store/middleware/root-epic';
+import { AbsenderlisteEpics } from "./store/middleware/absenderliste-epics";
 
 @NgModule({
   declarations: [
@@ -35,7 +39,11 @@ import { environment } from '../environments/environment';
     { provide: StorageService, useClass: LocalStorageService },
     TemplateService,
     TemplateActions,
+    AbsenderlisteActions,
+    AbsenderlisteService,
+    AbsenderlisteEpics,
     TemplateEpics,
+    RootEpic,
     { provide: OfficeService, useClass: environment.officeServie }
   ],
   bootstrap: [ AppComponent ]
@@ -45,9 +53,9 @@ export class AppModule {
   constructor(
     private ngRedux: NgRedux<FormBoxState>,
     private devTools: DevToolsExtension,
-    private templateEpics: TemplateEpics) {
+    private rootEpic: RootEpic) {
     const middleware = [
-      createEpicMiddleware(this.templateEpics.rootEpic())
+      createEpicMiddleware(this.rootEpic.epics())
     ];
     ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
   }

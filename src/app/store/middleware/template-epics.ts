@@ -21,8 +21,8 @@ import 'rxjs/add/observable/forkJoin';
 export class TemplateEpics {
   constructor(
     private log: Logger,
-    private templates: TemplateService,
-    private actions: TemplateActions) { }
+    private templates: TemplateService
+  ) { }
 
   /**
    * Startet das Laden eines Templates.
@@ -110,12 +110,4 @@ export class TemplateEpics {
           });
       });
   }
-
-  rootEpic = () => combineEpics(
-    this.loadingTemplate,
-    this.gettingTemplateFromUrl,
-    this.openingTemplate,
-    this.insertingFragments
-  )
-
 }

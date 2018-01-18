@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
-import { Pal } from './pal';
+import { Absender } from './pal';
 
 /**
  * Implementation der IndexDB für das Speichern von benutzerbezogenen Daten.
@@ -9,7 +9,7 @@ import { Pal } from './pal';
  */
 @Injectable()
 export class DexieStorage extends Dexie {
-  pal: Dexie.Table<Pal, number>;
+  pal: Dexie.Table<Absender, number>;
 
   /**
    * Initialisiert die Tabellen der Datenbank, falls noch nicht vorhanden.
@@ -30,9 +30,9 @@ export class DexieStorage extends Dexie {
    * Gibt eine Liste mit Personen in der Persönlichen Absenderliste (PAL)
    * zurück.
    *
-   * @returns {Promise<Pal[]>} Promise mit dem Inhalt der PAL.
+   * @returns {Promise<Absender[]>} Promise mit dem Inhalt der PAL.
    */
-  async getPAL(): Promise<Pal[]> {
+  async getPAL(): Promise<Absender[]> {
     return this.pal.toArray();
   }
 

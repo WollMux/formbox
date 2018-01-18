@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DexieStorage } from '../storage/dexie-storage';
-import { Pal } from '../storage/pal';
+import { Absender } from '../storage/pal';
 import { StorageService } from './storage.service';
 
 /**
@@ -28,7 +28,7 @@ export class LocalStorageService extends StorageService {
     });
   }
 
-  async getPAL(): Promise<Pal[]> {
+  async getPAL(): Promise<Absender[]> {
     return this.db.getPAL();
   }
 }
