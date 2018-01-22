@@ -1,11 +1,19 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
-import { ExpressionsService } from './expressions.service';
+import { ExpressionsService } from '../../../src/app/services/expressions.service';
+import { NgReduxModule } from '@angular-redux/store';
+import { TemplateActions } from '../../../src/app/store/actions/template-actions';
 
 describe('ExpressionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ExpressionsService]
+      imports: [
+        NgReduxModule
+      ],
+      providers: [
+        TemplateActions,
+        ExpressionsService
+      ]
     });
   });
 
