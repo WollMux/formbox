@@ -25,7 +25,7 @@ export class TemplateActions {
   static OVERRIDE_FRAGMENT = actionCreator<OverrideFrag>('OVERRIDE_FRAGMENT');
 
   static COLLECT_COMMANDS = actionCreator.async<any, DocumentCommand[]>('COLLECT_COMMANDS');
-  static EXECUTE_COMMAND = actionCreator.async<DocumentCommand, any>('EXECUTE_COMMAND');
+  static EXECUTE_COMMAND = actionCreator.async<DocumentCommand, number>('EXECUTE_COMMAND');
 
   constructor(private ngRedux: NgRedux<FormBoxState>) { }
 

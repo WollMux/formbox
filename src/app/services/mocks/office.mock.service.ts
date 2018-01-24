@@ -52,8 +52,10 @@ export class OfficeMockService {
     return Promise.resolve(ret);
   }
 
-  async insertFragment(name: string, base64: string): Promise<void> {
+  async insertFragment(id: number, base64: string): Promise<void> {
     this.log.debug('OfficeMockService.insertFragment');
+
+    return Promise.resolve();
   }
 
 }

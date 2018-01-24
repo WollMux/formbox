@@ -18,7 +18,7 @@ import { ExpressionsService } from '../../services/expressions.service';
 import { DocumentCommand } from '../actions/template-actions';
 import { TemplateActions } from '../actions/template-actions';
 import { FormBoxState } from '../states/formbox-state';
-import { LoadingStatus } from '../states/template-state';
+import { DocumentCommandStatus, LoadingStatus } from '../states/template-state';
 
 /**
  * Middleware für Templates und Fragmente.
@@ -111,7 +111,7 @@ export class TemplateEpics {
           if (cmds) {
             c = cmds.filter(it => oldCmds.findIndex(oc => oc.cmd.id === it.id) === -1);
           }
-          c = c.concat(oldCmds.filter(it => !it.done).map(it => it.cmd));
+          c = c.concat(oldCmds.filter(it => it.status !== DocumentCommandStatus.Done).map(it => it.cmd));
 
           let act;
           if (c.length > 0) {
@@ -131,14 +131,16 @@ export class TemplateEpics {
    * Action: COLLECT_COMMANDS.done
    * Payload: Liste von DokumentenKommandos
    */
-  collectingCommandsDone = (action: ActionsObservable<any>) => {
+  collectingCommandsDone = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(TemplateActions.COLLECT_COMMANDS.done)
       .mergeMap(({ payload }, n: number) => {
         return Observable.from(payload.result as DocumentCommand[])
           .mergeMap(c => {
-            const act = TemplateActions.EXECUTE_COMMAND.started(c);
+            if (this.getDocumentCommandState(store, c) === DocumentCommandStatus.New) {
+              const act = TemplateActions.EXECUTE_COMMAND.started(c);
 
-            return Observable.of(act);
+              return Observable.of(act);
+            }
           });
       });
   }
@@ -152,9 +154,11 @@ export class TemplateEpics {
   insertingFragment = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.INSERT_FRAGMENT.started)
       .mergeMap(({ payload }, n: number) => {
-        const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
+        return this.templates.insertFragment(payload.id, payload.url).then(() => {
+          const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
 
-        return Observable.of(act);
+          return act;
+        });
       });
   }
 
@@ -188,8 +192,11 @@ export class TemplateEpics {
           // TODO: Fehler oder insertValue
         }
 
-        return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: {} }));
+        return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
       });
   }
 
+  getDocumentCommandState = (store: NgRedux<FormBoxState>, cmd: DocumentCommand): DocumentCommandStatus => {
+    return store.getState().template.documentCommands.filter(it => it.cmd.id === cmd.id).map(it => it.status).pop();
+  }
 }

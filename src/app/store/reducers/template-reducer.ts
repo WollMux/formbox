@@ -1,5 +1,5 @@
 import { Action, Reducer } from 'redux';
-import { LoadingStatus, TemplateState } from '../states/template-state';
+import { DocumentCommandStatus, LoadingStatus, TemplateState } from '../states/template-state';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { tassign } from 'tassign';
 import { DocumentCommand, OverrideFrag, TemplateActions } from '../actions/template-actions';
@@ -41,16 +41,34 @@ const overrideFragment = (state: TemplateState, payload: OverrideFrag): Template
 };
 
 const collectCommandsDone = (state: TemplateState, cmds: DocumentCommand[]): TemplateState => {
-  const c = cmds.map(it => ({ cmd: it, done: false }));
+  const c = cmds.map(it => ({ cmd: it, status: DocumentCommandStatus.New }));
 
   return tassign(state, { documentCommands: c });
 };
 
-const insertFragmentDone = (state: TemplateState, id: number): TemplateState => {
+const executeCommandStarted = (state: TemplateState, cmd: DocumentCommand): TemplateState => {
+  const n = state.documentCommands.findIndex(it => it.cmd.id === cmd.id);
+  if (n !== -1) {
+    const c = state.documentCommands[n];
+    const arr =
+      [...state.documentCommands.slice(0, n),
+      { cmd: c.cmd, status: DocumentCommandStatus.Executing },
+      ...state.documentCommands.slice(n + 1)];
+
+    return tassign(state, { documentCommands: arr });
+  }
+
+  return state;
+};
+
+const executeCommandDone = (state: TemplateState, id: number): TemplateState => {
   const n = state.documentCommands.findIndex(it => it.cmd.id === id);
   if (n !== -1) {
     const cmd = state.documentCommands[n];
-    const arr = [...state.documentCommands.slice(0, n), { cmd: cmd.cmd, done: true }, ...state.documentCommands.slice(n + 1)];
+    const arr =
+      [...state.documentCommands.slice(0, n),
+      { cmd: cmd.cmd, status: DocumentCommandStatus.Done },
+      ...state.documentCommands.slice(n + 1)];
 
     return tassign(state, { documentCommands: arr });
   }
@@ -64,5 +82,6 @@ export const templateReducer: Reducer<TemplateState> = reducerWithInitialState({
   .case(TemplateActions.OPEN_TEMPLATE, (state, payload) => state)
   .case(TemplateActions.OVERRIDE_FRAGMENT, (state, payload) => overrideFragment(state, payload))
   .case(TemplateActions.COLLECT_COMMANDS.done, (state, payload) => collectCommandsDone(state, payload.result))
-  .case(TemplateActions.INSERT_FRAGMENT.done, (state, payload) => insertFragmentDone(state, payload.result))
+  .case(TemplateActions.EXECUTE_COMMAND.started, (state, payload) => executeCommandStarted(state, payload))
+  .case(TemplateActions.EXECUTE_COMMAND.done, (state, payload) => executeCommandDone(state, payload.result))
   .build();
