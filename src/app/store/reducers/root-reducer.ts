@@ -1,7 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
 import { FormBoxState } from '../states/formbox-state';
 import { templateReducer } from './template-reducer';
-import { fragmentsReducer } from './fragments-reducer';
 import { absenderlisteReducer } from './absenderliste-reducer';
 
 /**
@@ -12,6 +11,5 @@ import { absenderlisteReducer } from './absenderliste-reducer';
 export const rootReducer: Reducer<FormBoxState> =
   combineReducers({
     absenderliste: absenderlisteReducer,
-    template: templateReducer,
-    fragments: fragmentsReducer
+    template: templateReducer
   });

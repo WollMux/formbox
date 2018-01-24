@@ -3,6 +3,14 @@ import { Logger } from '@nsalaun/ng-logger';
 
 @Injectable()
 export class OfficeMockService {
+  cmds1 = [
+    { id: 0, cmd: '=insertFrag(\'Adresse_Angaben\')'.substr(1).trim() },
+    { id: 1, cmd: '=insertFrag(\'Empfaengerfeld\')'.substr(1).trim() }
+  ];
+
+  cmds2 = [
+    { id: 100, cmd: '=insertFrag(\'Email\')'.substr(1).trim() }
+  ];
 
   constructor(private log: Logger) { }
 
@@ -24,6 +32,24 @@ export class OfficeMockService {
       'Logo',
       'Zusatz'
     ]);
+  }
+
+  async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
+    this.log.debug('OfficeMockService.getDocumentCommands');
+
+    let ret;
+
+    if (this.cmds1) {
+      ret = this.cmds1.slice();
+    }
+    if (this.cmds2) {
+      this.cmds1 = this.cmds2.slice();
+      this.cmds2 = undefined;
+    } else {
+      this.cmds1 = undefined;
+    }
+
+    return Promise.resolve(ret);
   }
 
   async insertFragment(name: string, base64: string): Promise<void> {

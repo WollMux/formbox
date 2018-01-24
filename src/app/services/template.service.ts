@@ -33,16 +33,8 @@ export class TemplateService {
    * Gibt eine Liste von Namen und Urls für alle Fragmente im aktuellen
    * Dokument.
    */
-  async getFragmentUrls(): Promise<{ name: string, url: string }[]> {
-    return this.office.getFragmentNames().then(async names => {
-      if (names.length === 0) {
-        return undefined;
-      }
-
-      return Promise.all(names.map(name => {
-        return this.getFragmentUrl(name);
-      }));
-    });
+  async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
+    return this.office.getDocumentCommands();
   }
 
   /**
