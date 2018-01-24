@@ -5,7 +5,9 @@ import { FormBoxState } from '../states/formbox-state';
 
 const actionCreator = actionCreatorFactory();
 
-export type OverrideFrag = { fragId: string, newFragId: string }; // tslint:disable-line:interface-over-type-literal
+// tslint:disable:interface-over-type-literal
+export type OverrideFrag = { fragId: string, newFragId: string };
+export type DocumentCommand = { id: number, cmd: string };
 
 /**
  * Aktionen, die die Verarbeitung von Office-Templates und Fragmenten betreffen.
@@ -14,25 +16,27 @@ export type OverrideFrag = { fragId: string, newFragId: string }; // tslint:disa
 export class TemplateActions {
   static ERROR = actionCreator<any>('ERROR');
 
-  static LOAD_TEMPLATE = actionCreator<string>('LOAD_TEMPLATE');
+  static LOAD_TEMPLATE = actionCreator.async<string, any>('LOAD_TEMPLATE');
   static GET_TEMPLATE = actionCreator<string>('GET_TEMPLATE');
   static OPEN_TEMPLATE = actionCreator<string>('OPEN_TEMPLATE');
-  static LOAD_TEMPLATE_FINISHED = actionCreator<string>('LOAD_TEMPLATE_FINISHED');
 
   static INSERT_FRAGMENTS = actionCreator<any>('INSERT_FRAGMENTS');
-  static INSERT_FRAGMENT = actionCreator<string>('INSERT_FRAGMENT');
+  static INSERT_FRAGMENT = actionCreator.async<{ id: number, name: string }, number>('INSERT_FRAGMENT');
   static OVERRIDE_FRAGMENT = actionCreator<OverrideFrag>('OVERRIDE_FRAGMENT');
+
+  static COLLECT_COMMANDS = actionCreator.async<any, DocumentCommand[]>('COLLECT_COMMANDS');
+  static EXECUTE_COMMAND = actionCreator.async<DocumentCommand, any>('EXECUTE_COMMAND');
 
   constructor(private ngRedux: NgRedux<FormBoxState>) { }
 
   loadTemplate(name: string): Action<string> {
-    const action = TemplateActions.LOAD_TEMPLATE(name);
+    const action = TemplateActions.LOAD_TEMPLATE.started(name);
 
     return this.ngRedux.dispatch(action);
   }
 
-  insertFragment(name: string): Action<string> {
-    const action = TemplateActions.INSERT_FRAGMENT(name);
+  insertFragment(id: number, name: string): Action<{ id: number, name: string }> {
+    const action = TemplateActions.INSERT_FRAGMENT.started({ id: id, name: name });
 
     return this.ngRedux.dispatch(action);
   }

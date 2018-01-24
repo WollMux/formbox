@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
-import { TemplateStatus } from './store/states/template-state';
+import { LoadingStatus } from './store/states/template-state';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { StorageService } from './services/storage.service';
@@ -20,7 +20,7 @@ import { AbsenderlisteState } from './store/states/absender-state';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  @select([ 'template', 'status' ]) templateStatus: Observable<TemplateStatus>;
+  @select([ 'template', 'status' ]) templateStatus: Observable<LoadingStatus>;
   @select([ 'absender', 'selected' ]) absender: Observable<AbsenderlisteState>;
 
   constructor(

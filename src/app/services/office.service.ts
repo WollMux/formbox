@@ -25,9 +25,10 @@ export class OfficeService {
   /**
    * Liefert eine Liste der Namen aller Fragmente im aktiven Dokument.
    */
-  async getFragmentNames(): Promise<string[]> {
+  async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      return c.items.map(it => it.title);
+      return c.items.filter(it => it.title.startsWith('='))
+        .map(it => ({ id: it.id, cmd: it.title.substr(1).trim() }));
     });
   }
 

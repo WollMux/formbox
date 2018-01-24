@@ -1,4 +1,4 @@
-import { TemplateState, TemplateStatus } from './template-state';
+import { LoadingStatus, TemplateState } from './template-state';
 import { Absender } from '../../storage/pal';
 import { AbsenderlisteState } from './absender-state';
 
@@ -9,7 +9,6 @@ import { AbsenderlisteState } from './absender-state';
 export interface FormBoxState {
   absenderliste: AbsenderlisteState;
   template: TemplateState;
-  fragments: TemplateState[];
 }
 
 /**
@@ -18,6 +17,5 @@ export interface FormBoxState {
  */
 export const INITIAL_STATE: FormBoxState = {
   absenderliste: { selected: undefined, pal: [] },
-  template: { status: TemplateStatus.None, overrideFrags: [] } as TemplateState,
-  fragments: [] as TemplateState[]
+  template: { status: LoadingStatus.None, overrideFrags: [], documentCommands: [] } as TemplateState
 };

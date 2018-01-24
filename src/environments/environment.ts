@@ -10,5 +10,5 @@ export const environment = {
   production: false,
   formboxapi: 'https://127.0.0.1:4201',
   loglevel: Level.LOG,
-  officeServie: OfficeService
+  officeService: OfficeService
 };

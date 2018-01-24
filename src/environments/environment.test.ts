@@ -6,5 +6,5 @@ export const environment = {
   test: true,
   formboxapi: 'https://127.0.0.1:4201',
   loglevel: Level.LOG,
-  officeServie: OfficeMockService
+  officeService: OfficeMockService
 };

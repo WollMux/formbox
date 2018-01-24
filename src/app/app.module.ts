@@ -46,9 +46,9 @@ import { ExpressionsService } from './services/expressions.service';
     TemplateEpics,
     RootEpic,
     ExpressionsService,
-    { provide: OfficeService, useClass: environment.officeServie }
+    { provide: OfficeService, useClass: environment.officeService }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule {

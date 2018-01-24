@@ -1,4 +1,6 @@
-export enum TemplateStatus {
+import { DocumentCommand } from '../actions/template-actions';
+
+export enum LoadingStatus {
   None,
   Loading,
   Finished
@@ -9,8 +11,7 @@ export enum TemplateStatus {
  */
 export interface TemplateState {
   name: string;
-  url: string;
-  contents: string;
-  status: TemplateStatus;
+  status: LoadingStatus;
   overrideFrags: { fragId: string, newFragId: string }[];
+  documentCommands: { cmd: DocumentCommand, done: boolean }[];
 }
