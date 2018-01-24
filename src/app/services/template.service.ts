@@ -80,9 +80,9 @@ export class TemplateService {
    * @param name Name des Fragments
    * @param url Url des Fragments
    */
-  async insertFragment(name: string, url: string): Promise<void> {
+  async insertFragment(id: number, url: string): Promise<void> {
     await this.getFileAsBase64(url).then(async s => {
-      await this.office.insertFragment(name, s);
+      await this.office.insertFragment(id, s);
     });
   }
 

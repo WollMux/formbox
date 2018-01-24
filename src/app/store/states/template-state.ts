@@ -6,6 +6,12 @@ export enum LoadingStatus {
   Finished
 }
 
+export enum DocumentCommandStatus {
+  New,
+  Executing,
+  Done
+}
+
 /**
  * Status von Templates und Fragmenten.
  */
@@ -13,5 +19,5 @@ export interface TemplateState {
   name: string;
   status: LoadingStatus;
   overrideFrags: { fragId: string, newFragId: string }[];
-  documentCommands: { cmd: DocumentCommand, done: boolean }[];
+  documentCommands: { cmd: DocumentCommand, status: DocumentCommandStatus }[];
 }

@@ -38,21 +38,16 @@ export class OfficeService {
    * @param name Name des Fragments
    * @param base64 Fragmentdatei als Base64-String
    */
-  async insertFragment(name: string, base64: string): Promise<void> {
+  async insertFragment(id: number, base64: string): Promise<void> {
     await Word.run(context => {
       const doc = context.document;
-      const controls = doc.contentControls.getByTitle(name);
-      controls.load('items');
+      const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
-        controls.items.forEach(c => {
-          if (base64) {
-            c.insertFileFromBase64(base64, 'Replace');
-          }
-          c.delete(true);
-        });
-
-        return context.sync();
+        if (base64) {
+          control.insertFileFromBase64(base64, 'Replace');
+        }
+        control.delete(true);
       });
     }).catch(error => {
       this.log.error(error);
