@@ -48,11 +48,31 @@ export class OfficeService {
           control.insertFileFromBase64(base64, 'Replace');
         }
         control.delete(true);
+
+        return context.sync();
       });
     }).catch(error => {
       this.log.error(error);
 
-      return undefined;
+      return Promise.reject(error);
+    });
+  }
+
+  async insertValue(id: number, value: string): Promise<void> {
+    await Word.run(context => {
+      const doc = context.document;
+      const control = doc.contentControls.getById(id);
+
+      return context.sync().then(() => {
+        control.insertText(value, 'Replace');
+        control.delete(true);
+
+        return context.sync();
+      });
+    }).catch(error => {
+      this.log.error(error);
+
+      return Promise.reject(error);
     });
   }
 

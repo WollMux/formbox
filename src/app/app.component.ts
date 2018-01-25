@@ -51,13 +51,5 @@ export class AppComponent implements OnInit {
 
   onAbsender(): void {
     this.absenderlisteActions.changeAbsender(1);
-    this.absender.subscribe(ab => {
-      console.log(this.expressions.eval('vorname + " " + name'));
-      console.log(this.expressions.eval('overrideFrag("Adresse_Angaben", "Neue_Adresse")'));
-      console.log(this.expressions.eval('overrideFrag("Email", "Neue_Email")'));
-      console.log(this.expressions.eval('overrideFrag("Adresse_Angaben", "Neue_Adresse2")'));
-      console.log(this.expressions.eval('insertFrag("Adresse_Angaben")'));
-      console.log(this.expressions.eval('insertFrag("Zusatz")'));
-    });
   }
 }

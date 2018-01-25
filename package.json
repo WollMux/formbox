@@ -38,6 +38,7 @@
     "@types/office-js": "^0.0.50",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "dateformat": "^3.0.2",
     "dexie": "^2.0.1",
     "expressions-js": "^0.1.12",
     "ngx-bootstrap": "^2.0.0-beta.8",

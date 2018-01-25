@@ -22,7 +22,7 @@ export class DexieStorage extends Dexie {
   constructor() {
     super('FormBoxDB');
     this.version(1).stores({
-      pal: '++id, name, vorname'
+      pal: '++id, nachname, vorname, anrede, titel, strasse, posPLZ, postOrt, telefon, fax, email, dienstgebaeude, zimmer'
     });
   }
 
@@ -41,8 +41,34 @@ export class DexieStorage extends Dexie {
    */
   async init(): Promise<void> {
     await this.transaction('rw', this.pal, async () => {
-      this.pal.put({ name: 'Mouse', vorname: 'Mickey' });
-      this.pal.put({ name: 'Duck', vorname: 'Donald' });
+      this.pal.put({
+        nachname: 'Mouse',
+        vorname: 'Mickey',
+        anrede: 'Herr',
+        dienstgebaeude: 'Disneyworld',
+        email: 'mickey@disney.com',
+        fax: '0123/3830101',
+        postPLZ: '12345',
+        postOrt: 'Orlando',
+        strasse: 'Disneylane',
+        telefon: '0123/393767192',
+        titel: 'Dr.',
+        zimmer: '45'
+      });
+      this.pal.put({
+        nachname: 'Duck',
+        vorname: 'Donald',
+        anrede: 'Herr',
+        dienstgebaeude: 'Disneyworld',
+        email: 'donal@disney.com',
+        fax: '0123/3830101',
+        postPLZ: '12345',
+        postOrt: 'Orlando',
+        strasse: 'Disneylane',
+        telefon: '0123/393767200',
+        titel: '',
+        zimmer: '47'
+      });
     });
   }
 }

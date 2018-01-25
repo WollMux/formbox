@@ -154,10 +154,12 @@ export class TemplateEpics {
   insertingFragment = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.INSERT_FRAGMENT.started)
       .mergeMap(({ payload }, n: number) => {
-        return this.templates.insertFragment(payload.id, payload.url).then(() => {
-          const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
+        return this.templates.getFragmentUrl(payload.name).then(it => {
+          return this.templates.insertFragment(payload.id, it.url).then(() => {
+            const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
 
-          return act;
+            return act;
+          });
         });
       });
   }
@@ -189,7 +191,7 @@ export class TemplateEpics {
       .mergeMap(({ payload }, n: number) => {
         const val = this.expr.eval(payload.cmd, payload.id);
         if (val) {
-          // TODO: Fehler oder insertValue
+          this.templates.insertValue(payload.id, val);
         }
 
         return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
