@@ -48,7 +48,7 @@ import { ExpressionsService } from './services/expressions.service';
     ExpressionsService,
     { provide: OfficeService, useClass: environment.officeService }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule {
@@ -59,6 +59,10 @@ export class AppModule {
     const middleware = [
       createEpicMiddleware(this.rootEpic.epics())
     ];
-    ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
+    if (environment.production || !environment.test) {
+      ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
+    } else {
+      ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
+    }
   }
 }

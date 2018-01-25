@@ -86,6 +86,10 @@ export class TemplateService {
     });
   }
 
+  async insertValue(id: number, value: string): Promise<void> {
+    await this.office.insertValue(id, value);
+  }
+
   /**
    * Codiert ein Byte-Array als Base64.
    *
@@ -97,10 +101,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[bytes[i] >> 2];
-      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
-      base64 += this.chars[bytes[i + 2] & 63];
+      base64 += this.chars[ bytes[ i ] >> 2 ];
+      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
+      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
+      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
     }
 
     if ((len % 3) === 2) {
