@@ -32,6 +32,16 @@ export class OfficeService {
     });
   }
 
+  async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
+    return this.getDocumentCommands().then(c => {
+      if (c && c.length > 0) {
+        return c.pop();
+      } else {
+        return undefined;
+      }
+    });
+  }
+
   /**
    * Fügt ein Fragment in das aktive Dokument ein.
    * 
@@ -64,7 +74,9 @@ export class OfficeService {
       const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
-        control.insertText(value, 'Replace');
+        if (value) {
+          control.insertText(value, 'Replace');
+        }
         control.delete(true);
 
         return context.sync();
@@ -88,5 +100,4 @@ export class OfficeService {
       return context.sync(controls);
     });
   }
-
 }

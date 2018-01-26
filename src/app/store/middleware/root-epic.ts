@@ -14,11 +14,10 @@ export class RootEpic {
     this.templateEpics.loadingTemplate,
     this.templateEpics.gettingTemplateFromUrl,
     this.templateEpics.openingTemplate,
-    this.templateEpics.collectingCommands,
-    this.templateEpics.collectingCommandsDone,
+    this.templateEpics.gettingNextCommand,
     this.templateEpics.executingCommand,
+    this.templateEpics.executingCommandDone,
     this.templateEpics.insertingFragment,
-    this.templateEpics.insertingFragmentDone,
     this.absenderlisteEpics.loadingAbsenderliste,
     this.absenderlisteEpics.changingAbsender
   )

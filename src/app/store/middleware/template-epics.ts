@@ -40,6 +40,8 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.LOAD_TEMPLATE.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.getTemplateUrl(payload).then(url => {
+          this.expr.ctx.overrideFrags = [];
+
           // Action muss einer Variable zugewiesen werden, sonst wird sie nicht als Plain Object erkannt.
           const act = TemplateActions.GET_TEMPLATE(url);
 
@@ -83,7 +85,7 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.OPEN_TEMPLATE)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.openDocument(payload).then(() => {
-          const act = TemplateActions.COLLECT_COMMANDS.started({});
+          const act = TemplateActions.GET_NEXT_COMMAND({});
 
           return act;
         });
@@ -95,53 +97,20 @@ export class TemplateEpics {
       });
   }
 
-  /**
-   * Sammelt alle Dokumentenkommandos, die noch nicht ausgeführt worden sind.
-   * Nachdem alle Kommandos ausgeführt wurden, wird LOAD_TEMPLATE.done aufgerufen.
-   * 
-   *  Action: COLLECT_COMMANDS.started
-   *  Payload: Keine
-   */
-  collectingCommands = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(TemplateActions.COLLECT_COMMANDS.started)
+  gettingNextCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(TemplateActions.GET_NEXT_COMMAND)
       .mergeMap((value, n: number) => {
-        return this.templates.getDocumentCommands().then((cmds: DocumentCommand[]) => {
-          const oldCmds = store.getState().template.documentCommands;
-          let c = [];
-          if (cmds) {
-            c = cmds.filter(it => oldCmds.findIndex(oc => oc.cmd.id === it.id) === -1);
-          }
-          c = c.concat(oldCmds.filter(it => it.status !== DocumentCommandStatus.Done).map(it => it.cmd));
+        return this.templates.getNextDocumentCommand().then(c => {
+          if (c) {
+            const act = TemplateActions.EXECUTE_COMMAND.started(c);
 
-          let act;
-          if (c.length > 0) {
-            act = TemplateActions.COLLECT_COMMANDS.done({ params: {}, result: c });
+            return act;
           } else {
-            act = TemplateActions.LOAD_TEMPLATE.done({ params: value, result: {} });
+            const act = TemplateActions.LOAD_TEMPLATE.done({ params: value, result: {} });
+
+            return act;
           }
-
-          return act;
         });
-      });
-  }
-
-  /**
-   * Ruft für jedes Dokumentenkommando EXECUTE_COMMAND.started auf.
-   * 
-   * Action: COLLECT_COMMANDS.done
-   * Payload: Liste von DokumentenKommandos
-   */
-  collectingCommandsDone = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(TemplateActions.COLLECT_COMMANDS.done)
-      .mergeMap(({ payload }, n: number) => {
-        return Observable.from(payload.result as DocumentCommand[])
-          .mergeMap(c => {
-            if (this.getDocumentCommandState(store, c) === DocumentCommandStatus.New) {
-              const act = TemplateActions.EXECUTE_COMMAND.started(c);
-
-              return Observable.of(act);
-            }
-          });
       });
   }
 
@@ -165,22 +134,6 @@ export class TemplateEpics {
   }
 
   /**
-   * Nach dem Einfügen eines Fragments wird nach neuen Dokumentenkommandos
-   * gesucht.
-   * 
-   * Action: INSERT_FRAGMENT.done
-   * Payload: Id des Fragments
-   */
-  insertingFragmentDone = (action: ActionsObservable<any>) => {
-    return action.ofType(TemplateActions.INSERT_FRAGMENT.done)
-      .mergeMap(({ payload }, n: number) => {
-        const act = TemplateActions.COLLECT_COMMANDS.started({});
-
-        return Observable.of(act);
-      });
-  }
-
-  /**
    * Führt ein DokumentenKommando aus.
    * 
    * Action: EXECUTE_COMMAND.started
@@ -195,6 +148,15 @@ export class TemplateEpics {
         }
 
         return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+      });
+  }
+
+  executingCommandDone = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.EXECUTE_COMMAND.done)
+      .mergeMap(({ payload }, n: number) => {
+        const act = TemplateActions.GET_NEXT_COMMAND({});
+
+        return Observable.of(act);
       });
   }
 
