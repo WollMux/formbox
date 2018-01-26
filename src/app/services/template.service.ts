@@ -37,6 +37,10 @@ export class TemplateService {
     return this.office.getDocumentCommands();
   }
 
+  async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
+    return this.office.getNextDocumentCommand();
+  }
+
   /**
    * Gibt die Url eines Fragments zurück.
    * 

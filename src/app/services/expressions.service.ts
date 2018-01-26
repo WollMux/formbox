@@ -5,11 +5,12 @@ import * as dateFormat from 'dateformat';
 
 import { FormBoxState } from '../store/states/formbox-state';
 import { Absender } from '../storage/pal';
-import { OverrideFrag, TemplateActions } from '../store/actions/template-actions';
+import { OverrideFrag } from '../store/actions/template-actions';
+import { TemplateService } from './template.service';
 
 @Injectable()
 export class ExpressionsService {
-  ctx: Context = new Context(this.templateActions);
+  ctx: Context = new Context(this.templates);
 
   private formmatters = {
     format: (value: Date, format = 'dd.mm.yy'): string => {
@@ -19,7 +20,7 @@ export class ExpressionsService {
 
   constructor(
     private store: NgRedux<FormBoxState>,
-    private templateActions: TemplateActions
+    private templates: TemplateService
   ) {
     store.select<OverrideFrag[]>([ 'template', 'overrideFrags' ]).subscribe(overrideFrags => {
       this.ctx.overrideFrags = overrideFrags;
@@ -48,15 +49,17 @@ class Context {
   id: number;
   overrideFrags: OverrideFrag[];
 
-  constructor(private templateActions: TemplateActions) { /*Empty */ }
+  constructor(private templates: TemplateService) { /*Empty */ }
 
   insertFrag(name: string): void {
     const of = this.getOverrideFrag(name) || name;
-    this.templateActions.insertFragment(this.id, of);
+    this.templates.getFragmentUrl(of).then(url => {
+      this.templates.insertFragment(this.id, url.url);
+    });
   }
 
   overrideFrag(fragId: string, newFragId: string): void {
-    this.templateActions.overrideFragment(fragId, newFragId);
+    this.overrideFrags.push({ fragId: fragId, newFragId: newFragId });
   }
 
   date = (): Date => {
