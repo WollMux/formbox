@@ -28,7 +28,15 @@ export class TemplateMockService {
     return undefined;
   }
 
-  async insertFragment(name: string, url: string): Promise<void> {
+  async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
     return undefined;
+  }
+
+  async insertValue(id: number, value: string): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async insertFragment(id: number, url: string): Promise<void> {
+    return Promise.resolve();
   }
 }
