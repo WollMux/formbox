@@ -10,18 +10,18 @@ import { OfficeService } from './services/office.service';
 import { TemplateActions } from './store/actions/template-actions';
 import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
 import { ExpressionsService } from './services/expressions.service';
-import { AbsenderlisteState } from './store/states/absender-state';
+import { Absender } from './storage/pal';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  @select([ 'template', 'status' ]) templateStatus: Observable<LoadingStatus>;
-  @select([ 'absender', 'selected' ]) absender: Observable<AbsenderlisteState>;
+  @select(['template', 'status']) templateStatus: Observable<LoadingStatus>;
+  @select(['absenderliste', 'selected']) absender: Observable<Absender>;
 
   constructor(
     private templates: TemplateService,
@@ -43,6 +43,9 @@ export class AppComponent implements OnInit {
       this.log.debug(status);
     });
 
+    this.absender.subscribe(a => {
+      console.log(a);
+    });
   }
 
   onInsertDocument(): void {

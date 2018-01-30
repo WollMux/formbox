@@ -7,6 +7,7 @@ import { Level } from '@nsalaun/ng-logger';
 import { OfficeService } from '../app/services/office.service';
 
 export const environment = {
+  test: false,
   production: false,
   formboxapi: 'https://127.0.0.1:4201',
   loglevel: Level.LOG,

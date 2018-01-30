@@ -22,16 +22,16 @@ export class ExpressionsService {
     private store: NgRedux<FormBoxState>,
     private templates: TemplateService
   ) {
-    store.select<OverrideFrag[]>([ 'template', 'overrideFrags' ]).subscribe(overrideFrags => {
+    store.select<OverrideFrag[]>(['template', 'overrideFrags']).subscribe(overrideFrags => {
       this.ctx.overrideFrags = overrideFrags;
     });
 
     // Wenn der User den Absender ändert, werden die Eigenschaften als globale
     // Variablen für Expressions übernommen.
-    store.select<Absender>([ 'absenderliste', 'selected' ]).subscribe(absender => {
+    store.select<Absender>(['absenderliste', 'selected']).subscribe(absender => {
       if (absender) {
         Object.keys(absender).forEach(key => {
-          expressions.globals[ key ] = absender[ key ];
+          expressions.globals[key] = absender[key];
         });
       }
     });
@@ -53,8 +53,8 @@ class Context {
 
   insertFrag(name: string): void {
     const of = this.getOverrideFrag(name) || name;
-    this.templates.getFragmentUrl(of).then(url => {
-      this.templates.insertFragment(this.id, url.url);
+    this.templates.getFragmentUrl(of).then(async url => {
+      await this.templates.insertFragment(this.id, url.url);
     });
   }
 
