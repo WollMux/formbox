@@ -27,15 +27,19 @@ export class OfficeService {
    */
   async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      return c.items.filter(it => it.title.startsWith('='))
+      return c.items.filter(it => it.title && it.title.startsWith('='))
         .map(it => ({ id: it.id, cmd: it.title.substr(1).trim() }));
     });
   }
 
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
-    return this.getDocumentCommands().then(c => {
+    return this.getDocumentCommands().then(async c => {
       if (c && c.length > 0) {
-        return c.pop();
+        const cc = c.pop();
+
+        return await this.deleteContentControlText(cc.id).then(() => {
+          return cc;
+        });
       } else {
         return undefined;
       }
@@ -85,6 +89,16 @@ export class OfficeService {
       this.log.error(error);
 
       return Promise.reject(error);
+    });
+  }
+
+  private deleteContentControlText = async (id: number): Promise<void> => {
+    await Word.run(context => {
+      const doc = context.document;
+      const cc = doc.contentControls.getById(id);
+      cc.title = '';
+
+      return context.sync();
     });
   }
 
