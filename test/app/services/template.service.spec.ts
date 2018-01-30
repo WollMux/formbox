@@ -14,7 +14,7 @@ describe('TemplateService', () => {
       ],
       providers: [
         TemplateService,
-        { provide: OfficeService, useClass: environment.officeServie }
+        { provide: OfficeService, useClass: environment.officeService }
       ]
     });
   });

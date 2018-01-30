@@ -97,7 +97,7 @@ export class TemplateEpics {
       });
   }
 
-  gettingNextCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+  gettingNextCommand = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.GET_NEXT_COMMAND)
       .mergeMap((value, n: number) => {
         return this.templates.getNextDocumentCommand().then(c => {
@@ -158,9 +158,5 @@ export class TemplateEpics {
 
         return Observable.of(act);
       });
-  }
-
-  getDocumentCommandState = (store: NgRedux<FormBoxState>, cmd: DocumentCommand): DocumentCommandStatus => {
-    return store.getState().template.documentCommands.filter(it => it.cmd.id === cmd.id).map(it => it.status).pop();
   }
 }

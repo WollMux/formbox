@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http';
 import { OfficeService } from '../../../../src/app/services/office.service';
 import { NgReduxModule } from '@angular-redux/store';
 import { TemplateMockService } from '../../services/mocks/template-mock.service';
+import { ExpressionsService } from '../../../../src/app/services/expressions.service';
 
 describe('Template epics', () => {
   beforeEach(() => {
@@ -20,7 +21,8 @@ describe('Template epics', () => {
       providers: [
         { provide: TemplateService, useClass: TemplateMockService },
         TemplateActions,
-        TemplateEpics
+        TemplateEpics,
+        ExpressionsService
       ]
     });
   });
@@ -31,7 +33,7 @@ describe('Template epics', () => {
         const url = 'http://localhost:4201/vorlagen/Externer_Briefkopf.docx';
         const spy = spyOn(templates, 'getTemplateUrl').and.returnValue(Promise.resolve(url));
 
-        const action = TemplateActions.LOAD_TEMPLATE('Externer_Briefkopf');
+        const action = TemplateActions.LOAD_TEMPLATE.started('Externer_Briefkopf');
 
         const p = templateEpics.loadingTemplate(ActionsObservable.of(action));
 
@@ -71,23 +73,60 @@ describe('Template epics', () => {
 
         p.subscribe(result => {
           expect(spy).toHaveBeenCalledWith(base64);
-          expect(result).toEqual({ type: 'INSERT_FRAGMENTS', payload: {} });
+          expect(result).toEqual({ type: 'GET_NEXT_COMMAND', payload: {} });
         });
       }
     )));
 
-  it('insert fragments',
+  it('getting next command',
     async(inject([TemplateEpics, TemplateService],
       (templateEpics: TemplateEpics, templates: TemplateService) => {
-        const spy = spyOn(templates, 'insertFragment').and.returnValue(Promise.resolve());
+        const spy = spyOn(templates, 'getNextDocumentCommand').and.returnValue(Promise.resolve({ id: 10, cmd: 'insertFrag(\'Zusatz\')' }));
 
-        const action = TemplateActions.INSERT_FRAGMENTS({});
+        const action = TemplateActions.GET_NEXT_COMMAND({});
 
-        const p = templateEpics.insertingFragments(ActionsObservable.of(action));
+        const p = templateEpics.gettingNextCommand(ActionsObservable.of(action));
 
         p.subscribe(result => {
-          expect(spy).toHaveBeenCalledTimes(3);
-          expect(result).toEqual({ type: 'LOAD_TEMPLATE_FINISHED', payload: '' });
+          expect(spy).toHaveBeenCalledWith();
+          expect(result).toEqual({ type: 'EXECUTE_COMMAND_STARTED', payload: { id: 10, cmd: 'insertFrag(\'Zusatz\')' } });
+        });
+      }
+    )));
+
+  it('inserting fragment',
+    async(inject([TemplateEpics, TemplateService],
+      (templateEpics: TemplateEpics, templates: TemplateService) => {
+        const spy1 = spyOn(templates, 'getFragmentUrl').and.returnValue(Promise.resolve({ name: 'fragment', url: 'some url' }));
+        const spy2 = spyOn(templates, 'insertFragment').and.returnValue(Promise.resolve());
+
+        const action = TemplateActions.INSERT_FRAGMENT.started({ id: 10, name: 'fragment' });
+
+        const p = templateEpics.insertingFragment(ActionsObservable.of(action));
+
+        p.subscribe(result => {
+          expect(spy1).toHaveBeenCalledWith('fragment');
+          expect(spy2).toHaveBeenCalledWith(10, 'some url');
+          expect(result).toEqual({ type: 'INSERT_FRAGMENT_DONE', payload: { params: { id: 10, name: 'fragment' }, result: 10 } });
+        });
+      }
+    )));
+
+  it('executing insertFrag',
+    async(inject([TemplateEpics, ExpressionsService],
+      (templateEpics: TemplateEpics, expr: ExpressionsService) => {
+        const spy = spyOn(expr, 'eval').and.returnValue(Promise.resolve(undefined));
+
+        const action = TemplateActions.EXECUTE_COMMAND.started({ id: 10, cmd: 'insertFrag(\'fragment\')' });
+
+        const p = templateEpics.executingCommand(ActionsObservable.of(action));
+
+        p.subscribe(result => {
+          expect(spy).toHaveBeenCalledWith('insertFrag(\'fragment\')', 10);
+          expect(result).toEqual({
+            type: 'EXECUTE_COMMAND_DONE',
+            payload: { params: { id: 10, cmd: 'insertFrag(\'fragment\')' }, result: 10 }
+          });
         });
       }
     )));
