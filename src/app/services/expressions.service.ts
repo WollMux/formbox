@@ -47,7 +47,7 @@ export class ExpressionsService {
 
 class Context {
   id: number;
-  overrideFrags: OverrideFrag[];
+  overrideFrags: OverrideFrag[] = [];
 
   constructor(private templates: TemplateService) { /*Empty */ }
 

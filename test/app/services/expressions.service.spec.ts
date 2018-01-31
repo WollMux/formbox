@@ -29,4 +29,20 @@ describe('ExpressionsService', () => {
   it('should be created', inject([ExpressionsService], (service: ExpressionsService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('evaluate insertFrag', inject([ExpressionsService], (service: ExpressionsService) => {
+    const spy = spyOn(service.ctx, 'insertFrag').and.callThrough();
+    const ret = service.eval('insertFrag(\'Externer_Briefkopf\')', 0);
+
+    expect(ret).toBeUndefined();
+    expect(spy).toHaveBeenCalledWith('Externer_Briefkopf');
+  }));
+
+  it('evaluate overrideFrag', inject([ExpressionsService], (service: ExpressionsService) => {
+    const spy = spyOn(service.ctx, 'overrideFrag').and.callThrough();
+    const ret = service.eval('overrideFrag({fragId: \'Adresse_Angaben\', newFragId: \'Empfaengerfeld\'})', 0);
+
+    expect(ret).toBeUndefined();
+    expect(spy).toHaveBeenCalledWith({ fragId: 'Adresse_Angaben', newFragId: 'Empfaengerfeld' });
+  }));
 });
