@@ -42,10 +42,6 @@ export class AppComponent implements OnInit {
     this.templateStatus.subscribe(status => {
       this.log.debug(status);
     });
-
-    this.absender.subscribe(a => {
-      console.log(a);
-    });
   }
 
   onInsertDocument(): void {

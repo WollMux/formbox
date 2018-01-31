@@ -31,13 +31,9 @@ export class TemplateService {
   }
 
   /**
-   * Gibt eine Liste von Namen und Urls für alle Fragmente im aktuellen
-   * Dokument.
+   * Liefert das nächste DocumentCommand zurück, dass ausgeführt
+   * werden soll.
    */
-  async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
-    return this.office.getDocumentCommands();
-  }
-
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
     this.log.debug('TemplateService.getNextDocumentCommand()');
 
@@ -101,6 +97,12 @@ export class TemplateService {
     });
   }
 
+  /**
+   * Fügt den Wert einer Expression in das Dokument ein.
+   * 
+   * @param id Id des Felds, in das der Wert eingefügt werden soll
+   * @param value Der Wert der eingefügt werden soll
+   */
   async insertValue(id: number, value: string): Promise<void> {
     this.log.debug(`TemplateService.insertValue(${id}, ${value})`);
 

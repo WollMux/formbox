@@ -25,16 +25,42 @@ export class OfficeService {
   /**
    * Liefert eine Liste der Namen aller Fragmente im aktiven Dokument.
    */
-  async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
+  async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
       return c.items.filter(it => it.title && it.title.startsWith('='))
-        .map(it => ({ id: it.id, cmd: it.title.substr(1).trim() }));
+        .map(it => ({ id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }));
     });
   }
 
+  /**
+   * Liefert das nächste DocumentCommand zurück.
+   */
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
     return this.getDocumentCommands().then(async c => {
       if (c && c.length > 0) {
+        const sorted = c.sort((cc1, cc2) => {
+          let p1 = Number.MAX_SAFE_INTEGER;
+          let p2 = Number.MAX_SAFE_INTEGER;
+
+          if (cc1.tag && !isNaN(+cc1.tag)) {
+            p1 = +cc1.tag;
+          }
+
+          if (cc2.tag && !isNaN(+cc2.tag)) {
+            p2 = +cc2.tag;
+          }
+
+          if (p1 < p2) {
+            return 1;
+          }
+
+          if (p1 > p2) {
+            return -1;
+          }
+
+          return 0;
+        });
+
         const cc = c.pop();
 
         return await this.deleteContentControlText(cc.id).then(() => {
