@@ -58,8 +58,8 @@ class Context {
     });
   }
 
-  overrideFrag(fragId: string, newFragId: string): void {
-    this.overrideFrags.push({ fragId: fragId, newFragId: newFragId });
+  overrideFrag(...overrides: { fragId: string, newFragId: string }[]): void {
+    this.overrideFrags.push(...overrides);
   }
 
   date = (): Date => {
