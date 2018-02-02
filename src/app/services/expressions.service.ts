@@ -22,23 +22,27 @@ export class ExpressionsService {
     private store: NgRedux<FormBoxState>,
     private templates: TemplateService
   ) {
-    store.select<OverrideFrag[]>(['template', 'overrideFrags']).subscribe(overrideFrags => {
+    store.select<OverrideFrag[]>([ 'template', 'overrideFrags' ]).subscribe(overrideFrags => {
       this.ctx.overrideFrags = overrideFrags;
     });
 
     // Wenn der User den Absender ändert, werden die Eigenschaften als globale
     // Variablen für Expressions übernommen.
-    store.select<Absender>(['absenderliste', 'selected']).subscribe(absender => {
+    store.select<Absender>([ 'absenderliste', 'selected' ]).subscribe(absender => {
       if (absender) {
         Object.keys(absender).forEach(key => {
-          expressions.globals[key] = absender[key];
+          expressions.globals[ key ] = absender[ key ];
         });
       }
     });
   }
 
+  parse(expr: string): FunctionConstructor {
+    return expressions.parse(expr, expressions.globals, this.formmatters);
+  }
+
   eval(expr: string, id?: number): any {
-    const fn = expressions.parse(expr, expressions.globals, this.formmatters);
+    const fn = this.parse(expr);
     this.ctx.id = id;
 
     return fn.call(this.ctx);

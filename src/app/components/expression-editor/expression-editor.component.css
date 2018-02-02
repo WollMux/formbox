@@ -1,0 +1,8 @@
+.list-label {
+	text-overflow: ellipsis;
+}
+
+.list-group {
+	max-height: 200px;
+	overflow-y: auto;
+}

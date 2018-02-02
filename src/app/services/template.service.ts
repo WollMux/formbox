@@ -30,6 +30,10 @@ export class TemplateService {
       });
   }
 
+  async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
+    return await this.office.getDocumentCommands();
+  }
+
   /**
    * Liefert das nächste DocumentCommand zurück, dass ausgeführt
    * werden soll.
@@ -120,10 +124,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[bytes[i] >> 2];
-      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
-      base64 += this.chars[bytes[i + 2] & 63];
+      base64 += this.chars[ bytes[ i ] >> 2 ];
+      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
+      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
+      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
     }
 
     if ((len % 3) === 2) {
