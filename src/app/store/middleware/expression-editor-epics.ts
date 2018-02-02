@@ -60,5 +60,4 @@ export class ExpressionEditorEpics {
         }).catch(error => this.log.error(error));
       });
   }
-
 }
