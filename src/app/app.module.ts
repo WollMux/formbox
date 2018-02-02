@@ -1,12 +1,14 @@
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 import { DevToolsExtension, NgRedux, NgReduxModule } from '@angular-redux/store';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgDragDropModule } from 'ng-drag-drop';
 import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 
 import { FormBoxState, INITIAL_STATE } from './store/states/formbox-state';
 import { AppComponent } from './app.component';
@@ -31,13 +33,16 @@ import { LDAPEpics } from './store/middleware/ldap-epics';
 import { LDAPActions } from './store/actions/ldap-actions';
 import { appRoutes } from './app.routes';
 import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
-import { FormsModule } from '@angular/forms';
 import { AbsenderVerwaltenComponent } from './components/absender-verwalten/absender-verwalten.component';
 import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender-auswahl.component';
 import { StorageEpics } from './store/middleware/storage-epics';
 import { StorageActions } from './store/actions/storage-actions';
 import { LdapFilterValidatorDirective } from './directives/ldap-filter-validator.directive';
 import { LDAPMockService } from './services/mocks/ldap.mock.service';
+import { ExpressionEditorComponent } from './components/expression-editor/expression-editor.component';
+import { ExpressionEditorEpics } from './store/middleware/expression-editor-epics';
+import { DocumentCommandEditorComponent } from './components/document-command-editor/document-command-editor.component';
+import { ExpressionValidatorDirective } from './directives/expression-validator-directive';
 
 @NgModule({
   declarations: [
@@ -45,17 +50,22 @@ import { LDAPMockService } from './services/mocks/ldap.mock.service';
     LDAPSucheComponent,
     AbsenderVerwaltenComponent,
     AbsenderAuswahlComponent,
-    LdapFilterValidatorDirective
+    LdapFilterValidatorDirective,
+    ExpressionEditorComponent,
+    DocumentCommandEditorComponent,
+    ExpressionValidatorDirective
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
+    FormsModule,
     NgLoggerModule.forRoot(environment.loglevel),
     HttpModule,
     BrowserModule,
     NgReduxModule,
     AccordionModule.forRoot(),
     NgDragDropModule.forRoot(),
-    FormsModule
+    FormsModule,
+    Angular2FontawesomeModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -74,9 +84,10 @@ import { LDAPMockService } from './services/mocks/ldap.mock.service';
     RootEpic,
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
+    ExpressionEditorEpics,
     { provide: OfficeService, useClass: environment.officeService }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule {
