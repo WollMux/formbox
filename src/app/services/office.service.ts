@@ -36,7 +36,7 @@ export class OfficeService {
    * Liefert das nächste DocumentCommand zurück.
    */
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
-    return this.getDocumentCommands().then(async c => {
+    return this.getDocumentCommands().then(c => {
       if (c && c.length > 0) {
         const sorted = c.sort((cc1, cc2) => {
           let p1 = Number.MAX_SAFE_INTEGER;
@@ -63,7 +63,7 @@ export class OfficeService {
 
         const cc = c.pop();
 
-        return await this.deleteContentControlText(cc.id).then(() => {
+        return this.deleteContentControlTitle(cc.id).then(() => {
           return cc;
         });
       } else {
@@ -118,7 +118,7 @@ export class OfficeService {
     });
   }
 
-  private deleteContentControlText = async (id: number): Promise<void> => {
+  private deleteContentControlTitle = async (id: number): Promise<void> => {
     await Word.run(context => {
       const doc = context.document;
       const cc = doc.contentControls.getById(id);

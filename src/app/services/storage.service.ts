@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Absender } from '../storage/pal';
+import { Absender } from '../storage/absender';
 
 /**
  * Wird zum Injizieren des StorageService benötigt, falls in Zukunft eine

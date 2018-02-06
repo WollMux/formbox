@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DexieStorage } from '../storage/dexie-storage';
-import { Absender } from '../storage/pal';
+import { Absender } from '../storage/absender';
 import { StorageService } from './storage.service';
 
 /**

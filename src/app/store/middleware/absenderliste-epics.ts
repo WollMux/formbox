@@ -5,7 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { AbsenderlisteService } from '../../services/absenderliste.service';
 import { AbsenderlisteActions } from '../actions/absenderliste-actions';
-import { Absender } from '../../storage/pal';
+import { Absender } from '../../storage/absender';
 import { NgRedux } from '@angular-redux/store/lib/src';
 import { FormBoxState } from '../states/formbox-state';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
-import { Absender } from './pal';
+import { Absender } from './absender';
 
 /**
  * Implementation der IndexDB für das Speichern von benutzerbezogenen Daten.

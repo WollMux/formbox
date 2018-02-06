@@ -15,8 +15,7 @@ import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/forkJoin';
 
 import { ExpressionsService } from '../../services/expressions.service';
-import { DocumentCommand } from '../actions/template-actions';
-import { TemplateActions } from '../actions/template-actions';
+import { DocumentCommand, TemplateActions } from '../actions/template-actions';
 import { FormBoxState } from '../states/formbox-state';
 import { DocumentCommandStatus, LoadingStatus } from '../states/template-state';
 

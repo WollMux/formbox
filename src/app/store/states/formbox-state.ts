@@ -1,5 +1,4 @@
 import { LoadingStatus, TemplateState } from './template-state';
-import { Absender } from '../../storage/pal';
 import { AbsenderlisteState } from './absender-state';
 
 /**
