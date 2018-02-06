@@ -5,7 +5,7 @@ import { Success } from 'typescript-fsa';
 
 import { AbsenderlisteState, INITIAL_STATE } from '../states/absender-state';
 import { AbsenderlisteActions } from '../actions/absenderliste-actions';
-import { Absender } from '../../storage/pal';
+import { Absender } from '../../storage/absender';
 
 const changeAbsender = (state: AbsenderlisteState, absender: Absender): AbsenderlisteState => {
   if (!state.selected || (state.selected.id !== absender.id)) {

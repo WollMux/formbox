@@ -10,7 +10,7 @@ import { OfficeService } from './services/office.service';
 import { TemplateActions } from './store/actions/template-actions';
 import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
 import { ExpressionsService } from './services/expressions.service';
-import { Absender } from './storage/pal';
+import { Absender } from './storage/absender';
 
 @Component({
   selector: 'app-root',

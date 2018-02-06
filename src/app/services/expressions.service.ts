@@ -4,7 +4,7 @@ import * as expressions from 'expressions-js';
 import * as dateFormat from 'dateformat';
 
 import { FormBoxState } from '../store/states/formbox-state';
-import { Absender } from '../storage/pal';
+import { Absender } from '../storage/absender';
 import { OverrideFrag } from '../store/actions/template-actions';
 import { TemplateService } from './template.service';
 

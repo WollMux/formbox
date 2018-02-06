@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import actionCreatorFactory, { Action } from 'typescript-fsa';
 import { NgRedux } from '@angular-redux/store';
 import { AbsenderlisteState } from '../states/absender-state';
-import { Absender } from '../../storage/pal';
+import { Absender } from '../../storage/absender';
 
 const actionCreator = actionCreatorFactory();
 

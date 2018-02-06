@@ -1,4 +1,4 @@
-import { Absender } from '../../storage/pal';
+import { Absender } from '../../storage/absender';
 
 export interface AbsenderlisteState {
   selected: Absender;

@@ -5,7 +5,7 @@ import 'rxjs/add/operator/filter';
 
 import { AbsenderlisteActions } from '../store/actions/absenderliste-actions';
 import { StorageService } from './storage.service';
-import { Absender } from '../storage/pal';
+import { Absender } from '../storage/absender';
 import { FormBoxState } from '../store/states/formbox-state';
 
 @Injectable()
