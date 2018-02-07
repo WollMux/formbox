@@ -83,5 +83,4 @@ export class OfficeMockService {
 
     return Promise.resolve();
   }
-
 }
