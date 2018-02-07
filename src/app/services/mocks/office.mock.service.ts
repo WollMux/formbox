@@ -59,7 +59,19 @@ export class OfficeMockService {
   }
 
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
+    this.log.debug('OfficeMockService.getNextDocumentCommand');
+
     return Promise.resolve(this.cmds.pop());
+  }
+
+  async insertContentControl(title: string, tag: string): Promise<number> {
+    this.log.debug('OfficeMockService.insertContentControl');
+
+    return Promise.resolve(0);
+  }
+
+  async updateContentControl(id: number, title: string, tag: string): Promise<void> {
+    this.log.debug('OfficeMockService.updateContentControl');
   }
 
   async insertFragment(id: number, base64: string): Promise<void> {

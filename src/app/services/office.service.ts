@@ -118,6 +118,40 @@ export class OfficeService {
     });
   }
 
+  async insertContentControl(title: string, tag: string): Promise<number> {
+    return await Word.run(context => {
+      const doc = context.document;
+      const range = doc.getSelection();
+      const cc = range.insertContentControl();
+      cc.title = title;
+      cc.tag = tag;
+      context.load(cc, 'id');
+
+      return context.sync().then(() => cc.id);
+    });
+  }
+
+  async updateContentControl(id: number, title: string, tag: string): Promise<void> {
+    await Word.run(context => {
+      const doc = context.document;
+      const cc = doc.contentControls.getById(id);
+      cc.title = title;
+      cc.tag = tag;
+
+      return context.sync();
+    });
+  }
+
+  async deleteContentControl(id: number): Promise<void> {
+    await Word.run(context => {
+      const doc = context.document;
+      const cc = doc.contentControls.getById(id);
+      cc.delete(true);
+
+      return context.sync();
+    });
+  }
+
   private deleteContentControlTitle = async (id: number): Promise<void> => {
     await Word.run(context => {
       const doc = context.document;

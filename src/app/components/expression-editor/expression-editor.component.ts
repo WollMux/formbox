@@ -8,13 +8,13 @@ import { ExpressionEditorActions } from '../../store/actions/expression-editor-a
 @Component({
   selector: 'app-expression-editor',
   templateUrl: './expression-editor.component.html',
-  styleUrls: [ './expression-editor.component.css' ],
-  providers: [ ExpressionEditorActions ]
+  styleUrls: ['./expression-editor.component.css'],
+  providers: [ExpressionEditorActions]
 })
 export class ExpressionEditorComponent implements OnInit {
-  @select([ 'expressionEditor', 'selected' ]) selected: Observable<DocumentCommand>;
-  @select([ 'expressionEditor', 'selected_index' ]) selectedIndex: Observable<number>;
-  @select([ 'expressionEditor', 'documentCommands' ]) documentCommands: Observable<DocumentCommand[]>;
+  @select(['expressionEditor', 'selected']) selected: Observable<DocumentCommand>;
+  @select(['expressionEditor', 'selected_index']) selectedIndex: Observable<number>;
+  @select(['expressionEditor', 'documentCommands']) documentCommands: Observable<DocumentCommand[]>;
 
   constructor(private actions: ExpressionEditorActions) { }
 
@@ -23,14 +23,18 @@ export class ExpressionEditorComponent implements OnInit {
   }
 
   newDocumentCommand(): void {
-    this.actions.new();
+    this.actions.new('0', Number.MAX_SAFE_INTEGER);
   }
 
-  deleteDocumentCommand(n: number): void {
+  deleteDocumentCommand(n: number): boolean {
     this.actions.delete(n);
+
+    return false;
   }
 
-  selectDocumentCommand(n: number): void {
+  selectDocumentCommand(n: number): boolean {
     this.actions.select(n);
+
+    return false;
   }
 }

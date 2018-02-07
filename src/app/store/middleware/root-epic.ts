@@ -31,6 +31,9 @@ export class RootEpic {
     this.storageEpics.updatingStoragePAL,
     this.storageEpics.updatingStorageSelected,
     this.absenderlisteEpics.changingAbsender,
-    this.expressEditorEpics.initialising
+    this.expressEditorEpics.initialising,
+    this.expressEditorEpics.creatingDocumentCommand,
+    this.expressEditorEpics.savingDocumentCommand,
+    this.expressEditorEpics.deletingDocumentCommand
   )
 }

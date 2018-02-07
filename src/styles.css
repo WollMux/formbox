@@ -1,3 +1,4 @@
 span.icon-hightlight:hover {
+	cursor: pointer;
 	color: red;
 }
