@@ -11,9 +11,9 @@ const actionCreator = actionCreatorFactory('EXPRESSION_EDITOR');
 export class ExpressionEditorActions {
   static INIT = actionCreator.async<any, DocumentCommand[]>('INIT');
   static SELECT = actionCreator<number>('SELECT');
-  static NEW = actionCreator<any>('NEW');
-  static SAVE = actionCreator<{ index: number, cmd: DocumentCommand }>('SAVE');
-  static DELETE = actionCreator<number>('DELETE');
+  static NEW = actionCreator.async<{ cmd: string, order: number }, number>('NEW');
+  static SAVE = actionCreator.async<{ index: number, cmd: DocumentCommand }, number>('SAVE');
+  static DELETE = actionCreator.async<number, number>('DELETE');
 
   constructor(private ngRedux: NgRedux<FormBoxState>) { }
 
@@ -23,14 +23,14 @@ export class ExpressionEditorActions {
     return this.ngRedux.dispatch(action);
   }
 
-  new(): Action<any> {
-    const action = ExpressionEditorActions.NEW({});
+  new(cmd: string, order: number): Action<any> {
+    const action = ExpressionEditorActions.NEW.started({ cmd: cmd, order: order });
 
     return this.ngRedux.dispatch(action);
   }
 
   delete(n: number): Action<any> {
-    const action = ExpressionEditorActions.DELETE(n);
+    const action = ExpressionEditorActions.DELETE.started(n);
 
     return this.ngRedux.dispatch(action);
   }
@@ -42,7 +42,7 @@ export class ExpressionEditorActions {
   }
 
   save(n: number, cmd: DocumentCommand): Action<any> {
-    const action = ExpressionEditorActions.SAVE({ index: n, cmd: cmd });
+    const action = ExpressionEditorActions.SAVE.started({ index: n, cmd: cmd });
 
     return this.ngRedux.dispatch(action);
   }

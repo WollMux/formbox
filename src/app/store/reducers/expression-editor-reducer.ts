@@ -9,12 +9,12 @@ const init = (state: ExpressionEditorState, cmds: DocumentCommand[]): Expression
   return tassign(state, { documentCommands: cmds });
 };
 
-const newCommand = (state: ExpressionEditorState): ExpressionEditorState => {
-  const cmd = { id: -1, text: 'Neues Kommando', order: Number.MAX_SAFE_INTEGER };
+const newCommand = (state: ExpressionEditorState, id: number, cmd: string, order: number): ExpressionEditorState => {
+  const c = { id: id, text: cmd, order: order };
   const cmds = state.documentCommands.slice();
-  const n = cmds.push(cmd) - 1;
+  const n = cmds.push(c) - 1;
 
-  return tassign(state, { selected_index: n, selected: cmd, documentCommands: cmds });
+  return tassign(state, { selected_index: n, selected: c, documentCommands: cmds });
 };
 
 const deleteCommand = (state: ExpressionEditorState, index: number): ExpressionEditorState => {
@@ -29,7 +29,7 @@ const deleteCommand = (state: ExpressionEditorState, index: number): ExpressionE
 };
 
 const selectCommand = (state: ExpressionEditorState, index: number): ExpressionEditorState => {
-  const selected = (index !== -1) ? state.documentCommands[ index ] : undefined;
+  const selected = (index !== -1) ? state.documentCommands[index] : undefined;
 
   return tassign(state, { selected_index: index, selected: selected });
 };
@@ -49,8 +49,8 @@ const saveCommand = (state: ExpressionEditorState, index: number, cmd: DocumentC
 export const expressionEditorReducer: Reducer<ExpressionEditorState> =
   reducerWithInitialState({ documentCommands: [], selected_index: -1, selected: undefined })
     .case(ExpressionEditorActions.INIT.done, (state, payload) => init(state, payload.result))
-    .case(ExpressionEditorActions.NEW, (state, payload) => newCommand(state))
-    .case(ExpressionEditorActions.DELETE, (state, payload) => deleteCommand(state, payload))
+    .case(ExpressionEditorActions.NEW.done, (state, payload) => newCommand(state, payload.result, payload.params.cmd, payload.params.order))
+    .case(ExpressionEditorActions.DELETE.done, (state, payload) => deleteCommand(state, payload.result))
     .case(ExpressionEditorActions.SELECT, (state, payload) => selectCommand(state, payload))
-    .case(ExpressionEditorActions.SAVE, (state, payload) => saveCommand(state, payload.index, payload.cmd))
+    .case(ExpressionEditorActions.SAVE.done, (state, payload) => saveCommand(state, payload.result, payload.params.cmd))
     .build();

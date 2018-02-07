@@ -44,6 +44,18 @@ export class TemplateService {
     return this.office.getNextDocumentCommand();
   }
 
+  async createDocumentCommand(cmd: string, order: number): Promise<number> {
+    return await this.office.insertContentControl(`= ${cmd}`, order.toString());
+  }
+
+  async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
+    await this.office.updateContentControl(id, `= ${cmd}`, order.toString());
+  }
+
+  async deleteDocumentCommand(id: number): Promise<void> {
+    await this.office.deleteContentControl(id);
+  }
+
   /**
    * Gibt die Url eines Fragments zurück.
    * 
@@ -124,10 +136,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[ bytes[ i ] >> 2 ];
-      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
-      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
-      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
+      base64 += this.chars[bytes[i] >> 2];
+      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+      base64 += this.chars[bytes[i + 2] & 63];
     }
 
     if ((len % 3) === 2) {
