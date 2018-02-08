@@ -37,3 +37,8 @@ Startet den Entwicklungsserver auf `https://localhost:4200/`.
 `npm run nooffice`
 
 Startet den Server ohne Anbindung an MS Office. Das Add-On kann über einen Browser aufgerufen werden.
+
+## Redux DevTools
+
+Wenn die Anwendung mit `nooffice` (s.o.) gestartet wird, muss im Browser die Extension [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension) installiert sein.
+Nach der Installation können die DevTools über das Kontextmenü (rechte Maustaste im Browserfenster) aufgerufen werden.
