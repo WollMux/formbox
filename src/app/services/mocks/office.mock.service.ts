@@ -74,6 +74,10 @@ export class OfficeMockService {
     this.log.debug('OfficeMockService.updateContentControl');
   }
 
+  async deleteContentControl(id: number): Promise<void> {
+    this.log.debug('OfficeMockService.deleteContentControl');
+  }
+
   async insertFragment(id: number, base64: string): Promise<void> {
     this.log.debug('OfficeMockService.insertFragment');
 
