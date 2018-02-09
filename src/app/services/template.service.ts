@@ -31,7 +31,7 @@ export class TemplateService {
   }
 
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
-    return await this.office.getDocumentCommands();
+    return this.office.getDocumentCommands();
   }
 
   /**
@@ -45,7 +45,7 @@ export class TemplateService {
   }
 
   async createDocumentCommand(cmd: string, order: number): Promise<number> {
-    return await this.office.insertContentControl(`= ${cmd}`, order.toString());
+    return this.office.insertContentControl(`= ${cmd}`, order.toString());
   }
 
   async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
@@ -136,10 +136,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[bytes[i] >> 2];
-      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
-      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
-      base64 += this.chars[bytes[i + 2] & 63];
+      base64 += this.chars[ bytes[ i ] >> 2 ];
+      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
+      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
+      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
     }
 
     if ((len % 3) === 2) {
