@@ -119,7 +119,7 @@ export class OfficeService {
   }
 
   async insertContentControl(title: string, tag: string): Promise<number> {
-    return await Word.run(context => {
+    return Word.run(context => {
       const doc = context.document;
       const range = doc.getSelection();
       const cc = range.insertContentControl();
