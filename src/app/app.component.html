@@ -1,24 +1,23 @@
 <div class="container" style="margin-top: 16px;">
-    <accordion>
-        <accordion-group heading="Debug">
-			<div class="row">
-				<div class="col-sm-12">{{ templateStatus | async }}</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-12">Absender: {{ (absender | async)?.nachname }}</div>
-			</div>
-	
-            <div class="row">
-                <div class="col-sm-12">
-                    <button class="btn btn-lg btn-primary btn-block" (click)="onInsertDocument()">Dokument einfügen</button>
-                    <button class="btn btn-lg btn-primary btn-block" (click)="onAbsender()">Absender</button>
-                </div>
-            </div>
-        </accordion-group>
-    </accordion>
+  <accordion>
+    <accordion-group heading="Debug">
+      <div class="row">
+        <div class="col-sm-12">{{ templateStatus | async }}</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">Absender: {{ (absender | async)?.nachname }}</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button class="btn btn-lg btn-primary btn-block" (click)="onInsertDocument()">Dokument einfügen</button>
+          <button class="btn btn-lg btn-primary btn-block" (click)="onAbsender()">Absender</button>
+        </div>
+      </div>
+    </accordion-group>
+  </accordion>
 
-    <hr/>
+  <hr class="row"/>
 
-<!--     <router-outlet></router-outlet> -->
+  <router-outlet></router-outlet>
 </div>
 

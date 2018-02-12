@@ -1,3 +1,5 @@
+import { RouterModule } from '@angular/router';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
@@ -23,12 +25,14 @@ import { AbsenderlisteService } from './services/absenderliste.service';
 import { RootEpic } from './store/middleware/root-epic';
 import { AbsenderlisteEpics } from './store/middleware/absenderliste-epics';
 import { ExpressionsService } from './services/expressions.service';
+import { appRoutes } from './app.routes';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes),
     NgLoggerModule.forRoot(environment.loglevel),
     HttpModule,
     BrowserModule,
@@ -36,6 +40,7 @@ import { ExpressionsService } from './services/expressions.service';
     AccordionModule.forRoot()
   ],
   providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     DexieStorage,
     { provide: StorageService, useClass: LocalStorageService },
     TemplateService,
