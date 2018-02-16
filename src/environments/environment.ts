@@ -9,7 +9,7 @@ import { OfficeService } from '../app/services/office.service';
 export const environment = {
   test: false,
   production: false,
-  formboxapi: 'https://127.0.0.1:4201',
+  formboxapi: 'https://localhost:4201',
   loglevel: Level.LOG,
   officeService: OfficeService
 };
