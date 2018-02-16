@@ -17,7 +17,6 @@ import 'rxjs/add/observable/forkJoin';
 import { ExpressionsService } from '../../services/expressions.service';
 import { DocumentCommand, TemplateActions } from '../actions/template-actions';
 import { FormBoxState } from '../states/formbox-state';
-import { DocumentCommandStatus, LoadingStatus } from '../states/template-state';
 
 /**
  * Middleware für Templates und Fragmente.
@@ -156,6 +155,17 @@ export class TemplateEpics {
         const act = TemplateActions.GET_NEXT_COMMAND({});
 
         return Observable.of(act);
+      });
+  }
+
+  gettingFragments = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.GET_FRAGMENTS.started)
+      .mergeMap((value: any, n: number) => {
+        return this.templates.getFragmentNames().then(fragments => {
+          const act = TemplateActions.GET_FRAGMENTS.done({ params: {}, result: fragments });
+
+          return act;
+        });
       });
   }
 }

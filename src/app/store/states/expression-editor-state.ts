@@ -1,11 +1,7 @@
-export interface DocumentCommand {
-  id: number;
-  text: string;
-  order: number;
-}
+import { ExpressionEditorCommandsState } from './expression-editor-commands-state';
+import { ExpressionOverrideFragState } from './expression-override-frag-state';
 
 export interface ExpressionEditorState {
-  documentCommands: DocumentCommand[];
-  selected_index: number;
-  selected: DocumentCommand;
+  expressionEditorCommands: ExpressionEditorCommandsState;
+  expressionEditorOverrideFrags: ExpressionOverrideFragState;
 }

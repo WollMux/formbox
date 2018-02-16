@@ -1,21 +1,48 @@
+<!-- Liste -->
+
 <div class="row">
   <div class="col-sm-12">
   	<div class="list-group">
   		<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" 
   		  *ngFor="let c of (documentCommands | async); let i=index" 
-  		  (click)="selectDocumentCommand(i)" 
+  		  (click)="onSelectDocumentCommand(i)" 
   		  [ngClass]="{'active': (selectedIndex | async) === i}"
   		>
   			<div class="d-flex w-100 justify-content-between">
-  				<span class="list-label">= {{ c.text }}</span><span class="pull-right icon-hightlight" (click)="deleteDocumentCommand(i)"><fa [name]="'times'"></fa></span>
+  				<div class="list-label">= {{ c.text }}</div><span class="pull-right icon-hightlight" (click)="onDeleteDocumentCommand(i)"><fa [name]="'times'"></fa></span>
   			</div>
   		</a>
     </div>
   </div>
 </div>
+
+<!-- Buttons -->
+
 <div class="row">
+  <div class="col-sm-1">
+    <button type="button" class="btn btn-primary btn-sm" (click)="onNewDocumentCommand()"><fa [name]="'plus'"></fa></button>
+  </div>
+  <div class="col-sm11">
+	  <div class="btn-group" data-toggle="buttons">
+		  <label class="btn btn-primary" [ngClass]="{'active': (showInsertFrag | async)}" >
+		    <input type="checkbox" checked autocomplete="off" (click)="onShowInsertFrag()" />insertFrag
+		  </label>
+		  <label class="btn btn-primary" [ngClass]="{'active': (showOverrideFrag | async)}" >
+		    <input type="checkbox" autocomplete="off" (click)="onShowOverrideFrag()" />overrideFrag
+		  </label>
+	  </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="(showInsertFrag | async)">
   <div class="col-sm-12">
-    <button type="button" class="btn btn-primary btn-sm" (click)="newDocumentCommand()"><fa [name]="'plus'"></fa></button>
+    <app-expression-insert-frag></app-expression-insert-frag>
+  </div>
+</div>
+
+<div class="row" *ngIf="(showOverrideFrag | async)">
+  <div class="col-sm-12">
+    <app-expression-override-frag></app-expression-override-frag>
   </div>
 </div>
 

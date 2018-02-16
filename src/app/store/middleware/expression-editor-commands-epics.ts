@@ -4,22 +4,22 @@ import { ActionsObservable } from 'redux-observable';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { TemplateService } from '../../services/template.service';
-import { ExpressionEditorActions } from '../actions/expression-editor-actions';
+import { ExpressionEditorCommandsActions } from '../actions/expression-editor-commands-actions';
 import { FormBoxState } from '../states/formbox-state';
 
 @Injectable()
-export class ExpressionEditorEpics {
+export class ExpressionEditorCommandsEpics {
   constructor(
     private log: Logger,
     private templates: TemplateService
   ) { }
 
   initialising = (action: ActionsObservable<any>) => {
-    return action.ofType(ExpressionEditorActions.INIT.started)
+    return action.ofType(ExpressionEditorCommandsActions.INIT.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.getDocumentCommands().then(cmds => {
           const ret = cmds.map(c => ({ id: c.id, text: c.cmd, order: +c.tag }));
-          const act = ExpressionEditorActions.INIT.done({ params: {}, result: ret });
+          const act = ExpressionEditorCommandsActions.INIT.done({ params: {}, result: ret });
 
           return act;
         });
@@ -27,10 +27,10 @@ export class ExpressionEditorEpics {
   }
 
   creatingDocumentCommand = (action: ActionsObservable<any>) => {
-    return action.ofType(ExpressionEditorActions.NEW.started)
+    return action.ofType(ExpressionEditorCommandsActions.NEW.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.createDocumentCommand(payload.cmd, payload.order).then(id => {
-          const act = ExpressionEditorActions.NEW.done({ params: payload, result: id });
+          const act = ExpressionEditorCommandsActions.NEW.done({ params: payload, result: id });
 
           return act;
         }).catch(error => this.log.error(error));
@@ -38,10 +38,10 @@ export class ExpressionEditorEpics {
   }
 
   savingDocumentCommand = (action: ActionsObservable<any>) => {
-    return action.ofType(ExpressionEditorActions.SAVE.started)
+    return action.ofType(ExpressionEditorCommandsActions.SAVE.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.updateDocumentCommand(payload.cmd.id, payload.cmd.text, payload.cmd.order).then(() => {
-          const act = ExpressionEditorActions.SAVE.done({ params: payload, result: payload.index });
+          const act = ExpressionEditorCommandsActions.SAVE.done({ params: payload, result: payload.index });
 
           return act;
         }).catch(error => this.log.error(error));
@@ -49,12 +49,12 @@ export class ExpressionEditorEpics {
   }
 
   deletingDocumentCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(ExpressionEditorActions.DELETE.started)
+    return action.ofType(ExpressionEditorCommandsActions.DELETE.started)
       .mergeMap(({ payload }, n: number) => {
-        const id = store.getState().expressionEditor.documentCommands[payload].id;
+        const id = store.getState().expressionEditor.expressionEditorCommands.documentCommands[ payload ].id;
 
         return this.templates.deleteDocumentCommand(id).then(() => {
-          const act = ExpressionEditorActions.DELETE.done({ params: payload, result: payload });
+          const act = ExpressionEditorCommandsActions.DELETE.done({ params: payload, result: payload });
 
           return act;
         }).catch(error => this.log.error(error));

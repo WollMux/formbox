@@ -40,9 +40,11 @@ import { StorageActions } from './store/actions/storage-actions';
 import { LdapFilterValidatorDirective } from './directives/ldap-filter-validator.directive';
 import { LDAPMockService } from './services/mocks/ldap.mock.service';
 import { ExpressionEditorComponent } from './components/expression-editor/expression-editor.component';
-import { ExpressionEditorEpics } from './store/middleware/expression-editor-epics';
+import { ExpressionEditorCommandsEpics } from './store/middleware/expression-editor-commands-epics';
 import { DocumentCommandEditorComponent } from './components/document-command-editor/document-command-editor.component';
 import { ExpressionValidatorDirective } from './directives/expression-validator-directive';
+import { ExpressionInsertFragComponent } from './components/expression-insert-frag/expression-insert-frag.component';
+import { ExpressionOverrideFragComponent } from './components/expression-override-frag/expression-override-frag.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { ExpressionValidatorDirective } from './directives/expression-validator-
     LdapFilterValidatorDirective,
     ExpressionEditorComponent,
     DocumentCommandEditorComponent,
-    ExpressionValidatorDirective
+    ExpressionValidatorDirective,
+    ExpressionInsertFragComponent,
+    ExpressionOverrideFragComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -84,7 +88,7 @@ import { ExpressionValidatorDirective } from './directives/expression-validator-
     RootEpic,
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
-    ExpressionEditorEpics,
+    ExpressionEditorCommandsEpics,
     { provide: OfficeService, useClass: environment.officeService }
   ],
   bootstrap: [AppComponent]

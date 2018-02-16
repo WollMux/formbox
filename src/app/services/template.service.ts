@@ -30,6 +30,17 @@ export class TemplateService {
       });
   }
 
+  async getFragmentNames(): Promise<string[]> {
+    return this.http.get(`${this.formboxapi}/config/fragmente`, { responseType: ResponseContentType.Json })
+      .toPromise()
+      .then(res => res.json() as string[])
+      .catch(error => {
+        this.log.error(error);
+
+        return [];
+      });
+  }
+
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.office.getDocumentCommands();
   }
