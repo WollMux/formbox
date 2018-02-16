@@ -1,4 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
+
 import { FormBoxState } from '../states/formbox-state';
 import { templateReducer } from './template-reducer';
 import { absenderlisteReducer } from './absenderliste-reducer';

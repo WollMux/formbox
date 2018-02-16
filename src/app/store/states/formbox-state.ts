@@ -1,10 +1,7 @@
 import { LoadingStatus, TemplateState } from './template-state';
 import { AbsenderlisteState } from './absender-state';
-<<<<<<< HEAD
 import { INITIAL_STATE as ldapInit, LDAPState } from './ldap-state';
-=======
 import { ExpressionEditorState } from './expression-editor-state';
->>>>>>> Formulareditor 1.Teil.
 
 /**
  * Globales Statusobjekt für FormBox.
@@ -13,11 +10,8 @@ import { ExpressionEditorState } from './expression-editor-state';
 export interface FormBoxState {
   absenderliste: AbsenderlisteState;
   template: TemplateState;
-<<<<<<< HEAD
   ldap: LDAPState;
-=======
   expressionEditor: ExpressionEditorState;
->>>>>>> Formulareditor 1.Teil.
 }
 
 /**
@@ -26,10 +20,16 @@ export interface FormBoxState {
  */
 export const INITIAL_STATE: FormBoxState = {
   absenderliste: { selected: undefined, pal: [] },
-  template: { status: LoadingStatus.None, overrideFrags: [], documentCommands: [] } as TemplateState,
-<<<<<<< HEAD
-  ldap: ldapInit
-=======
-  expressionEditor: { documentCommands: [], selected_index: -1, selected: undefined }
->>>>>>> Formulareditor 1.Teil.
+  ldap: ldapInit,
+  template: { status: LoadingStatus.None, fragments: [], overrideFrags: [], documentCommands: [] } as TemplateState,
+  expressionEditor: {
+    expressionEditorCommands: {
+      documentCommands: [],
+      selected_index: -1,
+      selected: undefined,
+      showInsertFrag: false,
+      showOverrideFrag: false
+    },
+    expressionEditorOverrideFrags: { overrideFrags: [] }
+  }
 };

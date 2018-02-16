@@ -1,0 +1,9 @@
+.list-group-item {
+	min-height: 42px;
+}
+
+input {
+	width: 45%;
+	padding-right: 8px;
+}
+

@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-sm-11">
+    <div class="list-group">
+      <div class="list-group-item flex-column align-items-start" *ngFor="let f of (overrideFrags | async); let i=index; trackBy:trackByFn">
+        <div class="d-flex w-100 justify-content-between">
+          <span class="list-label">
+            <input [value] = "f.oldFrag" (focusout)="onUpdateOldFrag(i, $event.target.value)" list="fragments" />
+            <input [value] = "f.newFrag" (focusout)="onUpdateNewFrag(i, $event.target.value)" list="fragments" />
+            
+            <datalist id="fragments">
+              <option *ngFor="let frag of (fragments | async)" [value]="frag"></option>
+            </datalist>
+          </span>
+          <span class="pull-right icon-hightlight" (click)="onDeleteOverrideFrag(i)"><fa [name]="'times'"></fa></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-1">
+    <button type="button" class="btn btn-primary btn-sm" (click)="onNewOverrideFrag()"><fa [name]="'plus'"></fa></button>
+  </div>  
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <button type="button" class="btn btn-primary btn-sm" [disabled]="(overrideFrags | async).length <= 0  || !validate(overrideFrags | async)" (click)="onInsert()">Einf&uuml;gen</button>
+  </div>
+</div>

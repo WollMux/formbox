@@ -26,8 +26,12 @@ const loadTemplateDone = (state: TemplateState): TemplateState => {
   return state;
 };
 
+const getFragments = (state: TemplateState, fragments: string[]): TemplateState => {
+  return tassign(state, { fragments: fragments });
+};
+
 export const templateReducer: Reducer<TemplateState> = reducerWithInitialState({ status: LoadingStatus.None } as TemplateState)
   .case(TemplateActions.LOAD_TEMPLATE.started, (state, name) => loadTemplate(state, name))
   .case(TemplateActions.LOAD_TEMPLATE.done, (state, payload) => loadTemplateDone(state))
-  .case(TemplateActions.OPEN_TEMPLATE, (state, payload) => state)
+  .case(TemplateActions.GET_FRAGMENTS.done, (state, payload) => getFragments(state, payload.result))
   .build();

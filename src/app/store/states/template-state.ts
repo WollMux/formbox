@@ -18,6 +18,7 @@ export enum DocumentCommandStatus {
 export interface TemplateState {
   name: string;
   status: LoadingStatus;
+  fragments: string[];
   overrideFrags: { fragId: string, newFragId: string }[];
   documentCommands: { cmd: DocumentCommand, status: DocumentCommandStatus }[];
 }

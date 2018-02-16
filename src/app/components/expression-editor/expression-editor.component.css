@@ -1,5 +1,9 @@
 .list-label {
 	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 90%;
+	display: inline-block;
 }
 
 .list-group {

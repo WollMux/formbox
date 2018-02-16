@@ -4,7 +4,7 @@ import { TemplateEpics } from './template-epics';
 import { AbsenderlisteEpics } from './absenderliste-epics';
 import { LDAPEpics } from './ldap-epics';
 import { StorageEpics } from './storage-epics';
-import { ExpressionEditorEpics } from './expression-editor-epics';
+import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epics';
 
 @Injectable()
 export class RootEpic {
@@ -13,7 +13,7 @@ export class RootEpic {
     private absenderlisteEpics: AbsenderlisteEpics,
     private ldapEpics: LDAPEpics,
     private storageEpics: StorageEpics,
-    private expressEditorEpics: ExpressionEditorEpics
+    private expressEditorCommandsEpics: ExpressionEditorCommandsEpics
   ) { }
 
   epics = () => combineEpics(
@@ -30,10 +30,11 @@ export class RootEpic {
     this.ldapEpics.searchingLDAP,
     this.storageEpics.updatingStoragePAL,
     this.storageEpics.updatingStorageSelected,
+    this.templateEpics.gettingFragments,
     this.absenderlisteEpics.changingAbsender,
-    this.expressEditorEpics.initialising,
-    this.expressEditorEpics.creatingDocumentCommand,
-    this.expressEditorEpics.savingDocumentCommand,
-    this.expressEditorEpics.deletingDocumentCommand
+    this.expressEditorCommandsEpics.initialising,
+    this.expressEditorCommandsEpics.creatingDocumentCommand,
+    this.expressEditorCommandsEpics.savingDocumentCommand,
+    this.expressEditorCommandsEpics.deletingDocumentCommand
   )
 }

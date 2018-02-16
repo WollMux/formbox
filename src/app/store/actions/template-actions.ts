@@ -25,6 +25,8 @@ export class TemplateActions {
   static GET_NEXT_COMMAND = actionCreator<any>('GET_NEXT_COMMAND');
   static EXECUTE_COMMAND = actionCreator.async<DocumentCommand, number>('EXECUTE_COMMAND');
 
+  static GET_FRAGMENTS = actionCreator.async<any, string[]>('GET_FRAGMENTS');
+
   constructor(private ngRedux: NgRedux<FormBoxState>) { }
 
   loadTemplate(name: string): Action<string> {
@@ -35,6 +37,12 @@ export class TemplateActions {
 
   insertFragment(id: number, name: string): Action<{ id: number, name: string }> {
     const action = TemplateActions.INSERT_FRAGMENT.started({ id: id, name: name });
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  getFragments(): Action<any> {
+    const action = TemplateActions.GET_FRAGMENTS.started({});
 
     return this.ngRedux.dispatch(action);
   }
