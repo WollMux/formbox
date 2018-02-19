@@ -6,12 +6,15 @@ import { AbsenderlisteActions } from '../../../src/app/store/actions/absenderlis
 import { StorageService } from '../../../src/app/services/storage.service';
 import { LocalStorageService } from '../../../src/app/services/local-storage.service';
 import { DexieStorage } from '../../../src/app/storage/dexie-storage';
+import { NgLoggerModule } from '@nsalaun/ng-logger';
+import { environment } from '../../../src/environments/environment';
 
 describe('AbsenderlisteService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgReduxModule
+        NgReduxModule,
+        NgLoggerModule.forRoot(environment.loglevel)
       ],
       providers: [
         DexieStorage,

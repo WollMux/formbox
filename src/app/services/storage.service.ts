@@ -11,6 +11,12 @@ import { Absender } from '../storage/absender';
  */
 @Injectable()
 export abstract class StorageService {
+
+  /**
+   * Öffnet die Datenbank.
+   */
+  abstract async open(): Promise<void>;
+
   /**
    * Löscht die Datenbank und legt sie neu an.
    * 
@@ -22,4 +28,23 @@ export abstract class StorageService {
    * Liefert die Persönliche Absenderliste (PAL) zurück.
    */
   abstract async getPAL(): Promise<Absender[]>;
+
+  /**
+   * Setzt eine neue PAL in der Datenbank.
+   *
+   * @param absender Die neue PAL.
+   */
+  abstract async setPAL(absender: Absender[]): Promise<boolean>;
+
+  /**
+   * Liefert die ID des ausgewählten Absender.
+   */
+  abstract async getSelected(): Promise<number>;
+
+  /**
+   * Setzt einen neuen ausgewählten Absender.
+   *
+   * @param selected Die ID des neuen Absenders.
+   */
+  abstract async setSelected(selected: number): Promise<boolean>;
 }
