@@ -1,0 +1,59 @@
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { select } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
+import { LDAPFilter } from '../../services/ldap.service';
+import { LDAPActions } from '../../store/actions/ldap-actions';
+import { Logger } from '@nsalaun/ng-logger';
+
+/**
+ * Die Component für die LDAP-Suche.
+ *
+ * Die Parent-Componente kann festlegen, ob Drag-And-Drop aktiviert ist und welche Action dabei ausgeführt wird.
+ */
+@Component({
+  selector: 'app-ldap-suche',
+  templateUrl: './ldap-suche.component.html',
+  styleUrls: ['./ldap-suche.component.css']
+})
+export class LDAPSucheComponent implements OnInit, OnDestroy {
+  filter = {uid: undefined, vorname: undefined, nachname: undefined, ou: undefined} as LDAPFilter;
+  @select(['ldap', 'result']) result: Observable<any[]>;
+  @Input() dragEnabled = false;
+  @Input() action: any = undefined;
+
+  constructor(
+    private ldapActions: LDAPActions,
+    private log: Logger
+  ) { }
+
+  ngOnInit(): void {
+    // nothing to initialize
+  }
+
+  ngOnDestroy(): void {
+    this.ldapActions.clearingLDAP();
+  }
+
+  /**
+   * Suche starten.
+   */
+  onSubmit(): void {
+    if (this.searchAllowed()) {
+      this.log.debug(`starte Suche mit filter: ${JSON.stringify(this.filter)}`);
+      this.ldapActions.searchingLDAP(this.filter);
+    }
+  }
+
+  /**
+   * Testen ob eine Suchanfrage gestellt werden soll. Dazu muss mindestens eines der Formularfelder einen Wert enthalten.
+   */
+  searchAllowed(): boolean {
+    if (this.filter.uid || this.filter.nachname || this.filter.vorname || this.filter.ou) {
+      return true;
+    }
+    this.log.debug('leerer Suchfilter wird nicht unterstützt.');
+
+    return false;
+  }
+}

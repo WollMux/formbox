@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { DevToolsExtension, NgRedux, NgReduxModule } from '@angular-redux/store';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { NgDragDropModule } from 'ng-drag-drop';
 import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 
 import { FormBoxState, INITIAL_STATE } from './store/states/formbox-state';
@@ -29,10 +30,13 @@ import { LDAPService } from './services/ldap.service';
 import { LDAPEpics } from './store/middleware/ldap-epics';
 import { LDAPActions } from './store/actions/ldap-actions';
 import { appRoutes } from './app.routes';
+import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LDAPSucheComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -40,7 +44,9 @@ import { appRoutes } from './app.routes';
     HttpModule,
     BrowserModule,
     NgReduxModule,
-    AccordionModule.forRoot()
+    AccordionModule.forRoot(),
+    NgDragDropModule.forRoot(),
+    FormsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
