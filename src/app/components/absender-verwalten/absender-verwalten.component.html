@@ -1,0 +1,23 @@
+<div class="col-sm-6">
+  <app-ldap-suche [dragEnabled]="true" [action]="addToPALByID(actions)"></app-ldap-suche>
+</div>
+
+<div class="col-sm-6">
+  <div class="row">
+    <app-absender-auswahl></app-absender-auswahl>
+  </div>
+  <div class="row">
+    <div class="panel panel-default" dnd-droppable droppable (onDrop)="addToPAL($event)">
+      <div class="panel-heading">Persönliche Absenderliste</div>
+      <div class="panel-body">
+        <div class="list-group" id='resultlist'>
+          <a *ngFor="let a of pal | async; let i = index" class="list-group-item list-group-item-action">
+            <span class="list-label">{{ a.nachname }}, {{ a.vorname }} ({{ a.ou }})</span>
+            <span class="glyphicon glyphicon-remove pull-right" (click)="removeFromPAL(i)"></span>
+            <span class="glyphicon glyphicon-pencil pull-right" (click)="editAbsender(i)"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
