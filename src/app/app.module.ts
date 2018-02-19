@@ -25,6 +25,9 @@ import { AbsenderlisteService } from './services/absenderliste.service';
 import { RootEpic } from './store/middleware/root-epic';
 import { AbsenderlisteEpics } from './store/middleware/absenderliste-epics';
 import { ExpressionsService } from './services/expressions.service';
+import { LDAPService } from './services/ldap.service';
+import { LDAPEpics } from './store/middleware/ldap-epics';
+import { LDAPActions } from './store/actions/ldap-actions';
 import { appRoutes } from './app.routes';
 
 @NgModule({
@@ -46,10 +49,13 @@ import { appRoutes } from './app.routes';
     TemplateService,
     TemplateActions,
     AbsenderlisteActions,
+    LDAPActions,
     AbsenderlisteService,
     AbsenderlisteEpics,
     TemplateEpics,
+    LDAPEpics,
     RootEpic,
+    { provide: LDAPService, useClass: environment.ldapService },
     ExpressionsService,
     { provide: OfficeService, useClass: environment.officeService }
   ],

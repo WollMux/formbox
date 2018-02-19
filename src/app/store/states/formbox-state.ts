@@ -1,5 +1,6 @@
 import { LoadingStatus, TemplateState } from './template-state';
 import { AbsenderlisteState } from './absender-state';
+import { INITIAL_STATE as ldapInit, LDAPState } from './ldap-state';
 
 /**
  * Globales Statusobjekt für FormBox.
@@ -8,6 +9,7 @@ import { AbsenderlisteState } from './absender-state';
 export interface FormBoxState {
   absenderliste: AbsenderlisteState;
   template: TemplateState;
+  ldap: LDAPState;
 }
 
 /**
@@ -16,5 +18,6 @@ export interface FormBoxState {
  */
 export const INITIAL_STATE: FormBoxState = {
   absenderliste: { selected: undefined, pal: [] },
-  template: { status: LoadingStatus.None, overrideFrags: [], documentCommands: [] } as TemplateState
+  template: { status: LoadingStatus.None, overrideFrags: [], documentCommands: [] } as TemplateState,
+  ldap: ldapInit
 };
