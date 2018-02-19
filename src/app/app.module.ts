@@ -32,6 +32,7 @@ import { LDAPActions } from './store/actions/ldap-actions';
 import { appRoutes } from './app.routes';
 import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
 import { FormsModule } from '@angular/forms';
+import { AbsenderVerwaltenComponent } from './components/absender-verwalten/absender-verwalten.component';
 import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender-auswahl.component';
 import { StorageEpics } from './store/middleware/storage-epics';
 import { StorageActions } from './store/actions/storage-actions';
@@ -40,6 +41,7 @@ import { StorageActions } from './store/actions/storage-actions';
   declarations: [
     AppComponent,
     LDAPSucheComponent,
+    AbsenderVerwaltenComponent,
     AbsenderAuswahlComponent
   ],
   imports: [
