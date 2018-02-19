@@ -32,13 +32,15 @@ import { LDAPActions } from './store/actions/ldap-actions';
 import { appRoutes } from './app.routes';
 import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
 import { FormsModule } from '@angular/forms';
+import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender-auswahl.component';
 import { StorageEpics } from './store/middleware/storage-epics';
 import { StorageActions } from './store/actions/storage-actions';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LDAPSucheComponent
+    LDAPSucheComponent,
+    AbsenderAuswahlComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
