@@ -32,6 +32,8 @@ import { LDAPActions } from './store/actions/ldap-actions';
 import { appRoutes } from './app.routes';
 import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
 import { FormsModule } from '@angular/forms';
+import { StorageEpics } from './store/middleware/storage-epics';
+import { StorageActions } from './store/actions/storage-actions';
 
 @NgModule({
   declarations: [
@@ -56,10 +58,12 @@ import { FormsModule } from '@angular/forms';
     TemplateActions,
     AbsenderlisteActions,
     LDAPActions,
+    StorageActions,
     AbsenderlisteService,
     AbsenderlisteEpics,
     TemplateEpics,
     LDAPEpics,
+    StorageEpics,
     RootEpic,
     { provide: LDAPService, useClass: environment.ldapService },
     ExpressionsService,
