@@ -41,6 +41,7 @@
     "dateformat": "^3.0.2",
     "dexie": "^2.0.1",
     "expressions-js": "^0.1.12",
+    "ng-drag-drop": "^4.0.0",
     "ngx-bootstrap": "^2.0.0-beta.8",
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
