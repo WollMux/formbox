@@ -17,25 +17,27 @@ export class StorageEpics {
 
   updatingStorageSelected = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(StorageActions.UPDATE_STORAGE_SELECTED.started)
-      .mergeMap((payload, n) => {
+      .mergeMap(({payload}, n) => {
         const selected = store.getState().absenderliste.selected;
 
-        return this.db.setSelected(selected ? selected.id : undefined).then(result => {
-          let act;
-          if (result) {
-            act = StorageActions.UPDATE_STORAGE_SELECTED.done({params: payload, result: result});
-          } else {
-            act = StorageActions.UPDATE_STORAGE_SELECTED.failed({params: payload, error: payload});
-          }
+        return this.db.setSelected(selected ? selected.id : undefined)
+          .then(result => {
+            let act;
+            if (result) {
+              act = StorageActions.UPDATE_STORAGE_SELECTED.done({params: payload, result: result});
+            } else {
+              act = StorageActions.UPDATE_STORAGE_SELECTED.failed({params: payload, error: payload});
+            }
 
-          return act;
-        });
+            return act;
+          })
+          .catch(err => StorageActions.UPDATE_STORAGE_SELECTED.failed({params: payload, error: err}));
       });
   }
 
   updatingStoragePAL = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(StorageActions.UPDATE_STORAGE_PAL.started)
-      .mergeMap((payload, n) => {
+      .mergeMap(({payload}, n) => {
         const pal = store.getState().absenderliste.pal;
 
         return this.db.setPAL(pal).then(result => {

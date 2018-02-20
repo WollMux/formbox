@@ -1,13 +1,12 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { async, inject, TestBed } from '@angular/core/testing';
 
 import { AbsenderlisteService } from '../../../src/app/services/absenderliste.service';
 import { NgReduxModule } from '@angular-redux/store';
 import { AbsenderlisteActions } from '../../../src/app/store/actions/absenderliste-actions';
 import { StorageService } from '../../../src/app/services/storage.service';
-import { LocalStorageService } from '../../../src/app/services/local-storage.service';
-import { DexieStorage } from '../../../src/app/storage/dexie-storage';
 import { NgLoggerModule } from '@nsalaun/ng-logger';
 import { environment } from '../../../src/environments/environment';
+import { MockStorageService } from './mocks/storage-mock.service';
 
 describe('AbsenderlisteService', () => {
   beforeEach(() => {
@@ -17,15 +16,16 @@ describe('AbsenderlisteService', () => {
         NgLoggerModule.forRoot(environment.loglevel)
       ],
       providers: [
-        DexieStorage,
         AbsenderlisteActions,
-        { provide: StorageService, useClass: LocalStorageService },
+        { provide: StorageService, useClass: MockStorageService },
         AbsenderlisteService
       ]
     });
   });
 
-  it('should be created', inject([AbsenderlisteService], (service: AbsenderlisteService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('loadAbsenderliste', async(inject([AbsenderlisteService], (service: AbsenderlisteService) => {
+    service.loadAbsenderliste().then(result => {
+      expect(result).toEqual([{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}]);
+    });
+  })));
 });
