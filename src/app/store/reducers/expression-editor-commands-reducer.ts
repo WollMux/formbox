@@ -5,10 +5,25 @@ import { tassign } from 'tassign';
 import { DocumentCommand, ExpressionEditorCommandsState } from '../states/expression-editor-commands-state';
 import { ExpressionEditorCommandsActions } from '../actions/expression-editor-commands-actions';
 
+/**
+ * Initialisiert den Store mit der Liste der Dokumentenkommandos.
+ * 
+ * @param state
+ * @param cmds
+ */
 const init = (state: ExpressionEditorCommandsState, cmds: DocumentCommand[]): ExpressionEditorCommandsState => {
   return tassign(state, { documentCommands: cmds });
 };
 
+/**
+ * Legt ein neues Dokumentenkommando an und hängt es an die Liste der Kommandos
+ * an. Das Kommando wird gleichzeitig selektiert.
+ * 
+ * @param state
+ * @param id
+ * @param cmd
+ * @param order
+ */
 const newCommand = (state: ExpressionEditorCommandsState, id: number, cmd: string, order: number): ExpressionEditorCommandsState => {
   const c = { id: id, text: cmd, order: order };
   const cmds = state.documentCommands.slice();
@@ -23,6 +38,11 @@ const newCommand = (state: ExpressionEditorCommandsState, id: number, cmd: strin
   });
 };
 
+/**
+ * Löscht ein Dokumentenkommando. Die Selektion wir auf undefined gesetzt. 
+ * @param state
+ * @param index
+ */
 const deleteCommand = (state: ExpressionEditorCommandsState, index: number): ExpressionEditorCommandsState => {
   return tassign(state, {
     selected_index: -1,
@@ -34,8 +54,14 @@ const deleteCommand = (state: ExpressionEditorCommandsState, index: number): Exp
   });
 };
 
+/**
+ * Wählt das n-te Kommando aus der Liste der Dokumentenkommandos aus.
+ * 
+ * @param state
+ * @param index
+ */
 const selectCommand = (state: ExpressionEditorCommandsState, index: number): ExpressionEditorCommandsState => {
-  const selected = (index !== -1) ? state.documentCommands[ index ] : undefined;
+  const selected = (index !== -1) ? state.documentCommands[index] : undefined;
 
   return tassign(state,
     {
@@ -46,6 +72,13 @@ const selectCommand = (state: ExpressionEditorCommandsState, index: number): Exp
     });
 };
 
+/**
+ * Speichert Änderungen an einem Dokumentenkommando. 
+ * 
+ * @param state
+ * @param index
+ * @param cmd
+ */
 const saveCommand = (state: ExpressionEditorCommandsState, index: number, cmd: DocumentCommand): ExpressionEditorCommandsState => {
   const ret = state.documentCommands.map((it, n) => {
     if (n !== index) {
@@ -58,6 +91,13 @@ const saveCommand = (state: ExpressionEditorCommandsState, index: number, cmd: D
   return tassign(state, { documentCommands: ret });
 };
 
+/**
+ * Legt fest, ob das die GUI für die Bearbeitung von insertFrags angezeigt werden
+ * soll.
+ * 
+ * @param state
+ * @param show
+ */
 const showInsertFrag = (state: ExpressionEditorCommandsState, show: boolean): ExpressionEditorCommandsState => {
   return tassign(state,
     {
@@ -68,6 +108,13 @@ const showInsertFrag = (state: ExpressionEditorCommandsState, show: boolean): Ex
     });
 };
 
+/**
+ * Legt fest, ob das die GUI für die Bearbeitung von overrideFrags angezeigt werden
+ * soll.
+ * 
+ * @param state
+ * @param show
+ */
 const showOverrideFrag = (state: ExpressionEditorCommandsState, show: boolean): ExpressionEditorCommandsState => {
   return tassign(state,
     {

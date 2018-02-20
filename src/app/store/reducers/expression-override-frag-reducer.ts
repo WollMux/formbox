@@ -5,6 +5,11 @@ import { tassign } from 'tassign';
 import { ExpressionOverrideFragState } from '../states/expression-override-frag-state';
 import { ExpressionOverrideFragActions } from '../actions/expression-override-frag-actions';
 
+/**
+ * Hängt ein leeres overrideFrag an die Liste der overideFrags an. 
+ * 
+ * @param state
+ */
 const add = (state: ExpressionOverrideFragState): ExpressionOverrideFragState => {
   return tassign(state, {
     overrideFrags: [
@@ -14,6 +19,12 @@ const add = (state: ExpressionOverrideFragState): ExpressionOverrideFragState =>
   });
 };
 
+/**
+ * Löscht das n-te Element aus der Liste der overrideFrags.
+ * 
+ * @param state
+ * @param n
+ */
 const remove = (state: ExpressionOverrideFragState, n: number): ExpressionOverrideFragState => {
   return tassign(state, {
     overrideFrags: [
@@ -23,6 +34,13 @@ const remove = (state: ExpressionOverrideFragState, n: number): ExpressionOverri
   });
 };
 
+/**
+ * Speichert die Änderung der oldFrag eines existierenden overrideFrags.
+ * 
+ * @param state
+ * @param n
+ * @param oldFrag
+ */
 const updateOldFrag = (state: ExpressionOverrideFragState, n: number, oldFrag: string): ExpressionOverrideFragState => {
   return tassign(state, {
     overrideFrags: state.overrideFrags.map((it, index) => {
@@ -39,6 +57,13 @@ const updateOldFrag = (state: ExpressionOverrideFragState, n: number, oldFrag: s
   });
 };
 
+/**
+ * Speichert die Änderung der oldFrag eines existierenden overrideFrags.
+ * 
+ * @param state
+ * @param n
+ * @param newFrag
+ */
 const updateNewFrag = (state: ExpressionOverrideFragState, n: number, newFrag: string): ExpressionOverrideFragState => {
   return tassign(state, {
     overrideFrags: state.overrideFrags.map((it, index) => {
@@ -55,6 +80,11 @@ const updateNewFrag = (state: ExpressionOverrideFragState, n: number, newFrag: s
   });
 };
 
+/**
+ * Löscht die Liste der overrideFrags.
+ * 
+ * @param state
+ */
 const clear = (state: ExpressionOverrideFragState): ExpressionOverrideFragState => {
   return tassign(state, { overrideFrags: [] });
 };

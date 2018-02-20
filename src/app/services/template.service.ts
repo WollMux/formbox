@@ -30,6 +30,9 @@ export class TemplateService {
       });
   }
 
+  /**
+   * Liefert eine Liste der Namen aller Fragmenten vom Server zurück.
+   */
   async getFragmentNames(): Promise<string[]> {
     return this.http.get(`${this.formboxapi}/config/fragmente`, { responseType: ResponseContentType.Json })
       .toPromise()
@@ -41,6 +44,9 @@ export class TemplateService {
       });
   }
 
+  /**
+   * Liefert eine Liste aller Dokumentenkommandos im aktuellen Dokument zurück.
+   */
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.office.getDocumentCommands();
   }
@@ -55,14 +61,34 @@ export class TemplateService {
     return this.office.getNextDocumentCommand();
   }
 
+  /**
+   * Erzeugt ein neues Dokumentenkommando im aktuellen Dokument.
+   * Dem Text des Kommandos wird ein '=' vorangestellt. Daran werden 
+   * Dokumentenkommandos wiedererkannt.
+   * 
+   * @param cmd
+   * @param order
+   */
   async createDocumentCommand(cmd: string, order: number): Promise<number> {
     return this.office.insertContentControl(`= ${cmd}`, order.toString());
   }
 
+  /**
+   * Speichert Änderungen an einem Dokumentenkommando im aktuellen Dokument.
+   * 
+   * @param id
+   * @param cmd
+   * @param order
+   */
   async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
     await this.office.updateContentControl(id, `= ${cmd}`, order.toString());
   }
 
+  /**
+   * Löscht ein Dokumentenkommando anhand der Id aus dem aktuellen Dokument.
+   * 
+   * @param id
+   */
   async deleteDocumentCommand(id: number): Promise<void> {
     await this.office.deleteContentControl(id);
   }

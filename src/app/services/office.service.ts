@@ -98,6 +98,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Ersetzt ein ContentControl durch den angegebenen Wert.
+   * 
+   * @param id Interne Id des ContentControls im Dokument
+   * @param value
+   */
   async insertValue(id: number, value: string): Promise<void> {
     await Word.run(context => {
       const doc = context.document;
@@ -118,6 +124,14 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Fügt ein neues ContentControl an der aktuellen Cursorpsoition ein.
+   * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
+   * Text herum angelegt. 
+   * 
+   * @param title
+   * @param tag
+   */
   async insertContentControl(title: string, tag: string): Promise<number> {
     return Word.run(context => {
       const doc = context.document;
@@ -131,6 +145,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Ändert Titel und Tag des angegebenen ContentControls.
+   * 
+   * @param id Interne Id des Controls im Dokument.
+   * @param title
+   * @param tag
+   */
   async updateContentControl(id: number, title: string, tag: string): Promise<void> {
     await Word.run(context => {
       const doc = context.document;
@@ -142,6 +163,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Löscht ein ContentControl. Der Text, den das Control umfaßt, bleibt
+   * erhalten.
+   * 
+   * @param id
+   */
   async deleteContentControl(id: number): Promise<void> {
     await Word.run(context => {
       const doc = context.document;

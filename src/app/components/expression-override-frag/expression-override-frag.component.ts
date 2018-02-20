@@ -7,17 +7,21 @@ import 'rxjs/add/operator/take';
 import { ExpressionOverrideFragActions } from '../../store/actions/expression-override-frag-actions';
 import { ExpressionEditorCommandsActions } from '../../store/actions/expression-editor-commands-actions';
 
+/**
+ * GUI zum schnellen Anlegen von overrideFrag-Kommandos. Es können mehrere
+ * Overrides im selben Kommand angelegt werden.
+ */
 @Component({
   selector: 'app-expression-override-frag',
   templateUrl: './expression-override-frag.component.html',
-  styleUrls: [ './expression-override-frag.component.css' ],
-  providers: [ ExpressionOverrideFragActions ]
+  styleUrls: ['./expression-override-frag.component.css'],
+  providers: [ExpressionOverrideFragActions]
 })
 export class ExpressionOverrideFragComponent {
-  @select([ 'expressionEditor', 'expressionEditorOverrideFrags', 'overrideFrags' ])
+  @select(['expressionEditor', 'expressionEditorOverrideFrags', 'overrideFrags'])
   overrideFrags: Observable<{ oldFrag: string, newFrag: string }[]>;
 
-  @select([ 'template', 'fragments' ]) fragments: Observable<string[]>;
+  @select(['template', 'fragments']) fragments: Observable<string[]>;
 
   constructor(
     private actions: ExpressionOverrideFragActions,

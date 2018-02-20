@@ -17,7 +17,7 @@ export class TemplateMockService {
   }
 
   async getFragmentUrl(name: string): Promise<{ name: string, url: string }> {
-    return undefined;
+    return { name: 'Fragment', url: 'url' };
   }
 
   async getFileAsBase64(url: string): Promise<string> {
@@ -37,6 +37,26 @@ export class TemplateMockService {
   }
 
   async insertFragment(id: number, url: string): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async getFragmentNames(): Promise<string[]> {
+    return Promise.resolve(['Eins', 'Zwei', 'Drei']);
+  }
+
+  async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
+    return Promise.resolve([{ id: 1, tag: '1', cmd: "insertFrag('fragment')" }]);
+  }
+
+  async createDocumentCommand(cmd: string, order: number): Promise<number> {
+    return Promise.resolve(1);
+  }
+
+  async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async deleteDocumentCommand(id: number): Promise<void> {
     return Promise.resolve();
   }
 }

@@ -95,6 +95,10 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Gibt das nächste Dokumentenkommando zurück, das noch nicht verarbeitet
+   * wurde.
+   */
   gettingNextCommand = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.GET_NEXT_COMMAND)
       .mergeMap((value, n: number) => {
@@ -149,6 +153,10 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Wenn ein Dokumentenkommando verarbeitet wurde, wird TemplateActions.GET_NEXT_COMMAND
+   * aufgerufen, um die Verarbeitung des nächsten Kommandos anzustossen.
+   */
   executingCommandDone = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.EXECUTE_COMMAND.done)
       .mergeMap(({ payload }, n: number) => {
@@ -158,6 +166,9 @@ export class TemplateEpics {
       });
   }
 
+  /**
+   * Liefert eine Liste der Namen aller Fragmente zurück.
+   */
   gettingFragments = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.GET_FRAGMENTS.started)
       .mergeMap((value: any, n: number) => {
