@@ -69,6 +69,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-junit-reporter": "^1.2.0",
     "protractor": "~5.2.2",
+    "redux-mock-store": "^1.5.1",
     "sonarqube-scanner-node": "0.0.7",
     "ts-node": "~3.2.0",
     "tslint": "5.8.0",
