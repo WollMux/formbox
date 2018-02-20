@@ -3,14 +3,18 @@ import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 
 import { ExpressionsService } from '../services/expressions.service';
 
+/**
+ * Prüft, ob der Text in einem HTML-Control eine gültige Javascript-Expression
+ * ist.
+ */
 @Directive({
   selector: '[appExpression]',
-  providers: [ { provide: NG_VALIDATORS, useExisting: ExpressionValidatorDirective, multi: true }]
+  providers: [{ provide: NG_VALIDATORS, useExisting: ExpressionValidatorDirective, multi: true }]
 })
 export class ExpressionValidatorDirective implements Validator {
   constructor(private expressions: ExpressionsService) { }
 
-  validate(control: AbstractControl): { [ key: string ]: any } {
+  validate(control: AbstractControl): { [key: string]: any } {
     try {
       this.expressions.parse(control.value);
 

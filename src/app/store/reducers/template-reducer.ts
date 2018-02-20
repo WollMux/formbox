@@ -5,7 +5,7 @@ import { tassign } from 'tassign';
 import { DocumentCommand, OverrideFrag, TemplateActions } from '../actions/template-actions';
 
 /**
- * Setzt den Status in {@link TemplateState} auf TemplateStatus.Loading.
+ * Setzt den Status in {@link LoadingStatus} auf LoadingStatus.Loading.
  * 
  * @param state Aktueller Status
  * @param name Name der Vorlage
@@ -18,6 +18,11 @@ const loadTemplate = (state: TemplateState, name: string): TemplateState => {
   return state;
 };
 
+/**
+ * Setzt den Status auf LoadingStatus.Finished und setzt den Store zurück.
+ * 
+ * @param state
+ */
 const loadTemplateDone = (state: TemplateState): TemplateState => {
   if (state.status !== LoadingStatus.Finished) {
     return tassign(state, { status: LoadingStatus.Finished, documentCommands: [], overrideFrags: [] });
@@ -26,6 +31,12 @@ const loadTemplateDone = (state: TemplateState): TemplateState => {
   return state;
 };
 
+/**
+ * Speichert die Liste der Fragmente im Store.
+ * 
+ * @param state
+ * @param fragments
+ */
 const getFragments = (state: TemplateState, fragments: string[]): TemplateState => {
   return tassign(state, { fragments: fragments });
 };

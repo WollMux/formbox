@@ -7,14 +7,18 @@ import { ExpressionEditorCommandsActions } from '../../store/actions/expression-
 import { DocumentCommand } from '../../store/states/expression-editor-commands-state';
 import { ExpressionsService } from '../../services/expressions.service';
 
+/**
+ * Steuerelement mit zwei Eingabefeldern, mit dem die Inhalte eines Dokumentenkommandos
+ * bearbeitet werden können.
+ */
 @Component({
   selector: 'app-document-command-editor',
   templateUrl: './document-command-editor.component.html',
-  styleUrls: [ './document-command-editor.component.css' ]
+  styleUrls: ['./document-command-editor.component.css']
 })
 export class DocumentCommandEditorComponent implements OnInit {
-  @select([ 'expressionEditor', 'expressionEditorCommands', 'selected' ]) selected: Observable<DocumentCommand>;
-  @select([ 'expressionEditor', 'expressionEditorCommands', 'selected_index' ]) selectedIndex: Observable<number>;
+  @select(['expressionEditor', 'expressionEditorCommands', 'selected']) selected: Observable<DocumentCommand>;
+  @select(['expressionEditor', 'expressionEditorCommands', 'selected_index']) selectedIndex: Observable<number>;
 
   model: { index: number, cmd: DocumentCommand } = { index: -1, cmd: undefined };
 

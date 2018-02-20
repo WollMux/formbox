@@ -130,4 +130,21 @@ describe('Template epics', () => {
         });
       }
     )));
+
+  it('getting fragments',
+    async(inject([TemplateEpics, TemplateService],
+      (templateEpics: TemplateEpics, templates: TemplateService) => {
+        const spy = spyOn(templates, 'getFragmentNames').and.returnValue(Promise.resolve(['Eins', 'Zwei', 'Drei']));
+
+        const action = TemplateActions.GET_FRAGMENTS.started({});
+
+        const p = templateEpics.gettingFragments(ActionsObservable.of(action));
+
+        p.subscribe(result => {
+          expect(spy).toHaveBeenCalled();
+          expect(result).toEqual({ type: 'GET_FRAGMENTS_DONE', payload: { params: {}, result: ['Eins', 'Zwei', 'Drei'] } });
+        });
+      }
+    )));
+
 });

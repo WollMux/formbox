@@ -22,7 +22,7 @@
   <div class="col-sm-1">
     <button type="button" class="btn btn-primary btn-sm" (click)="onNewDocumentCommand()"><fa [name]="'plus'"></fa></button>
   </div>
-  <div class="col-sm11">
+  <div class="col-sm-11">
 	  <div class="btn-group" data-toggle="buttons">
 		  <label class="btn btn-primary" [ngClass]="{'active': (showInsertFrag | async)}" >
 		    <input type="checkbox" checked autocomplete="off" (click)="onShowInsertFrag()" />insertFrag
@@ -33,6 +33,8 @@
 	  </div>
   </div>
 </div>
+
+<!-- Komponenten -->
 
 <div class="row" *ngIf="(showInsertFrag | async)">
   <div class="col-sm-12">

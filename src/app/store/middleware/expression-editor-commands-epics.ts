@@ -7,6 +7,9 @@ import { TemplateService } from '../../services/template.service';
 import { ExpressionEditorCommandsActions } from '../actions/expression-editor-commands-actions';
 import { FormBoxState } from '../states/formbox-state';
 
+/**
+ * Epics für den ExpressionEditor.
+ */
 @Injectable()
 export class ExpressionEditorCommandsEpics {
   constructor(
@@ -14,6 +17,9 @@ export class ExpressionEditorCommandsEpics {
     private templates: TemplateService
   ) { }
 
+  /**
+   * Lädt die Dokumentenkommandos aus der Briefvorlage.
+   */
   initialising = (action: ActionsObservable<any>) => {
     return action.ofType(ExpressionEditorCommandsActions.INIT.started)
       .mergeMap(({ payload }, n: number) => {
@@ -26,6 +32,9 @@ export class ExpressionEditorCommandsEpics {
       });
   }
 
+  /**
+   * Erzeugt ein neues Dokumentenkommando im Dokument.
+   */
   creatingDocumentCommand = (action: ActionsObservable<any>) => {
     return action.ofType(ExpressionEditorCommandsActions.NEW.started)
       .mergeMap(({ payload }, n: number) => {
@@ -37,6 +46,9 @@ export class ExpressionEditorCommandsEpics {
       });
   }
 
+  /**
+   * Speichert Änderungen am Dokumentenkommando im Dokument.
+   */
   savingDocumentCommand = (action: ActionsObservable<any>) => {
     return action.ofType(ExpressionEditorCommandsActions.SAVE.started)
       .mergeMap(({ payload }, n: number) => {
@@ -48,10 +60,13 @@ export class ExpressionEditorCommandsEpics {
       });
   }
 
+  /**
+   * Löscht ein Dokumentenkommando aus dem Dokument.
+   */
   deletingDocumentCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(ExpressionEditorCommandsActions.DELETE.started)
       .mergeMap(({ payload }, n: number) => {
-        const id = store.getState().expressionEditor.expressionEditorCommands.documentCommands[ payload ].id;
+        const id = store.getState().expressionEditor.expressionEditorCommands.documentCommands[payload].id;
 
         return this.templates.deleteDocumentCommand(id).then(() => {
           const act = ExpressionEditorCommandsActions.DELETE.done({ params: payload, result: payload });
