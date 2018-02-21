@@ -70,9 +70,6 @@ export class ExpressionOverrideFragComponent {
 
   /**
    * Workaround: Ohne die Funktion verlieren die Input-Felder den Fokus.
-   * 
-   * @param index
-   * @param item
    */
   trackByFn(index: any, item: any): any {
     return index;

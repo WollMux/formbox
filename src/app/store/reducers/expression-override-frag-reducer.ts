@@ -7,8 +7,6 @@ import { ExpressionOverrideFragActions } from '../actions/expression-override-fr
 
 /**
  * Hängt ein leeres overrideFrag an die Liste der overideFrags an. 
- * 
- * @param state
  */
 const add = (state: ExpressionOverrideFragState): ExpressionOverrideFragState => {
   return tassign(state, {
@@ -21,9 +19,6 @@ const add = (state: ExpressionOverrideFragState): ExpressionOverrideFragState =>
 
 /**
  * Löscht das n-te Element aus der Liste der overrideFrags.
- * 
- * @param state
- * @param n
  */
 const remove = (state: ExpressionOverrideFragState, n: number): ExpressionOverrideFragState => {
   return tassign(state, {
@@ -36,10 +31,6 @@ const remove = (state: ExpressionOverrideFragState, n: number): ExpressionOverri
 
 /**
  * Speichert die Änderung der oldFrag eines existierenden overrideFrags.
- * 
- * @param state
- * @param n
- * @param oldFrag
  */
 const updateOldFrag = (state: ExpressionOverrideFragState, n: number, oldFrag: string): ExpressionOverrideFragState => {
   return tassign(state, {
@@ -59,10 +50,6 @@ const updateOldFrag = (state: ExpressionOverrideFragState, n: number, oldFrag: s
 
 /**
  * Speichert die Änderung der oldFrag eines existierenden overrideFrags.
- * 
- * @param state
- * @param n
- * @param newFrag
  */
 const updateNewFrag = (state: ExpressionOverrideFragState, n: number, newFrag: string): ExpressionOverrideFragState => {
   return tassign(state, {
@@ -82,8 +69,6 @@ const updateNewFrag = (state: ExpressionOverrideFragState, n: number, newFrag: s
 
 /**
  * Löscht die Liste der overrideFrags.
- * 
- * @param state
  */
 const clear = (state: ExpressionOverrideFragState): ExpressionOverrideFragState => {
   return tassign(state, { overrideFrags: [] });

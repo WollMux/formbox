@@ -3,7 +3,6 @@ import { AbsenderVerwaltenComponent } from './components/absender-verwalten/abse
 import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender-auswahl.component';
 
 import { ExpressionEditorComponent } from './components/expression-editor/expression-editor.component';
-import { AppComponent } from './app.component';
 
 export const appRoutes: Routes = [
   { path: 'absender-verwalten', component: AbsenderVerwaltenComponent },

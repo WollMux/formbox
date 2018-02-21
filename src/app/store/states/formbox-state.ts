@@ -2,6 +2,8 @@ import { LoadingStatus, TemplateState } from './template-state';
 import { AbsenderlisteState } from './absender-state';
 import { INITIAL_STATE as ldapInit, LDAPState } from './ldap-state';
 import { ExpressionEditorState } from './expression-editor-state';
+import { INITIAL_STATE as EEC_INITIAL_STATE } from './expression-editor-commands-state';
+import { INITIAL_STATE as TS_INITIAL_STATE } from './template-state';
 
 /**
  * Globales Statusobjekt für FormBox.
@@ -21,15 +23,9 @@ export interface FormBoxState {
 export const INITIAL_STATE: FormBoxState = {
   absenderliste: { selected: undefined, pal: [] },
   ldap: ldapInit,
-  template: { status: LoadingStatus.None, fragments: [], overrideFrags: [], documentCommands: [] } as TemplateState,
+  template: TS_INITIAL_STATE,
   expressionEditor: {
-    expressionEditorCommands: {
-      documentCommands: [],
-      selected_index: -1,
-      selected: undefined,
-      showInsertFrag: false,
-      showOverrideFrag: false
-    },
+    expressionEditorCommands: EEC_INITIAL_STATE,
     expressionEditorOverrideFrags: { overrideFrags: [] }
   }
 };
