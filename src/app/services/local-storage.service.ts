@@ -13,9 +13,6 @@ export class LocalStorageService extends StorageService {
 
   /**
    * Initialisiert die Dexie-Datenbank.
-   * 
-   * @constructor
-   * @param db
    */
   constructor(
     private db: DexieStorage,

@@ -65,9 +65,6 @@ export class TemplateService {
    * Erzeugt ein neues Dokumentenkommando im aktuellen Dokument.
    * Dem Text des Kommandos wird ein '=' vorangestellt. Daran werden 
    * Dokumentenkommandos wiedererkannt.
-   * 
-   * @param cmd
-   * @param order
    */
   async createDocumentCommand(cmd: string, order: number): Promise<number> {
     return this.office.insertContentControl(`= ${cmd}`, order.toString());
@@ -75,10 +72,6 @@ export class TemplateService {
 
   /**
    * Speichert Änderungen an einem Dokumentenkommando im aktuellen Dokument.
-   * 
-   * @param id
-   * @param cmd
-   * @param order
    */
   async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
     await this.office.updateContentControl(id, `= ${cmd}`, order.toString());
@@ -86,8 +79,6 @@ export class TemplateService {
 
   /**
    * Löscht ein Dokumentenkommando anhand der Id aus dem aktuellen Dokument.
-   * 
-   * @param id
    */
   async deleteDocumentCommand(id: number): Promise<void> {
     await this.office.deleteContentControl(id);

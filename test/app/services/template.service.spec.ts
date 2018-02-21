@@ -1,4 +1,4 @@
-import { async, inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { TemplateService } from '../../../src/app/services/template.service';
 import { HttpModule } from '@angular/http';
 import { environment } from '../../../src/environments/environment';

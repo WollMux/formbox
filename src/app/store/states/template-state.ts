@@ -22,3 +22,11 @@ export interface TemplateState {
   overrideFrags: { fragId: string, newFragId: string }[];
   documentCommands: { cmd: DocumentCommand, status: DocumentCommandStatus }[];
 }
+
+export const INITIAL_STATE: TemplateState = {
+  name: undefined,
+  status: LoadingStatus.None,
+  fragments: [],
+  overrideFrags: [],
+  documentCommands: []
+};

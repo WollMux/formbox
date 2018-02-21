@@ -60,8 +60,6 @@ export class ExpressionsService {
    * 
    * Fehler in der Expression lösen eine Exception aus. Das kann zur Validierung
    * in der GUI verwendet werden.
-   * 
-   * @param expr
    */
   parse(expr: string): FunctionConstructor {
     return expressions.parse(expr, expressions.globals, this.formmatters);
@@ -69,9 +67,6 @@ export class ExpressionsService {
 
   /**
    * Parst eine Expression und führt sie gleich aus.
-   * 
-   * @param expr
-   * @param id
    */
   eval(expr: string, id?: number): any {
     const fn = this.parse(expr);

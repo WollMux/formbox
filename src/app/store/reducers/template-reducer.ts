@@ -20,8 +20,6 @@ const loadTemplate = (state: TemplateState, name: string): TemplateState => {
 
 /**
  * Setzt den Status auf LoadingStatus.Finished und setzt den Store zurück.
- * 
- * @param state
  */
 const loadTemplateDone = (state: TemplateState): TemplateState => {
   if (state.status !== LoadingStatus.Finished) {
@@ -33,9 +31,6 @@ const loadTemplateDone = (state: TemplateState): TemplateState => {
 
 /**
  * Speichert die Liste der Fragmente im Store.
- * 
- * @param state
- * @param fragments
  */
 const getFragments = (state: TemplateState, fragments: string[]): TemplateState => {
   return tassign(state, { fragments: fragments });

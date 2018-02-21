@@ -11,3 +11,11 @@ export interface ExpressionEditorCommandsState {
   showInsertFrag: boolean;
   showOverrideFrag: boolean;
 }
+
+export const INITIAL_STATE: ExpressionEditorCommandsState = {
+  documentCommands: [],
+  selected_index: -1,
+  selected: undefined,
+  showInsertFrag: false,
+  showOverrideFrag: false
+};
