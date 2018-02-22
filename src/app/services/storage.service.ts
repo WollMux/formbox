@@ -34,7 +34,7 @@ export abstract class StorageService {
    *
    * @param absender Die neue PAL.
    */
-  abstract async setPAL(absender: Absender[]): Promise<boolean>;
+  abstract async setPAL(absender: Absender[]): Promise<void>;
 
   /**
    * Liefert die ID des ausgewählten Absender.
@@ -46,5 +46,5 @@ export abstract class StorageService {
    *
    * @param selected Die ID des neuen Absenders.
    */
-  abstract async setSelected(selected: number): Promise<boolean>;
+  abstract async setSelected(selected: number): Promise<void>;
 }

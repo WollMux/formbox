@@ -25,7 +25,7 @@ export class LocalStorageService extends StorageService {
   }
 
   async open(): Promise<void> {
-    return this.db.open().then(d => { return; });
+    return this.db.open().then(d => { Promise.resolve(); });
   }
 
   async reset(): Promise<void> {
@@ -44,11 +44,11 @@ export class LocalStorageService extends StorageService {
     return this.db.getSelected();
   }
 
-  async setPAL(absender: Absender[]): Promise<boolean> {
+  async setPAL(absender: Absender[]): Promise<void> {
     return this.db.setPAL(absender);
   }
 
-  async setSelected(selected: number): Promise<boolean> {
+  async setSelected(selected: number): Promise<void> {
     return this.db.setSelected(selected);
   }
 }

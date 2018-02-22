@@ -18,20 +18,17 @@ export class StorageEpics {
   updatingStorageSelected = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(StorageActions.UPDATE_STORAGE_SELECTED.started)
       .mergeMap(({payload}, n) => {
-        const selected = store.getState().absenderliste.selected;
-
-        return this.db.setSelected(selected ? selected.id : undefined)
+        return this.db.setSelected(payload)
           .then(result => {
-            let act;
-            if (result) {
-              act = StorageActions.UPDATE_STORAGE_SELECTED.done({params: payload, result: result});
-            } else {
-              act = StorageActions.UPDATE_STORAGE_SELECTED.failed({params: payload, error: payload});
-            }
+            const act = StorageActions.UPDATE_STORAGE_SELECTED.done({params: payload, result: result});
 
             return act;
           })
-          .catch(err => StorageActions.UPDATE_STORAGE_SELECTED.failed({params: payload, error: err}));
+          .catch(err => {
+            const act = StorageActions.UPDATE_STORAGE_SELECTED.failed({params: payload, error: err});
+
+            return act;
+          });
       });
   }
 
@@ -40,16 +37,17 @@ export class StorageEpics {
       .mergeMap(({payload}, n) => {
         const pal = store.getState().absenderliste.pal;
 
-        return this.db.setPAL(pal).then(result => {
-          let act;
-          if (result) {
-            act = StorageActions.UPDATE_STORAGE_PAL.done({params: payload, result: result});
-          } else {
-            act = StorageActions.UPDATE_STORAGE_PAL.failed({params: payload, error: payload});
-          }
+        return this.db.setPAL(pal)
+          .then(result => {
+            const act = StorageActions.UPDATE_STORAGE_PAL.done({params: payload, result: result});
 
-          return act;
-        });
+            return act;
+          })
+          .catch(err => {
+            const act = StorageActions.UPDATE_STORAGE_PAL.failed({params: payload, error: err});
+
+            return act;
+          });
       });
   }
 

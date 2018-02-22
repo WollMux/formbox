@@ -29,27 +29,12 @@ export class AbsenderlisteEpics {
   }
 
   changingAbsender = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(AbsenderlisteActions.CHANGE_ABSENDER.started)
-      .mergeMap(({ payload }, n) => {
-        const absender = store.getState().absenderliste.pal.find(it => it.id === payload);
-        let act;
-        if (absender) {
-          act = AbsenderlisteActions.CHANGE_ABSENDER.done({ params: payload as number, result: absender });
-        } else {
-          act = AbsenderlisteActions.CHANGE_ABSENDER.failed({ params: payload as number, error: payload });
-        }
+    return action.ofType(AbsenderlisteActions.CHANGE_ABSENDER)
+    .mergeMap(({payload}, n) => {
+      const act = StorageActions.UPDATE_STORAGE_SELECTED.started(payload);
 
-        return Observable.of(act);
-      });
-  }
-
-  savingAbsender = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(AbsenderlisteActions.CHANGE_ABSENDER.done)
-      .mergeMap(({payload}, n) => {
-        const act = StorageActions.UPDATE_STORAGE_SELECTED.started({});
-
-        return Observable.of(act);
-      });
+      return Observable.of(act);
+    });
   }
 
   addingAbsenderByID = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {

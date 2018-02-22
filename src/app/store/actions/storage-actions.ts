@@ -10,13 +10,13 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class StorageActions {
-  static UPDATE_STORAGE_SELECTED = actionCreator.async<any, boolean>('UPDATE_STORAGE_SELECTED');
-  static UPDATE_STORAGE_PAL = actionCreator.async<any, boolean>('UPDATE_STORAGE_PAL');
+  static UPDATE_STORAGE_SELECTED = actionCreator.async<number, void>('UPDATE_STORAGE_SELECTED');
+  static UPDATE_STORAGE_PAL = actionCreator.async<any, void>('UPDATE_STORAGE_PAL');
 
   constructor(private ngRedux: NgRedux<FormBoxState>) { }
 
-  updateSelected(): Action<any> {
-    const action = StorageActions.UPDATE_STORAGE_SELECTED.started({});
+  updateSelected(id: number): Action<any> {
+    const action = StorageActions.UPDATE_STORAGE_SELECTED.started(id);
 
     return this.ngRedux.dispatch(action);
   }

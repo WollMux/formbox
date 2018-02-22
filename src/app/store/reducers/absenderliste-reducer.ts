@@ -7,9 +7,9 @@ import { AbsenderlisteState, INITIAL_STATE } from '../states/absender-state';
 import { AbsenderlisteActions } from '../actions/absenderliste-actions';
 import { Absender } from '../../storage/absender';
 
-const changeAbsender = (state: AbsenderlisteState, absender: Absender): AbsenderlisteState => {
-  if (!state.selected || (state.selected.id !== absender.id)) {
-    return tassign(state, { selected: absender });
+const changeAbsender = (state: AbsenderlisteState, id: number): AbsenderlisteState => {
+  if (!state.selected || (state.selected.id !== id)) {
+    return tassign(state, { selected: state.pal.find(it => it.id === id) });
   }
 
   return state;
@@ -34,7 +34,7 @@ const removeAbsender = (state: AbsenderlisteState, id: number): AbsenderlisteSta
 };
 
 export const absenderlisteReducer: Reducer<AbsenderlisteState> = reducerWithInitialState(INITIAL_STATE)
-  .case(AbsenderlisteActions.CHANGE_ABSENDER.done, (state, result) => changeAbsender(state, result.result))
+  .case(AbsenderlisteActions.CHANGE_ABSENDER, (state, result) => changeAbsender(state, result))
   .case(AbsenderlisteActions.LOAD_ABSENDERLISTE.done, (state, result) => loadAbsenderliste(state, result.result))
   .case(AbsenderlisteActions.ADD_ABSENDER, (state, absender) => addAbsender(state, absender))
   .case(AbsenderlisteActions.REMOVE_ABSENDER, (state, id) => removeAbsender(state, id))
