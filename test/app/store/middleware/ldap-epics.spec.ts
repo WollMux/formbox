@@ -6,6 +6,7 @@ import { NgReduxModule } from '@angular-redux/store';
 import { LDAPFilter, LDAPService } from '../../../../src/app/services/ldap.service';
 import { LDAPActions } from '../../../../src/app/store/actions/ldap-actions';
 import { LDAPEpics } from '../../../../src/app/store/middleware/ldap-epics';
+import { LDAPMockService } from '../../../../src/app/services/mocks/ldap.mock.service';
 
 describe('LDAP epics', () => {
   beforeEach(() => {
@@ -15,7 +16,7 @@ describe('LDAP epics', () => {
         NgReduxModule
       ],
       providers: [
-        { provide: LDAPService, useClass: environment.ldapService },
+        { provide: LDAPService, useClass: LDAPMockService },
         LDAPActions,
         LDAPEpics
       ]
