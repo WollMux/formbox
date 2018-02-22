@@ -5,13 +5,11 @@
 
 import { Level } from '@nsalaun/ng-logger';
 import { OfficeService } from '../app/services/office.service';
-import { LDAPService } from '../app/services/ldap.service';
 
 export const environment = {
   test: false,
   production: false,
   formboxapi: 'https://localhost:4201',
   loglevel: Level.LOG,
-  officeService: OfficeService,
-  ldapService: LDAPService
+  officeService: OfficeService
 };
