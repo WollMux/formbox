@@ -37,6 +37,7 @@ import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender
 import { StorageEpics } from './store/middleware/storage-epics';
 import { StorageActions } from './store/actions/storage-actions';
 import { LdapFilterValidatorDirective } from './directives/ldap-filter-validator.directive';
+import { LDAPMockService } from './services/mocks/ldap.mock.service';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,7 @@ import { LdapFilterValidatorDirective } from './directives/ldap-filter-validator
     LDAPEpics,
     StorageEpics,
     RootEpic,
-    { provide: LDAPService, useClass: environment.ldapService },
+    { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
     { provide: OfficeService, useClass: environment.officeService }
   ],
