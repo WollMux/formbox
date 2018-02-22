@@ -45,7 +45,7 @@ describe('Absenderliste epics', () => {
     });
   })));
 
-  it('changing Absender', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
+  it('changing Absender', inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
     const store = mockStore(INITIAL_STATE);
     store.getState().absenderliste.pal = [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}];
     const action = AbsenderlisteActions.CHANGE_ABSENDER(1);
@@ -57,6 +57,29 @@ describe('Absenderliste epics', () => {
         payload: 1
       });
     });
-  })));
+  }));
+
+  it('saving PAL', inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
+    const store = mockStore(INITIAL_STATE);
+    const action = AbsenderlisteActions.ADD_ABSENDER({uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1});
+    const p = epics.savingPAL(ActionsObservable.of(action), store);
+
+    p.subscribe(result => {
+      expect(result).toEqual({
+        type: 'UPDATE_STORAGE_PAL_STARTED',
+        payload: {}
+      });
+    });
+
+    const action2 = AbsenderlisteActions.REMOVE_ABSENDER(0);
+    const p2 = epics.savingPAL(ActionsObservable.of(action2), store);
+
+    p2.subscribe(result => {
+      expect(result).toEqual({
+        type: 'UPDATE_STORAGE_PAL_STARTED',
+        payload: {}
+      });
+    });
+  }));
 
 });
