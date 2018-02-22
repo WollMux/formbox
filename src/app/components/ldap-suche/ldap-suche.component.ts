@@ -39,21 +39,8 @@ export class LDAPSucheComponent implements OnInit, OnDestroy {
    * Suche starten.
    */
   onSubmit(): void {
-    if (this.searchAllowed()) {
-      this.log.debug(`starte Suche mit filter: ${JSON.stringify(this.filter)}`);
-      this.ldapActions.searchingLDAP(this.filter);
-    }
+    this.log.debug(`starte Suche mit filter: ${JSON.stringify(this.filter)}`);
+    this.ldapActions.searchingLDAP(this.filter);
   }
 
-  /**
-   * Testen ob eine Suchanfrage gestellt werden soll. Dazu muss mindestens eines der Formularfelder einen Wert enthalten.
-   */
-  searchAllowed(): boolean {
-    if (this.filter.uid || this.filter.nachname || this.filter.vorname || this.filter.ou) {
-      return true;
-    }
-    this.log.debug('leerer Suchfilter wird nicht unterstützt.');
-
-    return false;
-  }
 }

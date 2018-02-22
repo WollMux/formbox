@@ -36,13 +36,15 @@ import { AbsenderVerwaltenComponent } from './components/absender-verwalten/abse
 import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender-auswahl.component';
 import { StorageEpics } from './store/middleware/storage-epics';
 import { StorageActions } from './store/actions/storage-actions';
+import { LdapFilterValidatorDirective } from './directives/ldap-filter-validator.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LDAPSucheComponent,
     AbsenderVerwaltenComponent,
-    AbsenderAuswahlComponent
+    AbsenderAuswahlComponent,
+    LdapFilterValidatorDirective
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
