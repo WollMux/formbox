@@ -24,8 +24,6 @@ export class RootEpic {
     this.templateEpics.insertingFragment,
     this.absenderlisteEpics.loadingAbsenderliste,
     this.absenderlisteEpics.changingAbsender,
-    this.absenderlisteEpics.addingAbsenderByID,
-    this.absenderlisteEpics.addingAbsenderByIdDone,
     this.absenderlisteEpics.savingPAL,
     this.ldapEpics.searchingLDAP,
     this.storageEpics.updatingStoragePAL,

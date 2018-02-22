@@ -37,30 +37,6 @@ export class AbsenderlisteEpics {
     });
   }
 
-  addingAbsenderByID = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(AbsenderlisteActions.ADD_ABSENDER_BY_ID.started)
-      .mergeMap(({payload}, n) => {
-        const absender = store.getState().ldap.result[payload] as Absender;
-        let act;
-        if (absender) {
-          act = AbsenderlisteActions.ADD_ABSENDER_BY_ID.done({ params: payload as number, result: absender });
-        } else {
-          act = AbsenderlisteActions.ADD_ABSENDER_BY_ID.failed({ params: payload as number, error: payload });
-        }
-
-        return Observable.of(act);
-      });
-  }
-
-  addingAbsenderByIdDone = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(AbsenderlisteActions.ADD_ABSENDER_BY_ID.done)
-      .mergeMap(({payload}, n) => {
-        const act = AbsenderlisteActions.ADD_ABSENDER(payload.result);
-
-        return Observable.of(act);
-      });
-  }
-
   savingPAL = (action: ActionsObservable<any>, stroe: NgRedux<FormBoxState>) => {
     return action.ofType(AbsenderlisteActions.ADD_ABSENDER, AbsenderlisteActions.REMOVE_ABSENDER)
       .mergeMap(({payload}, n) => {

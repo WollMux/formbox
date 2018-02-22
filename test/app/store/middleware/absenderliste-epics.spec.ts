@@ -59,37 +59,4 @@ describe('Absenderliste epics', () => {
     });
   })));
 
-  it('adding Absender by ID successful', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
-    const store = mockStore(INITIAL_STATE);
-    store.getState().ldap.result = [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann'}];
-    const action = AbsenderlisteActions.ADD_ABSENDER_BY_ID.started(0);
-    const p = epics.changingAbsender(ActionsObservable.of(action), store);
-
-    p.subscribe(result => {
-      expect(result).toEqual({
-        type: 'CHANGE_ABSENDER_BY_ID_DONE',
-        payload: {
-          params: 1,
-          result: {uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann'}
-        }
-      });
-    });
-  })));
-
-  it('adding Absender by ID failed', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
-    const store = mockStore(INITIAL_STATE);
-    const action = AbsenderlisteActions.ADD_ABSENDER_BY_ID.started(0);
-    const p = epics.changingAbsender(ActionsObservable.of(action), store);
-
-    p.subscribe(result => {
-      expect(result).toEqual({
-        type: 'CHANGE_ABSENDER_BY_ID_FAILED',
-        payload: {
-          params: 1,
-          error: 1
-        },
-        error: true
-      });
-    });
-  })));
 });

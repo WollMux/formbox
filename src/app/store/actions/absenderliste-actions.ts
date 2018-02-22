@@ -14,7 +14,6 @@ export class AbsenderlisteActions {
   static CHANGE_ABSENDER = actionCreator<number>('CHANGE_ABSENDER');
   static LOAD_ABSENDERLISTE = actionCreator.async<any, Absender[]>('LOAD_ABSENDERLISTE');
   static ADD_ABSENDER = actionCreator<Absender>('ADD_ABSENDER');
-  static ADD_ABSENDER_BY_ID = actionCreator.async<number, Absender, Absender>('ADD_ABSENDER_BY_ID');
   static REMOVE_ABSENDER = actionCreator<number>('REMOVE_ABSENDER');
 
   constructor(private ngRedux: NgRedux<AbsenderlisteState>) { }
@@ -33,12 +32,6 @@ export class AbsenderlisteActions {
 
   addAbsender(absender: Absender): Action<Absender> {
     const action = AbsenderlisteActions.ADD_ABSENDER(absender);
-
-    return this.ngRedux.dispatch(action);
-  }
-
-  addAbsenderByID(id: number): Action<number> {
-    const action = AbsenderlisteActions.ADD_ABSENDER_BY_ID.started(id);
 
     return this.ngRedux.dispatch(action);
   }
