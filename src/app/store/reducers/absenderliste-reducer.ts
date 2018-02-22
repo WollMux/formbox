@@ -20,14 +20,14 @@ const loadAbsenderliste = (state: AbsenderlisteState, liste: Absender[]): Absend
 };
 
 const addAbsender = (state: AbsenderlisteState, absender: Absender): AbsenderlisteState => {
-  const pal = state.pal;
+  const pal = state.pal.slice();
   pal.push(absender);
 
   return tassign(state, { pal: pal});
 };
 
 const removeAbsender = (state: AbsenderlisteState, id: number): AbsenderlisteState => {
-  const pal = state.pal;
+  const pal = state.pal.slice();
   pal.splice(id, 1);
 
   return tassign(state, {pal: pal});
