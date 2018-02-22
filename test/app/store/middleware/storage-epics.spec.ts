@@ -30,15 +30,15 @@ describe('Storage epics', () => {
 
   it('updating selected', async(inject([StorageEpics], (epics: StorageEpics) => {
     const store = mockStore(INITIAL_STATE);
-    const action = StorageActions.UPDATE_STORAGE_SELECTED.started({uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1});
+    const action = StorageActions.UPDATE_STORAGE_SELECTED.started(1);
     const p = epics.updatingStorageSelected(ActionsObservable.of(action), store);
 
     p.subscribe(result => {
       expect(result).toEqual({
         type: 'UPDATE_STORAGE_SELECTED_DONE',
         payload: {
-          params: {uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1},
-          result: true
+          params: 1,
+          result: undefined
         }
       });
     });
@@ -54,7 +54,7 @@ describe('Storage epics', () => {
         type: 'UPDATE_STORAGE_PAL_DONE',
         payload: {
           params: {},
-          result: true
+          result: undefined
         }
       });
     });

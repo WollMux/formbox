@@ -26,11 +26,11 @@ export class MockStorageService extends StorageService {
     return Promise.resolve(1);
   }
 
-  async setPAL(absender: Absender[]): Promise<boolean> {
-    return Promise.resolve(true);
+  async setPAL(absender: Absender[]): Promise<void> {
+    return Promise.resolve();
   }
 
-  async setSelected(selected: number): Promise<boolean> {
-    return Promise.resolve(true);
+  async setSelected(selected: number): Promise<void> {
+    return Promise.resolve();
   }
 }

@@ -11,7 +11,7 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class AbsenderlisteActions {
-  static CHANGE_ABSENDER = actionCreator.async<number, Absender, number>('CHANGE_ABSENDER');
+  static CHANGE_ABSENDER = actionCreator<number>('CHANGE_ABSENDER');
   static LOAD_ABSENDERLISTE = actionCreator.async<any, Absender[]>('LOAD_ABSENDERLISTE');
   static ADD_ABSENDER = actionCreator<Absender>('ADD_ABSENDER');
   static ADD_ABSENDER_BY_ID = actionCreator.async<number, Absender, Absender>('ADD_ABSENDER_BY_ID');
@@ -20,7 +20,7 @@ export class AbsenderlisteActions {
   constructor(private ngRedux: NgRedux<AbsenderlisteState>) { }
 
   changeAbsender(id: number): Action<number> {
-    const action = AbsenderlisteActions.CHANGE_ABSENDER.started(id);
+    const action = AbsenderlisteActions.CHANGE_ABSENDER(id);
 
     return this.ngRedux.dispatch(action);
   }

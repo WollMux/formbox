@@ -39,16 +39,16 @@ export class DexieStorage extends Dexie {
     return this.pal.toArray();
   }
 
-  async setPAL(absender: Absender[]): Promise<boolean> {
+  async setPAL(absender: Absender[]): Promise<void> {
     return this.transaction('rw', this.pal, async () => {
       this.pal.clear();
       this.pal.bulkPut(absender);
     })
-    .then(() => true)
+    .then(() => Promise.resolve())
     .catch(err => {
       this.log.debug(err);
 
-      return false;
+      return Promise.reject(err);
     });
   }
 
@@ -58,19 +58,18 @@ export class DexieStorage extends Dexie {
     });
   }
 
-  async setSelected(id: number): Promise<boolean> {
+  async setSelected(id: number): Promise<void> {
     return this.transaction('rw', this.selected, async () => {
       this.selected.clear();
       if (id) {
         this.selected.put(id);
       }
     })
-    .then(() => true)
+    .then(() => Promise.resolve())
     .catch(err => {
       this.log.debug(err);
-      this.log.debug(JSON.stringify(id));
 
-      return false;
+      return Promise.reject(err);
     });
   }
 

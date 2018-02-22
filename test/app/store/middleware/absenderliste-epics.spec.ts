@@ -45,36 +45,16 @@ describe('Absenderliste epics', () => {
     });
   })));
 
-  it('changing Absender failed', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
-    const store = mockStore(INITIAL_STATE);
-    const action = AbsenderlisteActions.CHANGE_ABSENDER.started(1);
-    const p = epics.changingAbsender(ActionsObservable.of(action), store);
-
-    p.subscribe(result => {
-      expect(result).toEqual({
-        type: 'CHANGE_ABSENDER_FAILED',
-        payload: {
-          params: 1,
-          error: 1
-        },
-        error: true
-      });
-    });
-  })));
-
-  it('changing Absender succussful', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
+  it('changing Absender', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
     const store = mockStore(INITIAL_STATE);
     store.getState().absenderliste.pal = [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}];
-    const action = AbsenderlisteActions.CHANGE_ABSENDER.started(1);
+    const action = AbsenderlisteActions.CHANGE_ABSENDER(1);
     const p = epics.changingAbsender(ActionsObservable.of(action), store);
 
     p.subscribe(result => {
       expect(result).toEqual({
-        type: 'CHANGE_ABSENDER_DONE',
-        payload: {
-          params: 1,
-          result: {uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}
-        }
+        type: 'UPDATE_STORAGE_SELECTED_STARTED',
+        payload: 1
       });
     });
   })));
