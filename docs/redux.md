@@ -24,6 +24,16 @@ FormBox verwendet [typescript-fsa](https://github.com/aikoven/typescript-fsa), u
 
 Für die Epics wird [redux-observable](https://github.com/redux-observable/redux-observable) verwendet.
 
+## Redux Generator
+
+Zum schnellen Erstellen von den für Redux benötigten Klassen gibt es einen Generator.
+
+`npm run gen-redux -- <name>`
+
+Mit dem Befehl werden Dateien für State, Actions, Reducers, und Epics angelegt.
+Das Argument `<name>` wird dabei als Basis für die Namen der Dateien und Klassen
+verwendet.  
+
 ## Redux Developer Tool
 
 FormBox unterstützt die [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension) für Firefox und Chrome. Dafür muss FormBox im Browser gestartet werden.
@@ -34,3 +44,4 @@ Wenn die Extension installiert ist, hat das Kontextmenü des Browsers einen Eint
 * [Redux](https://redux.js.org/)
 * [angular-redux/store](https://github.com/angular-redux/store)
 * [Tutorial](https://github.com/angular-redux/store/blob/master/articles/intro-tutorial.md)
+* [Ribosome](http://sustrik.github.io/ribosome/) (Codegenerator)
