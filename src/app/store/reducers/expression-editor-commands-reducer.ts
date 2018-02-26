@@ -108,7 +108,7 @@ export const expressionEditorCommandsReducer: Reducer<ExpressionEditorCommandsSt
     showInsertFrag: false, showOverrideFrag: false
   })
     .case(ExpressionEditorCommandsActions.INIT.done, (state, payload) => init(state, payload.result))
-    .case(ExpressionEditorCommandsActions.NEW.done, (state, payload) =>
+    .case(ExpressionEditorCommandsActions.CREATE.done, (state, payload) =>
       newCommand(state, payload.result, payload.params.cmd, payload.params.order))
     .case(ExpressionEditorCommandsActions.DELETE.done, (state, payload) => deleteCommand(state, payload.result))
     .case(ExpressionEditorCommandsActions.SELECT, (state, payload) => selectCommand(state, payload))

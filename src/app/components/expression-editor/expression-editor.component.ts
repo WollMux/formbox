@@ -32,7 +32,7 @@ export class ExpressionEditorComponent implements OnInit {
   }
 
   onNewDocumentCommand(): void {
-    this.actions.new('0', Number.MAX_SAFE_INTEGER);
+    this.actions.create('0', Number.MAX_SAFE_INTEGER);
   }
 
   onDeleteDocumentCommand(n: number): boolean {

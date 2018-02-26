@@ -11,7 +11,7 @@ const actionCreator = actionCreatorFactory('EXPRESSION_EDITOR_COMMANDS');
 export class ExpressionEditorCommandsActions {
   static INIT = actionCreator.async<any, DocumentCommand[]>('INIT');
   static SELECT = actionCreator<number>('SELECT');
-  static NEW = actionCreator.async<{ cmd: string, order: number }, number>('NEW');
+  static CREATE = actionCreator.async<{ cmd: string, order: number }, number>('CREATE');
   static SAVE = actionCreator.async<{ index: number, cmd: DocumentCommand }, number>('SAVE');
   static DELETE = actionCreator.async<number, number>('DELETE');
   static SHOW_INSERT_FRAG = actionCreator<boolean>('SHOW_INSERT_FRAG');
@@ -25,8 +25,8 @@ export class ExpressionEditorCommandsActions {
     return this.ngRedux.dispatch(action);
   }
 
-  new(cmd: string, order: number): Action<any> {
-    const action = ExpressionEditorCommandsActions.NEW.started({ cmd: cmd, order: order });
+  create(cmd: string, order: number): Action<any> {
+    const action = ExpressionEditorCommandsActions.CREATE.started({ cmd: cmd, order: order });
 
     return this.ngRedux.dispatch(action);
   }
