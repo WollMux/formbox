@@ -12,6 +12,7 @@ import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
 import { ExpressionsService } from './services/expressions.service';
 import { Absender } from './storage/absender';
 import { StorageActions } from './store/actions/storage-actions';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -37,12 +38,15 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.log.debug('AppComponent.ngOnInit');
 
-    this.storage.reset().then(() => {
-      this.absenderlisteActions.loadAbsenderliste();
-      this.storage.getSelected().then(id => {
-        this.absenderlisteActions.changeAbsender(id);
+    if (environment.production || !environment.test) {
+      this.storage.open().then(() => {
+        this.absenderlisteActions.loadAbsenderState();
       });
-    });
+    } else {
+      this.storage.reset().then(() => {
+        this.absenderlisteActions.loadAbsenderState();
+      });
+    }
 
     this.templateStatus.subscribe(status => {
       this.log.debug(status);

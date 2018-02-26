@@ -30,16 +30,19 @@ describe('Absenderliste epics', () => {
     mockStore = configureStore();
   });
 
-  it('loading Absenderliste', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
-    const action = AbsenderlisteActions.LOAD_ABSENDERLISTE.started({});
-    const p = epics.loadingAbsenderliste(ActionsObservable.of(action));
+  it('loading AbsenderState', async(inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
+    const action = AbsenderlisteActions.LOAD_ABSENDERSTATE.started({});
+    const p = epics.loadingAbsenderState(ActionsObservable.of(action));
 
     p.subscribe(result => {
       expect(result).toEqual({
-        type: 'LOAD_ABSENDERLISTE_DONE',
+        type: 'LOAD_ABSENDERSTATE_DONE',
         payload: {
           params: {},
-          result: [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}]
+          result: {
+            pal: [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}],
+            selected: 1
+          }
         }
       });
     });
