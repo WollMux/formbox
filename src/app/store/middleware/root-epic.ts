@@ -22,7 +22,7 @@ export class RootEpic {
     this.templateEpics.executingCommand,
     this.templateEpics.executingCommandDone,
     this.templateEpics.insertingFragment,
-    this.absenderlisteEpics.loadingAbsenderliste,
+    this.absenderlisteEpics.loadingAbsenderState,
     this.absenderlisteEpics.changingAbsender,
     this.absenderlisteEpics.savingPAL,
     this.ldapEpics.searchingLDAP,

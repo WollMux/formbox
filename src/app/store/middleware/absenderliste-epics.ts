@@ -17,13 +17,15 @@ export class AbsenderlisteEpics {
     private absenderliste: AbsenderlisteService
   ) { }
 
-  loadingAbsenderliste = (action: ActionsObservable<any>) => {
-    return action.ofType(AbsenderlisteActions.LOAD_ABSENDERLISTE.started)
+  loadingAbsenderState = (action: ActionsObservable<any>) => {
+    return action.ofType(AbsenderlisteActions.LOAD_ABSENDERSTATE.started)
       .mergeMap((value, n) => {
         return this.absenderliste.loadAbsenderliste().then(absender => {
-          const act = AbsenderlisteActions.LOAD_ABSENDERLISTE.done({ params: {}, result: absender });
+          return this.absenderliste.loadAbsender().then(id => {
+            const act = AbsenderlisteActions.LOAD_ABSENDERSTATE.done({ params: {}, result: { pal: absender, selected: id }});
 
-          return act;
+            return act;
+          });
         });
       });
   }

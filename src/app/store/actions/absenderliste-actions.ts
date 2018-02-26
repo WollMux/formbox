@@ -12,7 +12,7 @@ const actionCreator = actionCreatorFactory();
 @Injectable()
 export class AbsenderlisteActions {
   static CHANGE_ABSENDER = actionCreator<number>('CHANGE_ABSENDER');
-  static LOAD_ABSENDERLISTE = actionCreator.async<any, Absender[]>('LOAD_ABSENDERLISTE');
+  static LOAD_ABSENDERSTATE = actionCreator.async<any, {pal: Absender[], selected: number}>('LOAD_ABSENDERSTATE');
   static ADD_ABSENDER = actionCreator<Absender>('ADD_ABSENDER');
   static REMOVE_ABSENDER = actionCreator<number>('REMOVE_ABSENDER');
 
@@ -24,8 +24,8 @@ export class AbsenderlisteActions {
     return this.ngRedux.dispatch(action);
   }
 
-  loadAbsenderliste(): Action<any> {
-    const action = AbsenderlisteActions.LOAD_ABSENDERLISTE.started({});
+  loadAbsenderState(): Action<any> {
+    const action = AbsenderlisteActions.LOAD_ABSENDERSTATE.started({});
 
     return this.ngRedux.dispatch(action);
   }

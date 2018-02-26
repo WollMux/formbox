@@ -24,4 +24,8 @@ export class AbsenderlisteService {
   loadAbsenderliste(): Promise<Absender[]> {
     return this.storage.getPAL();
   }
+
+  loadAbsender(): Promise<number> {
+    return this.storage.getSelected();
+  }
 }
