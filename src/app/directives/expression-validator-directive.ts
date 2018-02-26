@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 import { ExpressionsService } from '../services/expressions.service';
 
@@ -14,7 +14,7 @@ import { ExpressionsService } from '../services/expressions.service';
 export class ExpressionValidatorDirective implements Validator {
   constructor(private expressions: ExpressionsService) { }
 
-  validate(control: AbstractControl): { [key: string]: any } {
+  validate(control: AbstractControl): ValidationErrors {
     try {
       this.expressions.parse(control.value);
 

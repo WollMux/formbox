@@ -56,7 +56,7 @@ export class ExpressionOverrideFragComponent {
     this.overrideFrags.take(1).toPromise().then(of => {
       const json = JSON.stringify(of);
 
-      this.expressionActions.new(`overrideFrag('${json}')`, Number.MAX_SAFE_INTEGER);
+      this.expressionActions.create(`overrideFrag('${json}')`, Number.MAX_SAFE_INTEGER);
 
       this.actions.clear();
     });

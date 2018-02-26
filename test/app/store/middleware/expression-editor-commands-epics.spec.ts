@@ -45,13 +45,13 @@ describe('Expression Editor epics', () => {
   it('creating DocumentCommand',
     async(inject([ExpressionEditorCommandsEpics, TemplateService],
       (epics: ExpressionEditorCommandsEpics, templates: TemplateService) => {
-        const action = ExpressionEditorCommandsActions.NEW.started({ cmd: 'cmd', order: 1 });
+        const action = ExpressionEditorCommandsActions.CREATE.started({ cmd: 'cmd', order: 1 });
 
         const p = epics.creatingDocumentCommand(ActionsObservable.of(action));
 
         p.subscribe(result => {
           expect(result).toEqual({
-            type: 'EXPRESSION_EDITOR_COMMANDS/NEW_DONE',
+            type: 'EXPRESSION_EDITOR_COMMANDS/CREATE_DONE',
             payload: { params: { cmd: 'cmd', order: 1 }, result: 1 }
           });
         });

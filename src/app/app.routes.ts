@@ -6,6 +6,6 @@ import { ExpressionEditorComponent } from './components/expression-editor/expres
 
 export const appRoutes: Routes = [
   { path: 'absender-verwalten', component: AbsenderVerwaltenComponent },
-  { path: 'absender-auswahl', component: AbsenderAuswahlComponent }
+  { path: 'absender-auswahl', component: AbsenderAuswahlComponent },
   { path: 'expression-editor', component: ExpressionEditorComponent }
 ];

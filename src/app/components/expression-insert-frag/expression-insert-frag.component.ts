@@ -28,7 +28,7 @@ export class ExpressionInsertFragComponent {
   }
 
   onInsert(): boolean {
-    this.expressionActions.new(`insertFrag('${this.selectedName}')`, Number.MAX_SAFE_INTEGER);
+    this.expressionActions.create(`insertFrag('${this.selectedName}')`, Number.MAX_SAFE_INTEGER);
 
     return false;
   }

@@ -56,8 +56,4 @@ export class AppComponent implements OnInit {
   onInsertDocument(): void {
     this.actions.loadTemplate('Externer_Briefkopf');
   }
-
-  onAbsender(): void {
-    this.absenderlisteActions.changeAbsender(1);
-  }
 }

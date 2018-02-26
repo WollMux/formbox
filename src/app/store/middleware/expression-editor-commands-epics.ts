@@ -36,10 +36,10 @@ export class ExpressionEditorCommandsEpics {
    * Erzeugt ein neues Dokumentenkommando im Dokument.
    */
   creatingDocumentCommand = (action: ActionsObservable<any>) => {
-    return action.ofType(ExpressionEditorCommandsActions.NEW.started)
+    return action.ofType(ExpressionEditorCommandsActions.CREATE.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.createDocumentCommand(payload.cmd, payload.order).then(id => {
-          const act = ExpressionEditorCommandsActions.NEW.done({ params: payload, result: id });
+          const act = ExpressionEditorCommandsActions.CREATE.done({ params: payload, result: id });
 
           return act;
         }).catch(error => this.log.error(error));
