@@ -6,6 +6,7 @@
   		<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" 
   		  *ngFor="let c of (documentCommands | async); let i=index" 
   		  (click)="onSelectDocumentCommand(i)" 
+        routerLink="document-command-editor"
   		  [ngClass]="{'active': (selectedIndex | async) === i}"
   		>
   			<div class="d-flex w-100 justify-content-between">
@@ -20,36 +21,18 @@
 
 <div class="row">
   <div class="col-sm-1">
-    <button type="button" class="btn btn-primary btn-sm" (click)="onNewDocumentCommand()"><fa [name]="'plus'"></fa></button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="onNewDocumentCommand()" routerLink="document-command-editor"><fa [name]="'plus'"></fa></button>
   </div>
   <div class="col-sm-11">
 	  <div class="btn-group" data-toggle="buttons">
-		  <label class="btn btn-primary" [ngClass]="{'active': (showInsertFrag | async)}" >
-		    <input type="checkbox" checked autocomplete="off" (click)="onShowInsertFrag()" />insertFrag
+		  <label class="btn btn-primary" routerLinkActive="active">
+		    <input type="checkbox" checked autocomplete="off" (click)="onSelectDocumentCommand(-1)" routerLink="insert-frag-editor" />insertFrag
 		  </label>
-		  <label class="btn btn-primary" [ngClass]="{'active': (showOverrideFrag | async)}" >
-		    <input type="checkbox" autocomplete="off" (click)="onShowOverrideFrag()" />overrideFrag
+		  <label class="btn btn-primary" routerLinkActive="active" >
+		    <input type="checkbox" autocomplete="off" (click)="onSelectDocumentCommand(-1)" routerLink="override-frag-editor" />overrideFrag
 		  </label>
 	  </div>
   </div>
 </div>
 
-<!-- Komponenten -->
-
-<div class="row" *ngIf="(showInsertFrag | async)">
-  <div class="col-sm-12">
-    <app-expression-insert-frag></app-expression-insert-frag>
-  </div>
-</div>
-
-<div class="row" *ngIf="(showOverrideFrag | async)">
-  <div class="col-sm-12">
-    <app-expression-override-frag></app-expression-override-frag>
-  </div>
-</div>
-
-<div class="row" *ngIf="(selected | async)">
-  <div class="col-sm-12">
-    <app-document-command-editor></app-document-command-editor>
-  </div>
-</div>
+<router-outlet></router-outlet>
