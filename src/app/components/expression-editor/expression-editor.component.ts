@@ -46,17 +46,4 @@ export class ExpressionEditorComponent implements OnInit {
 
     return false;
   }
-
-  onShowInsertFrag(): boolean {
-    this.actions.showInsertFrag();
-
-    return false;
-  }
-
-  onShowOverrideFrag(): boolean {
-    this.actions.showOverrideFrag();
-
-    return false;
-  }
-
 }
