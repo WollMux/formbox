@@ -19,8 +19,6 @@ export class ExpressionEditorComponent implements OnInit {
   @select(['expressionEditor', 'expressionEditorCommands', 'selected']) selected: Observable<DocumentCommand>;
   @select(['expressionEditor', 'expressionEditorCommands', 'selected_index']) selectedIndex: Observable<number>;
   @select(['expressionEditor', 'expressionEditorCommands', 'documentCommands']) documentCommands: Observable<DocumentCommand[]>;
-  @select(['expressionEditor', 'expressionEditorCommands', 'showInsertFrag']) showInsertFrag: Observable<boolean>;
-  @select(['expressionEditor', 'expressionEditorCommands', 'showOverrideFrag']) showOverrideFrag: Observable<boolean>;
 
   constructor(
     private actions: ExpressionEditorCommandsActions,
