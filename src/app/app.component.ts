@@ -13,6 +13,7 @@ import { ExpressionsService } from './services/expressions.service';
 import { Absender } from './storage/absender';
 import { StorageActions } from './store/actions/storage-actions';
 import { environment } from '../environments/environment';
+import { FormDataService } from './services/form-data.service';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
     private storageActions: StorageActions,
     private storage: StorageService,
     private expressions: ExpressionsService,
+    private formdata: FormDataService,
     private log: Logger) {
   }
 
@@ -55,5 +57,9 @@ export class AppComponent implements OnInit {
 
   onInsertDocument(): void {
     this.actions.loadTemplate('Externer_Briefkopf');
+  }
+
+  onTestXml(): void {
+    this.formdata.parse(this.formdata.xml);
   }
 }

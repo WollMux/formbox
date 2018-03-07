@@ -171,6 +171,54 @@ export class OfficeService {
     });
   }
 
+  async addXml(xml: string): Promise<string> {
+    return new Promise<string>(resolve => {
+      Office.context.document.customXmlParts.addAsync(xml, result => {
+        resolve(result.value.id);
+      });
+    });
+  }
+
+  async getXmlById(id: string): Promise<string> {
+    return new Promise<string>(resolve => {
+      Office.context.document.customXmlParts.getByIdAsync(id, result => {
+        result.value.getXmlAsync({}, e => {
+          resolve(e.value);
+        });
+      });
+    });
+  }
+
+  async getXmlIdsByNamespace(ns: string): Promise<string[]> {
+    return new Promise<string[]>(resolve => {
+      Office.context.document.customXmlParts.getByNamespaceAsync(ns, result => {
+        const ret = [];
+        for (const r of result.value as Office.CustomXmlPart[]) {
+          ret.push(r.id);
+        }
+        resolve(ret);
+      });
+    });
+  }
+
+  async deleteXmlById(id: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      Office.context.document.customXmlParts.getByIdAsync(id, result => {
+        result.value.deleteAsync(() => { resolve(); });
+      });
+    });
+  }
+
+  async deleteXmlByNamespace(ns: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      Office.context.document.customXmlParts.getByNamespaceAsync(ns, result => {
+        for (const part of result.value) {
+          part.deleteAsync(() => resolve());
+        }
+      });
+    });
+  }
+
   private deleteContentControlTitle = async (id: number): Promise<void> => {
     await Word.run(context => {
       const doc = context.document;
@@ -193,4 +241,5 @@ export class OfficeService {
       return context.sync(controls);
     });
   }
+
 }
