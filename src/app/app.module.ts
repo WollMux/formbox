@@ -46,6 +46,7 @@ import { ExpressionValidatorDirective } from './directives/expression-validator-
 import { ExpressionInsertFragComponent } from './components/expression-insert-frag/expression-insert-frag.component';
 import { ExpressionOverrideFragComponent } from './components/expression-override-frag/expression-override-frag.component';
 import { OfficeMockService } from './services/mocks/office.mock.service';
+import { FormDataService } from './services/form-data.service';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { OfficeMockService } from './services/mocks/office.mock.service';
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
     ExpressionEditorCommandsEpics,
-    { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService }
+    { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService },
+    FormDataService
   ],
   bootstrap: [AppComponent]
 })
