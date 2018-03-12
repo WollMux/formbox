@@ -5,6 +5,7 @@ import { templateReducer } from './template-reducer';
 import { absenderlisteReducer } from './absenderliste-reducer';
 import { ldapReducer } from './ldap-reducer';
 import { expressionEditorReducer } from './expression-editor-reducer';
+import { documentTreeViewReducer } from './document-treeview-reducer';
 
 /**
  * Erzeugt aus mehreren Reducern einen Root-Reducer, der beim Start der 
@@ -16,5 +17,6 @@ export const rootReducer: Reducer<FormBoxState> =
     absenderliste: absenderlisteReducer,
     template: templateReducer,
     ldap: ldapReducer,
-    expressionEditor: expressionEditorReducer
+    expressionEditor: expressionEditorReducer,
+    documentTree: documentTreeViewReducer
   });

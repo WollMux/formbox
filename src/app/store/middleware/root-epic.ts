@@ -5,6 +5,7 @@ import { AbsenderlisteEpics } from './absenderliste-epics';
 import { LDAPEpics } from './ldap-epics';
 import { StorageEpics } from './storage-epics';
 import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epics';
+import { DocumentTreeViewEpics } from './document-treeview-epics';
 
 @Injectable()
 export class RootEpic {
@@ -13,7 +14,8 @@ export class RootEpic {
     private absenderlisteEpics: AbsenderlisteEpics,
     private ldapEpics: LDAPEpics,
     private storageEpics: StorageEpics,
-    private expressEditorCommandsEpics: ExpressionEditorCommandsEpics
+    private expressEditorCommandsEpics: ExpressionEditorCommandsEpics,
+    private documentTreeViewEpics: DocumentTreeViewEpics
   ) { }
 
   epics = () => combineEpics(
@@ -36,6 +38,7 @@ export class RootEpic {
     this.expressEditorCommandsEpics.initialising,
     this.expressEditorCommandsEpics.creatingDocumentCommand,
     this.expressEditorCommandsEpics.savingDocumentCommand,
-    this.expressEditorCommandsEpics.deletingDocumentCommand
+    this.expressEditorCommandsEpics.deletingDocumentCommand,
+    this.documentTreeViewEpics.getTemplateList
   )
 }

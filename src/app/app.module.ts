@@ -48,6 +48,10 @@ import { ExpressionOverrideFragComponent } from './components/expression-overrid
 import { OfficeMockService } from './services/mocks/office.mock.service';
 import { FormDataService } from './services/form-data.service';
 import { FormXmlParserService } from './services/form-xml-parser.service';
+import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
+import { TreeModule } from 'angular-tree-component';
+import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
+import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
 
 @NgModule({
   declarations: [
@@ -60,19 +64,21 @@ import { FormXmlParserService } from './services/form-xml-parser.service';
     DocumentCommandEditorComponent,
     ExpressionValidatorDirective,
     ExpressionInsertFragComponent,
-    ExpressionOverrideFragComponent
+    ExpressionOverrideFragComponent,
+    DocumentTreeviewComponent
   ],
   imports: [
+    AccordionModule.forRoot(),
+    NgDragDropModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    FormsModule,
     NgLoggerModule.forRoot(environment.loglevel),
+    FormsModule,
     HttpModule,
     BrowserModule,
     NgReduxModule,
-    AccordionModule.forRoot(),
-    NgDragDropModule.forRoot(),
     FormsModule,
-    Angular2FontawesomeModule
+    Angular2FontawesomeModule,
+    TreeModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -83,12 +89,14 @@ import { FormXmlParserService } from './services/form-xml-parser.service';
     AbsenderlisteActions,
     LDAPActions,
     StorageActions,
+    DocumentTreeViewActions,
     AbsenderlisteService,
     AbsenderlisteEpics,
     TemplateEpics,
     LDAPEpics,
     StorageEpics,
     RootEpic,
+    DocumentTreeViewEpics,
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
     ExpressionEditorCommandsEpics,

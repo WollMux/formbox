@@ -17,6 +17,7 @@ import { FormDataService } from './services/form-data.service';
 import { Form } from './data/forms/form';
 import { Label } from './data/forms/label';
 import { Button } from './data/forms/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   @select([ 'absenderliste', 'selected' ]) absender: Observable<Absender>;
 
   constructor(
+    private router: Router,
     private templates: TemplateService,
     private actions: TemplateActions,
     private absenderlisteActions: AbsenderlisteActions,
@@ -43,7 +45,9 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.log.debug('AppComponent.ngOnInit');
 
-    if (environment.production) {
+    this.router.navigate(['/document-treeview']);
+
+    if (environment.production || !environment.test) {
       this.storage.open().then(() => {
         this.absenderlisteActions.loadAbsenderState();
       });
