@@ -36,6 +36,11 @@
     "@angular/router": "^5.2.8",
     "@microsoft/office-js": "git://github.com/OfficeDev/office-js.git#v1.1.3-beta-next.4",
     "@nsalaun/ng-logger": "^5.0.0",
+<<<<<<< HEAD
+=======
+    "@types/office-js": "^0.0.50",
+    "angular-tree-component": "^7.0.1",
+>>>>>>> angular-tree-component hinzugefügt.
     "angular2-fontawesome": "^0.9.3",
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.3",
@@ -44,8 +49,12 @@
     "expressions-js": "^0.1.12",
     "font-awesome": "^4.7.0",
     "ng-drag-drop": "^4.0.0",
+<<<<<<< HEAD
     "ngx-bootstrap": "^2.0.2",
     "node-sass": "^4.8.1",
+=======
+    "ngx-bootstrap": "^2.0.0-beta.8",
+>>>>>>> angular-tree-component hinzugefügt.
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
     "reflect-metadata": "^0.1.12",
