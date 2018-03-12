@@ -4,7 +4,7 @@
 
 <div class="col-sm-6">
   <div class="row">
-    <app-absender-auswahl></app-absender-auswahl>
+      <app-ldap-suche [dragEnabled]="true" [action]="addToPALAction(actions)"></app-ldap-suche>
   </div>
   <div class="row">
     <div dnd-droppable droppable (onDrop)="addToPAL($event.dragData)">

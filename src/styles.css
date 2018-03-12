@@ -35,7 +35,6 @@ body {
 }
 
 span.icon-hightlight:hover {
-	cursor: pointer;
 	color: red;
 }
 
@@ -56,6 +55,10 @@ span.icon-hightlight:hover {
 
 .lhm-logo {
     padding-left: 20px;
+}
+
+.glyphicon {
+    cursor: pointer;
 }
 
 .glyphicon-nav-bar {
@@ -101,7 +104,6 @@ span.icon-hightlight:hover {
     text-decoration: none
 }
 
-/* funktioniert nicht in dokument-treeview-component.css ?*/
 .angular-tree-component {
 	background-color: #fde57b;
     padding-left: 20px;
