@@ -1,22 +1,14 @@
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.navbar-btn').on('click', function() {
-            $(".nav").find(".navbar-btn-active").removeClass("navbar-btn-active");
-            $(this).addClass('navbar-btn-active');
-        });
-    });
-</script>
 <div class="container">
 
-  <div class="nav-bar-container text-center">
-    <button id="nav1" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-home" routerLink="/document-treeview" title="Startseite"></button>
-    <button id="nav2" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-list-alt" routerLink="/absender-verwalten"
-      title="Absender verwalten"></button>
-    <button id="nav4" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-comment" routerLink="/expression-editor" title="Expression-Editor"></button>
-    <button id="nav3" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-calendar" routerLink="/debug" title="Debug"></button>
-    <button class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-wrench"></button>
-    <button class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-info-sign"></button>
-  </div>
+    <div class="nav-bar-container text-center">
+        <!-- overlay tooltip example <button class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-list-alt tip"><span>test</span></button> -->
+        <button id="nav1" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-home" routerLink="/document-treeview" title="Startseite"></button>
+        <button id="nav2" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-list-alt" routerLink="/absender-verwalten" title="Absender verwalten"></button>
+        <button id="nav4" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-copy" routerLink="/expression-editor" title="Expression-Editor"></button>
+        <button id="nav3" class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-calendar" routerLink="/debug" title="Debug"></button>
+        <button class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-wrench"></button>
+        <button class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-info-sign"></button>
+    </div>
 
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

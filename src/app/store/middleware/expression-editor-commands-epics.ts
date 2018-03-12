@@ -6,6 +6,7 @@ import { Logger } from '@nsalaun/ng-logger';
 import { TemplateService } from '../../services/template.service';
 import { ExpressionEditorCommandsActions } from '../actions/expression-editor-commands-actions';
 import { FormBoxState } from '../states/formbox-state';
+import { OfficeService } from '../../services/office.service';
 
 /**
  * Epics für den ExpressionEditor.
@@ -14,7 +15,8 @@ import { FormBoxState } from '../states/formbox-state';
 export class ExpressionEditorCommandsEpics {
   constructor(
     private log: Logger,
-    private templates: TemplateService
+    private templates: TemplateService,
+    private office: OfficeService
   ) { }
 
   /**
@@ -70,6 +72,21 @@ export class ExpressionEditorCommandsEpics {
 
         return this.templates.deleteDocumentCommand(id).then(() => {
           const act = ExpressionEditorCommandsActions.DELETE.done({ params: payload, result: payload });
+
+          return act;
+        }).catch(error => this.log.error(error));
+      });
+  }
+
+  /**
+   * Setzt Index der Dokumentenkommandoliste und selektiert das entsprechende ContentControl.
+   */
+  selectCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(ExpressionEditorCommandsActions.SELECT.started)
+      .mergeMap(({ payload }, n: number) => {
+        
+        return this.office.selectContentControlById(payload.contentControlId).then(() => {
+          const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload.index });
 
           return act;
         }).catch(error => this.log.error(error));
