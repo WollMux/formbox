@@ -46,6 +46,7 @@ import { ExpressionValidatorDirective } from './directives/expression-validator-
 import { ExpressionInsertFragComponent } from './components/expression-insert-frag/expression-insert-frag.component';
 import { ExpressionOverrideFragComponent } from './components/expression-override-frag/expression-override-frag.component';
 import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
+import { DebugComponent } from './components/debug-component/debug.component';
 import { TreeModule } from 'angular-tree-component';
 import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
 import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
@@ -62,7 +63,8 @@ import { DocumentTreeViewActions } from './store/actions/document-treeview-actio
     ExpressionValidatorDirective,
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
-    DocumentTreeviewComponent
+    DocumentTreeviewComponent,
+    DebugComponent
   ],
   imports: [
     AccordionModule.forRoot(),
