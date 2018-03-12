@@ -4,7 +4,6 @@ body {
 }
 
 span.icon-hightlight:hover {
-	cursor: pointer;
 	color: red;
 }
 
@@ -25,6 +24,10 @@ span.icon-hightlight:hover {
 
 .lhm-logo {
     padding-left: 20px;
+}
+
+.glyphicon {
+    cursor: pointer;
 }
 
 .glyphicon-nav-bar {

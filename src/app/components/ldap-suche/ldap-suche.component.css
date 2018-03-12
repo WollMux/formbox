@@ -2,3 +2,28 @@
 	max-height: 200px;
 	overflow-y: auto;
 }
+
+.panel-default {
+	background-color: #fde57b;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #656565;
+	border-color: #656565;
+}
+
+.btn-primary:hover {
+    color: #656565;
+    background-color: #FCC700;
+	border-color: #FCC700;
+}
+
+.form-group > label {
+	color: #656565;
+}
+
+.ng-invalid .btn-primary:hover {
+	background-color: #656565;
+	color: #fff;
+}
