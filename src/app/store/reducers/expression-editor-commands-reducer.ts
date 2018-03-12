@@ -51,7 +51,7 @@ const selectCommand = (state: ExpressionEditorCommandsState, index: number): Exp
   return tassign(state,
     {
       selected_index: index,
-      selected: selected
+      selected: selected,
     });
 };
 
@@ -76,6 +76,6 @@ export const expressionEditorCommandsReducer: Reducer<ExpressionEditorCommandsSt
     .case(ExpressionEditorCommandsActions.CREATE.done, (state, payload) =>
       newCommand(state, payload.result, payload.params.cmd, payload.params.order))
     .case(ExpressionEditorCommandsActions.DELETE.done, (state, payload) => deleteCommand(state, payload.result))
-    .case(ExpressionEditorCommandsActions.SELECT, (state, payload) => selectCommand(state, payload))
+    .case(ExpressionEditorCommandsActions.SELECT.done, (state, payload) => selectCommand(state, payload.result))
     .case(ExpressionEditorCommandsActions.SAVE.done, (state, payload) => saveCommand(state, payload.result, payload.params.cmd))
     .build();

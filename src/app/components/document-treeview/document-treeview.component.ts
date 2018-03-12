@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class DocumentTreeviewComponent implements OnInit {
   @select(['documentTree', 'tree']) documentTree: Observable<any[]>;
-  
+
   constructor(
     private log: Logger,
     private router: Router,
