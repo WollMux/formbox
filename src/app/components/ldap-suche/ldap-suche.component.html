@@ -1,29 +1,29 @@
-<div class="panel panel-default">
+<div class="panel panel-default" style="padding: 15px">
   <div class="panel-heading">
     <form (ngSubmit)="onSubmit()" #ldapForm="ngForm">
       <div class="form-group" #fgFilter="ngModelGroup" ngModelGroup="filter" [appLdapFilterValidator]="filter">
         <label for="uid">Benutzername/Email</label>
         <input type="text" class="form-control" id="uid" [(ngModel)]="filter.uid" name="uid">
-  
+
         <label for="nachname">Nachname</label>
         <input type="text" class="form-control" id="nachname" [(ngModel)]="filter.nachname" name="nachname">
-  
+
         <label for="vorname">Vorname</label>
-        <input type="text" class="form-control" id="vorname" [(ngModel)]="filter.vorname" name="vorname" >
-  
+        <input type="text" class="form-control" id="vorname" [(ngModel)]="filter.vorname" name="vorname">
+
         <label for="ou">Organisationseinheit</label>
         <input type="text" class="form-control" id="ou" [(ngModel)]="filter.ou" name="ou">
       </div>
-  
+
       <button type="submit" class="btn btn-lg btn-primary btn-block" id='search' [disabled]="!ldapForm.form.valid || !ldapForm.form.dirty">Suchen</button>
     </form>
   </div>
-  <div class="panel-body">
-    <div class="list-group" id='resultlist'>
-      <a *ngFor="let res of result | async; let i = index" class="list-group-item" draggable [dragEnabled]="dragEnabled" [dragData]="res">
-        <span class="list-label">{{ res.nachname }}, {{ res.vorname }} ({{ res.ou }})</span>
-        <span class="glyphicon glyphicon-star pull-right" (click)="emitEvent(res)"></span>
-      </a>
-    </div>
+</div>
+<div class="panel-body">
+  <div class="list-group" id='resultlist'>
+    <a *ngFor="let res of result | async; let i = index" class="list-group-item" draggable [dragEnabled]="dragEnabled" [dragData]="res">
+      <span class="list-label">{{ res.nachname }}, {{ res.vorname }} ({{ res.ou }})</span>
+      <span *ngIf="action" class="glyphicon glyphicon-star pull-right" (click)="action(res)"></span>
+    </a>
   </div>
 </div>
