@@ -1,0 +1,66 @@
+.angular-tree-component {
+    padding: 3rem;
+}
+
+.root-node {
+    font-weight: 600;
+}
+
+.node-content-wrapper, .tree-children {
+    position: relative;
+    cursor: pointer;
+}
+
+.toggle-children {
+    background-image: none;
+}
+
+.glyphicon-zoom-in {
+    color: #656565;
+}
+
+.glyphicon-zoom-in:hover {
+    color: #FCC700;
+}
+
+.glyphicon {
+    padding: 2px;
+}
+
+.glyphicon-plus {
+    color: #656565;
+}
+
+.glyphicon-plus:hover {
+    cursor: pointer;
+    color: #FCC700;
+}
+
+.glyphicon-minus {
+    color: #FCC700;
+}
+
+.glyphicon-minus:hover {
+    cursor: pointer;
+}
+
+.angular-tree-component {
+    padding-left: 20px;
+    padding-top: 10px;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.panel-heading {
+    background-color: #FCC700;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 2rem;
+}

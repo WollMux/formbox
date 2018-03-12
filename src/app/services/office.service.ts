@@ -9,6 +9,17 @@ export class OfficeService {
   constructor(private log: Logger) { }
 
   /**
+   * 
+   * @param url Öffnet einen OfficeJs-Dialog.
+   * @param dialogHeight 
+   * @param dialogWidth 
+   */
+  async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
+    this.log.debug("OfficeService.openDialog()");
+    return Office.context.ui.displayDialogAsync(url, { height: dialogHeight, width: dialogWidth });
+  }
+
+  /**
    * Öffnet ein Dokument in MS Office.
    * 
    * @param base64 Das Dokument als Base64-String

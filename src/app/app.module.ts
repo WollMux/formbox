@@ -45,6 +45,10 @@ import { DocumentCommandEditorComponent } from './components/document-command-ed
 import { ExpressionValidatorDirective } from './directives/expression-validator-directive';
 import { ExpressionInsertFragComponent } from './components/expression-insert-frag/expression-insert-frag.component';
 import { ExpressionOverrideFragComponent } from './components/expression-override-frag/expression-override-frag.component';
+import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
+import { TreeModule } from 'angular-tree-component';
+import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
+import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
 
 @NgModule({
   declarations: [
@@ -57,19 +61,21 @@ import { ExpressionOverrideFragComponent } from './components/expression-overrid
     DocumentCommandEditorComponent,
     ExpressionValidatorDirective,
     ExpressionInsertFragComponent,
-    ExpressionOverrideFragComponent
+    ExpressionOverrideFragComponent,
+    DocumentTreeviewComponent
   ],
   imports: [
+    AccordionModule.forRoot(),
+    NgDragDropModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    FormsModule,
     NgLoggerModule.forRoot(environment.loglevel),
+    FormsModule,
     HttpModule,
     BrowserModule,
     NgReduxModule,
-    AccordionModule.forRoot(),
-    NgDragDropModule.forRoot(),
     FormsModule,
-    Angular2FontawesomeModule
+    Angular2FontawesomeModule,
+    TreeModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -80,12 +86,14 @@ import { ExpressionOverrideFragComponent } from './components/expression-overrid
     AbsenderlisteActions,
     LDAPActions,
     StorageActions,
+    DocumentTreeViewActions,
     AbsenderlisteService,
     AbsenderlisteEpics,
     TemplateEpics,
     LDAPEpics,
     StorageEpics,
     RootEpic,
+    DocumentTreeViewEpics,
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
     ExpressionEditorCommandsEpics,

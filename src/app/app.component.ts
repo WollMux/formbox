@@ -13,6 +13,7 @@ import { ExpressionsService } from './services/expressions.service';
 import { Absender } from './storage/absender';
 import { StorageActions } from './store/actions/storage-actions';
 import { environment } from '../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   @select(['absenderliste', 'selected']) absender: Observable<Absender>;
 
   constructor(
+    private router: Router,
     private templates: TemplateService,
     private actions: TemplateActions,
     private absenderlisteActions: AbsenderlisteActions,
@@ -37,6 +39,8 @@ export class AppComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.log.debug('AppComponent.ngOnInit');
+
+    this.router.navigate(['/document-treeview']);
 
     if (environment.production || !environment.test) {
       this.storage.open().then(() => {
