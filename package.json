@@ -46,12 +46,8 @@
     "expressions-js": "^0.1.12",
     "font-awesome": "^4.7.0",
     "ng-drag-drop": "^4.0.0",
-<<<<<<< HEAD
-    "ngx-bootstrap": "^2.0.2",
-    "node-sass": "^4.8.1",
-=======
     "ngx-bootstrap": "^2.0.0-beta.8",
->>>>>>> angular-tree-component hinzugefügt.
+    "node-sass": "^4.8.1",
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
     "reflect-metadata": "^0.1.12",

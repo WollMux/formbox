@@ -7,9 +7,9 @@
     <app-absender-auswahl></app-absender-auswahl>
   </div>
   <div class="row">
-    <div class="panel panel-default" dnd-droppable droppable (onDrop)="addToPAL($event.dragData)">
-      <div class="panel-heading">Persönliche Absenderliste</div>
-      <div class="panel-body">
+    <div dnd-droppable droppable (onDrop)="addToPAL($event.dragData)">
+      <div class="panel-heading text-center">Persönliche Absenderliste</div>
+      <div class="panel panel-default">
         <div class="list-group" id='resultlist'>
           <a *ngFor="let a of pal | async; let i = index" class="list-group-item list-group-item-action">
             <span class="list-label">{{ a.nachname }}, {{ a.vorname }} ({{ a.ou }})</span>
