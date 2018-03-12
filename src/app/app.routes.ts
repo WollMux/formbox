@@ -8,12 +8,14 @@ import { ExpressionInsertFragComponent } from './components/expression-insert-fr
 import { ExpressionOverrideFragComponent } from './components/expression-override-frag/expression-override-frag.component';
 import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
 import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
+import { DebugComponent } from './components/debug-component/debug.component';
 
 export const appRoutes: Routes = [
   { path: 'absender-verwalten', component: AbsenderVerwaltenComponent },
   { path: 'absender-auswahl', component: AbsenderAuswahlComponent },
   { path: 'ldap-suche', component: LDAPSucheComponent },
   { path: 'document-treeview', component: DocumentTreeviewComponent },
+  { path: 'debug', component: DebugComponent},
   {
     path: 'expression-editor', component: ExpressionEditorComponent,
     children: [
