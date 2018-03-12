@@ -49,6 +49,7 @@ import { OfficeMockService } from './services/mocks/office.mock.service';
 import { FormDataService } from './services/form-data.service';
 import { FormXmlParserService } from './services/form-xml-parser.service';
 import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
+import { DebugComponent } from './components/debug-component/debug.component';
 import { TreeModule } from 'angular-tree-component';
 import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
 import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
@@ -65,7 +66,8 @@ import { DocumentTreeViewActions } from './store/actions/document-treeview-actio
     ExpressionValidatorDirective,
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
-    DocumentTreeviewComponent
+    DocumentTreeviewComponent,
+    DebugComponent
   ],
   imports: [
     AccordionModule.forRoot(),
