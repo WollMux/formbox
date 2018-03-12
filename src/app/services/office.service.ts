@@ -14,8 +14,19 @@ export class OfficeService {
   constructor(private log: Logger) { }
 
   /**
+   *
+   * @param url Öffnet einen OfficeJs-Dialog.
+   * @param dialogHeight
+   * @param dialogWidth
+   */
+  async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
+    this.log.debug("OfficeService.openDialog()");
+    return Office.context.ui.displayDialogAsync(url, { height: dialogHeight, width: dialogWidth });
+  }
+
+  /**
    * Öffnet ein Dokument in MS Office.
-   * 
+   *
    * @param base64 Das Dokument als Base64-String
    */
   async openDocument(base64: string): Promise<Word.DocumentCreated> {
@@ -34,7 +45,7 @@ export class OfficeService {
 
   /**
    * Zeigt ein Dokument an, dass mit openDocument geöffnet wurde.
-   * 
+   *
    * Die Funktion kann nur einmal aufgerufen werden, danach hat sie keine
    * Funktion mehr. Nachdem das Dokument angezeigt wird, kann das aktuelle
    * Addon keine Änderungen daran mehr vornehmen.
@@ -103,7 +114,7 @@ export class OfficeService {
 
   /**
    * Fügt ein Fragment in das aktive Dokument ein.
-   * 
+   *
    * @param name Name des Fragments
    * @param base64 Fragmentdatei als Base64-String
    */
@@ -129,7 +140,7 @@ export class OfficeService {
 
   /**
    * Ersetzt ein ContentControl durch den angegebenen Wert.
-   * 
+   *
    * @param id Interne Id des ContentControls im Dokument
    */
   async insertValue(id: number, value: string): Promise<void> {
@@ -155,7 +166,7 @@ export class OfficeService {
   /**
    * Fügt ein neues ContentControl an der aktuellen Cursorpsoition ein.
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
-   * Text herum angelegt. 
+   * Text herum angelegt.
    */
   async insertContentControl(title: string, tag: string): Promise<number> {
     return Word.run(context => {
@@ -172,7 +183,7 @@ export class OfficeService {
 
   /**
    * Ändert Titel und Tag des angegebenen ContentControls.
-   * 
+   *
    * @param id Interne Id des Controls im Dokument.
    */
   async updateContentControl(id: number, title: string, tag: string): Promise<void> {

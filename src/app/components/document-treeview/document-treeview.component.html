@@ -1,0 +1,47 @@
+<div class="container" style="margin-top: 16px;">
+  <div class="row">
+    <app-absender-auswahl></app-absender-auswahl>
+  </div>
+  <div class="row">
+    <div class="treeview-panel panel-default">
+      <div class="panel-heading text-center">Dokumente</div>
+      <tree-root [nodes]="documentTree | async" [options]="options" [focused]="true">
+        <ng-template #treeNodeFullTemplate let-node let-index="index" let-templates="templates">
+          <div class="tree-node tree-node-level-{{ node.level }}" [class.tree-node-expanded]="node.isExpanded && node.hasChildren">
+            <tree-node-drop-slot *ngIf="index === 0" [dropIndex]="node.index" [node]="node.parent"></tree-node-drop-slot>
+            <div class="node-wrapper">
+              <span *ngIf="node.hasChildren" [ngClass]="getNodeIsExpandedClass(node)" (click)="node.toggleExpanded()"></span>
+              <div class="node-content-wrapper" [treeDrag]="node" [treeDragEnabled]="node.allowDrag()">
+                <span *ngIf="!node.hasChildren" class="glyphicon glyphicon-zoom-in" (click)="showThumb(node)"></span>
+                <span (click)="nodeClicked(node)" [ngClass]="isRootNode(node)">
+                  <tree-node-content [node]="node" [index]="index" [template]="templates.treeNodeTemplate" ></tree-node-content>
+                </span>
+              </div>
+            </div>
+            <tree-node-children [node]="node" [templates]="templates"></tree-node-children>
+            <tree-node-drop-slot [dropIndex]="node.index + 1" [node]="node.parent"></tree-node-drop-slot>
+          </div>
+        </ng-template>
+      </tree-root>
+    </div>
+  </div>
+  <!-- Zwei horizontal angeordnete Beispielboxen für Zuletzt verwendet/ meist verwendet -->
+  <!-- <div class="row text-center" style="margin-top: 50px;">
+    <div class="col-xs-6">
+      <div class="panel panel-default" dnd-droppable droppable (onDrop)="addToPAL($event)">
+        <div class="panel-heading">Zuletzt verwendet</div>
+        <div class="panel-body">
+          <span>Externer Briefkopf <br/> Kurzmitteilung <br/> Faxvorlage <br/> Interner Briefkopf</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="panel panel-default" dnd-droppable droppable (onDrop)="addToPAL($event)">
+        <div class="panel-heading">Persönliche Absenderliste</div>
+        <div class="panel-body">
+          <span>test</span>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>
