@@ -34,6 +34,7 @@ body {
 }
 
 span.icon-hightlight:hover {
+<<<<<<< HEAD
     color: red;
 }
 
@@ -112,6 +113,9 @@ span.icon-hightlight:hover {
 
 .angular-tree-component {
     background-color: #fde57b;
+=======
+	color: red;
+>>>>>>> Suchfeld in Absenderliste entfernt, in Absender verwalten Suche und PAL zusammengefasst.
 }
 
 .container {
@@ -131,6 +135,10 @@ span.icon-hightlight:hover {
 
 .lhm-logo {
     padding-left: 20px;
+}
+
+.glyphicon {
+    cursor: pointer;
 }
 
 .glyphicon-nav-bar {
@@ -176,7 +184,6 @@ span.icon-hightlight:hover {
     text-decoration: none
 }
 
-/* funktioniert nicht in dokument-treeview-component.css ?*/
 .angular-tree-component {
 	background-color: #fde57b;
     padding-left: 20px;
