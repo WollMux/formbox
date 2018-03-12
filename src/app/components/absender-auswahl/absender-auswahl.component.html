@@ -1,10 +1,10 @@
-<div class="panel panel-default">
-  <div class="panel-body">
-    <label for="selected">Aktueller Absender</label>
-    <select class="form-control" name="selected" id="selected" [ngModel]="selected" (ngModelChange)="changeAbsender($event)">
-      <option *ngFor="let a of pal | async" [ngValue]="a.id" [selected]="(selected | async) && (selected | async).id == a.id">
-        {{ a.nachname }}, {{ a.vorname }} ({{ a.ou }})
-      </option>
-    </select>
-  </div>
+<div class="treeview-panel">
+    <div class="absender-panel-heading">Aktueller Absender</div>
+    <div class="input-group-btn">
+      <select class="form-control" name="selected" id="selected" [ngModel]="selected" (ngModelChange)="changeAbsender($event)">
+        <option *ngFor="let a of pal | async" [ngValue]="a.id" [selected]="(selected | async) && (selected | async).id == a.id">
+          {{ a.nachname }}, {{ a.vorname }} ({{ a.ou }})
+        </option>
+      </select>
+    </div>
 </div>
