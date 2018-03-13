@@ -70,7 +70,7 @@ export class DocumentTreeviewComponent implements OnInit {
         break;
     }
 
-    this.officeService.openDialog(url, 100, 100);
+    this.officeService.openDialog(url, 80, 30);
   }
 
   options: ITreeOptions = {
