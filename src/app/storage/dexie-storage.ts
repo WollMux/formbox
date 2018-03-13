@@ -18,8 +18,6 @@ export class DexieStorage extends Dexie {
    * Änderungen in der Struktur müssen über die Versionsnummer dem Framework
    * mitgeteilt werden. Die Änderungen werden dann zur Laufzeit mit vorhandenen
    * Datenbanken gemergt.
-   *
-   * @constructor
    */
   constructor(private log: Logger) {
     super('FormBoxDB');
@@ -33,7 +31,7 @@ export class DexieStorage extends Dexie {
    * Gibt eine Liste mit Personen in der Persönlichen Absenderliste (PAL)
    * zurück.
    *
-   * @returns {Promise<Absender[]>} Promise mit dem Inhalt der PAL.
+   * @returns Promise mit dem Inhalt der PAL.
    */
   async getPAL(): Promise<Absender[]> {
     return this.pal.toArray();
