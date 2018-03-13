@@ -29,14 +29,8 @@ export class AbsenderVerwaltenComponent implements OnInit, OnDestroy {
     this.storageActions.updatePAL();
   }
 
-  addToPALAction = (actions: AbsenderlisteActions): (absender: Absender) => void => {
-    return (absender: Absender) => {
-      actions.addAbsender(absender);
-    };
-  }
-
-  addToPAL(event: any): void {
-    this.actions.addAbsender(event.dragData);
+  addToPAL(user: any): void {
+    this.actions.addAbsender(user);
   }
 
   removeFromPAL(id: number): void {

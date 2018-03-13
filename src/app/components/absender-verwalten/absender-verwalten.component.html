@@ -1,5 +1,5 @@
 <div class="col-sm-6">
-  <app-ldap-suche [dragEnabled]="true" [action]="addToPALAction(actions)"></app-ldap-suche>
+  <app-ldap-suche [dragEnabled]="true" (selected)="addToPAL($event)"></app-ldap-suche>
 </div>
 
 <div class="col-sm-6">
@@ -7,7 +7,7 @@
     <app-absender-auswahl></app-absender-auswahl>
   </div>
   <div class="row">
-    <div class="panel panel-default" dnd-droppable droppable (onDrop)="addToPAL($event)">
+    <div class="panel panel-default" dnd-droppable droppable (onDrop)="addToPAL($event.dragData)">
       <div class="panel-heading">Persönliche Absenderliste</div>
       <div class="panel-body">
         <div class="list-group" id='resultlist'>
