@@ -32,6 +32,6 @@ describe('AbsenderlisteService', () => {
   it('loadAbsender', async(inject([AbsenderlisteService], (service: AbsenderlisteService) => {
     service.loadAbsender().then(result => {
       expect(result).toEqual(1);
-    })
+    });
   })));
 });
