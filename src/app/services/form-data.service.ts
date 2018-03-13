@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { OfficeService } from './office.service';
 import { Form } from '../data/forms/form';
-import * as fastXmlParser from 'fast-xml-parser';
 import { JsonConvert, OperationMode } from 'json2typescript';
+import { FormXmlParserService } from './form-xml-parser.service';
 
 @Injectable()
 export class FormDataService {
@@ -15,11 +15,11 @@ export class FormDataService {
     <controls>
       <label>
         <id>Label1</id>
-        <label>Label 1</label>
+        <title>Label 1</title>
       </label>
       <label>
         <id>Label2</id>
-        <label>Label 2</label>
+        <title>Label 2</title>
       </label>
       <tabs>
         <id>tab1</id>
@@ -30,11 +30,11 @@ export class FormDataService {
            <controls>
              <label>
                <id>label1</id>
-               <label>Label1</label>
+               <title>Label1</title>
              </label>
              <textfield>
                <id>textfeld1</id>
-               <label>Eingabefeld</label>
+               <title>Eingabefeld</title>
                <tip></tip>
                <readonly>false</readonly>
                <autofill>Text</autofill>
@@ -46,11 +46,11 @@ export class FormDataService {
            <controls>
              <checkbox>
                <id>checkbox1</id>
-               <label>Checkbox 1</label>
+               <title>Checkbox 1</title>
              </checkbox>
              <checkbox>
                <id>checkbox2</id>
-               <label>Checkbox 1</label>
+               <title>Checkbox 1</title>
              </checkbox>
              <separator>
                <id>separator1</id>
@@ -60,13 +60,13 @@ export class FormDataService {
                <controls>
                  <button>
                    <id>button1</id>
-                   <label>Button 1</label>
+                   <title>Button 1</title>
                    <action>openTemplate</action>
                    <value>fragId</value>
                  </button>
                  <button>
                    <id>button2</id>
-                   <label>Button 2</label>
+                   <title>Button 2</title>
                    <action>openExt</action>
                    <value>explorer.exe</value>
                    <disabled>true</disabled>
@@ -81,7 +81,7 @@ export class FormDataService {
   </form>
   `;
 
-  constructor(private office: OfficeService) { }
+  constructor(private office: OfficeService, private formXmlParser: FormXmlParserService) { }
 
   async write(xml: string): Promise<string> {
     return this.office.deleteXmlByNamespace(FormDataService.namespace).then(() => {
@@ -104,12 +104,13 @@ export class FormDataService {
   }
 
   parse(xml: string): Form {
-    const options = { arrrayMode: false };
-    const json = fastXmlParser.parse(xml, options);
-    const jsonConvert = new JsonConvert();
-    jsonConvert.operationMode = OperationMode.LOGGING;
-    const form: Form = jsonConvert.deserialize(json.form, Form);
-    console.log(form);
-    return form;
+    this.formXmlParser.parse(xml);
+
+    //    const jsonConvert = new JsonConvert();
+    //    jsonConvert.operationMode = OperationMode.LOGGING;
+    //    const form: Form = jsonConvert.deserialize(json.form, Form);
+    //    console.log(form);
+    //    return form;
+    return undefined;
   }
 }

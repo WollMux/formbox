@@ -1,7 +1,6 @@
-import { JsonObject, JsonProperty } from 'json2typescript';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-@JsonObject
+@XmlClass('label')
 export class Label {
-  @JsonProperty('label', String)
-  label: string = undefined;
+  title = '';
 }

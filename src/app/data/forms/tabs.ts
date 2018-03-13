@@ -1,10 +1,8 @@
 import { Control } from './control';
 import { Tab } from './tab';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject, JsonProperty } from 'json2typescript';
-
-@JsonObject
+@XmlClass('tabs')
 export class Tabs extends Control {
-  @JsonProperty('pages', [[Tab]], true)
-  pages: Tab[] = undefined;
+  pages: Tab[] = [];
 }

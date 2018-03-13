@@ -1,7 +1,6 @@
 import { Label } from './label';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject } from 'json2typescript';
-
-@JsonObject
+@XmlClass('combobox')
 export class Combobox extends Label {
 }

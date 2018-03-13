@@ -1,7 +1,6 @@
 import { Control } from './control';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject } from 'json2typescript';
-
-@JsonObject
+@XmlClass('separator')
 export class Separator extends Control {
 }

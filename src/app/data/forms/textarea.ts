@@ -1,12 +1,9 @@
 import { Textfield } from './textfield';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject, JsonProperty } from 'json2typescript';
-
-@JsonObject
+@XmlClass('textarea')
 export class Textarea extends Textfield {
-  @JsonProperty('lines', Number)
   lines: number = undefined;
 
-  @JsonProperty('wrap', Boolean)
   wrap: boolean = undefined;
 }

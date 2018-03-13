@@ -1,15 +1,11 @@
 import { Control } from './control';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject, JsonProperty } from 'json2typescript';
-
-@JsonObject
+@XmlClass('tab')
 export class Tab {
-  @JsonProperty('title', String)
-  title: string = undefined;
+  title: string;
 
-  @JsonProperty('tooltip', String, true)
-  tooltip?: string = undefined;
+  tooltip?: string;
 
-  @JsonProperty('controls', [Control], true)
-  controls: Control[] = undefined;
+  controls: Control[] = [];
 }
