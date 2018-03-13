@@ -20,6 +20,10 @@ export class ExpressionInsertFragComponent {
 
   constructor(private expressionActions: ExpressionEditorCommandsActions) { }
 
+  getSelectedIndex(): number {
+    return this.selectedIndex;
+  }
+
   onSelect(n: number, name: string): boolean {
     this.selectedIndex = n;
     this.selectedName = name;
