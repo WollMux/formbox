@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +20,7 @@ export class LDAPSucheComponent implements OnInit, OnDestroy {
   filter = {uid: undefined, vorname: undefined, nachname: undefined, ou: undefined} as LDAPFilter;
   @select(['ldap', 'result']) result: Observable<any[]>;
   @Input() dragEnabled = false;
-  @Input() action: any = undefined;
+  @Output() selected = new EventEmitter();
 
   constructor(
     private ldapActions: LDAPActions,
@@ -41,6 +41,11 @@ export class LDAPSucheComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.log.debug(`starte Suche mit filter: ${JSON.stringify(this.filter)}`);
     this.ldapActions.searchingLDAP(this.filter);
+  }
+
+  emitEvent(res: any): void {
+    this.log.debug(JSON.stringify(res));
+    this.selected.emit(res);
   }
 
 }
