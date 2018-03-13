@@ -1,15 +1,11 @@
-import { JsonObject, JsonProperty } from 'json2typescript';
-
 import { Label } from './label';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-@JsonObject
+@XmlClass('button')
 export class Button extends Label {
-  @JsonProperty('action', String)
   action: string = undefined;
 
-  @JsonProperty('value', String)
   value: string = undefined;
 
-  @JsonProperty('disabled', Boolean, true)
   disabled?: boolean = undefined;
 }

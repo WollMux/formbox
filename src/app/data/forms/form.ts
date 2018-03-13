@@ -1,12 +1,9 @@
-import { JsonObject, JsonProperty } from 'json2typescript';
-
 import { Control } from './control';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-@JsonObject
+@XmlClass('form')
 export class Form {
-  @JsonProperty('title', String)
-  title: string = undefined;
+  title = '';
 
-  @JsonProperty('controls', [Control], true)
-  controls: Control[] = undefined;
+  controls: Control[] = [];
 }

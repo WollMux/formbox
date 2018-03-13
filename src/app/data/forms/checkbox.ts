@@ -1,7 +1,6 @@
 import { Label } from './label';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject } from 'json2typescript';
-
-@JsonObject
+@XmlClass('checkbox')
 export class Checkbox extends Label {
 }

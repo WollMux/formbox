@@ -1,7 +1,6 @@
 import { Container } from './container';
+import { XmlClass } from '../../decorators/xml.decorators';
 
-import { JsonObject } from 'json2typescript';
-
-@JsonObject
+@XmlClass('hbox')
 export class Hbox extends Container {
 }

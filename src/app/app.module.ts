@@ -47,6 +47,7 @@ import { ExpressionInsertFragComponent } from './components/expression-insert-fr
 import { ExpressionOverrideFragComponent } from './components/expression-override-frag/expression-override-frag.component';
 import { OfficeMockService } from './services/mocks/office.mock.service';
 import { FormDataService } from './services/form-data.service';
+import { FormXmlParserService } from './services/form-xml-parser.service';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { FormDataService } from './services/form-data.service';
     ExpressionsService,
     ExpressionEditorCommandsEpics,
     { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService },
-    FormDataService
+    FormDataService,
+    FormXmlParserService
   ],
   bootstrap: [AppComponent]
 })
