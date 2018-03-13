@@ -4,6 +4,7 @@ import { HttpModule } from '@angular/http';
 import { environment } from '../../../src/environments/environment';
 import { OfficeService } from '../../../src/app/services/office.service';
 import { NgLoggerModule } from '@nsalaun/ng-logger';
+import { OfficeMockService } from '../../../src/app/services/mocks/office.mock.service';
 
 describe('TemplateService', () => {
   beforeEach(() => {
@@ -14,7 +15,7 @@ describe('TemplateService', () => {
       ],
       providers: [
         TemplateService,
-        { provide: OfficeService, useClass: environment.officeService }
+        { provide: OfficeService, useClass: OfficeMockService }
       ]
     });
   });
