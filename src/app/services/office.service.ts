@@ -150,7 +150,7 @@ export class OfficeService {
 
       return context.sync().then(() => {
         if (value) {
-          control.insertText(value, 'Replace');
+          control.insertText(value, 'Replace');         
         }
         control.delete(true);
 
@@ -176,8 +176,13 @@ export class OfficeService {
       const randomColor = this.generateRandomHexColorString();
       cc.title = title;
       cc.tag = tag;
+<<<<<<< HEAD
       cc.color = randomColor;
       cc.font.color = randomColor;
+=======
+      cc.color = '#ffed9e';
+      cc.font.color = '#ffed9e';
+>>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
@@ -271,6 +276,7 @@ export class OfficeService {
    * Selektiert ein Content Control.
    * @param id id des ContentControls.
    */
+<<<<<<< HEAD
   async selectContentControlById(id: number): Promise<void> {
     await Word.run(context => {
       const doc = this.getDocument(context);
@@ -278,6 +284,16 @@ export class OfficeService {
       control.select();
       return context.sync();
     });
+=======
+  async selectContentControlByTitle(id: number): Promise<void> {
+    await Word.run(context => {
+      const doc = context.document;
+      const control = doc.contentControls.getById(id);
+      control.select();
+
+      return context.sync();
+    })
+>>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
   }
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {
