@@ -150,7 +150,7 @@ export class OfficeService {
 
       return context.sync().then(() => {
         if (value) {
-          control.insertText(String(value), 'Replace');
+          control.insertText(value, 'Replace');
         }
         control.delete(true);
 
@@ -175,6 +175,8 @@ export class OfficeService {
       const cc = range.insertContentControl();
       cc.title = title;
       cc.tag = tag;
+      cc.color = '#ffed9e';
+      cc.font.color = '#ffed9e';
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
@@ -257,6 +259,20 @@ export class OfficeService {
         }
         resolve();
       });
+    });
+  }
+
+  /**
+   * Selektiert ein Content Control.
+   * @param id id des ContentControls.
+   */
+  async selectContentControlByTitle(id: number): Promise<void> {
+    await Word.run(context => {
+      const doc = this.getDocument(context);
+      const control = doc.contentControls.getById(id);
+      control.select();
+
+      return context.sync();
     });
   }
 
