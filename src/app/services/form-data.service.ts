@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { OfficeService } from './office.service';
 import { Form } from '../data/forms/form';
-import { JsonConvert, OperationMode } from 'json2typescript';
 import { FormXmlParserService } from './form-xml-parser.service';
 
+/**
+ * Service zum Bearbeiten von Formulardefinitionen.
+ */
 @Injectable()
 export class FormDataService {
   static readonly namespace = 'http://www.muenchen.de/formbox/forms';
@@ -83,12 +85,18 @@ export class FormDataService {
 
   constructor(private office: OfficeService, private formXmlParser: FormXmlParserService) { }
 
+  /**
+   * Schreibt CustomXML in das aktuelle Dokument. 
+   */
   async write(xml: string): Promise<string> {
     return this.office.deleteXmlByNamespace(FormDataService.namespace).then(() => {
       return this.office.addXml(xml);
     });
   }
 
+  /**
+   * Liest CustomXML aus dem aktuellen Dokument.
+   */
   async read(): Promise<string> {
     return this.office.getXmlIdsByNamespace(FormDataService.namespace).then(ids => {
       if (ids.length > 0) {
@@ -99,18 +107,17 @@ export class FormDataService {
     });
   }
 
+  /**
+   * Löscht CustomXML aus dem aktuellen Dokument.
+   */
   async clear(): Promise<void> {
     this.office.deleteXmlByNamespace(FormDataService.namespace);
   }
 
+  /**
+   * Parst Formulardefinition in XML und gibt ein Form-Objekt zurück. 
+   */
   parse(xml: string): Form {
-    this.formXmlParser.parse(xml);
-
-    //    const jsonConvert = new JsonConvert();
-    //    jsonConvert.operationMode = OperationMode.LOGGING;
-    //    const form: Form = jsonConvert.deserialize(json.form, Form);
-    //    console.log(form);
-    //    return form;
-    return undefined;
+    return this.formXmlParser.parse(xml);
   }
 }

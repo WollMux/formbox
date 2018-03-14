@@ -8,6 +8,9 @@ import { Container } from '../data/forms/container';
 import { Tabs } from '../data/forms/tabs';
 import { Tab } from '../data/forms/tab';
 
+/**
+ * Parser für Formulardefinition in XML.
+ */
 @Injectable()
 export class FormXmlParserService {
   private parser: SAXParser;
@@ -25,7 +28,18 @@ export class FormXmlParserService {
     this.parser.onend = this.onend;
   }
 
-  onopentag = (node: Tag | QualifiedTag) => {
+  /**
+   * Parst Formulardefinition in XML und gibt ein Form-Objekt zurück. 
+   */
+  parse(xml: string): Form {
+    this.parser.write(xml);
+    this.parser.close();
+
+    return this.root;
+  }
+
+  private onopentag = (node: Tag | QualifiedTag) => {
+    // Zuerst wird nach einer Klasse gesucht, die mit @XmlClass dem Tag zugeordnet wurde.
     const xmlClass = getXmlClass(node.name);
     if (xmlClass) {
       const o = new xmlClass();
@@ -41,6 +55,7 @@ export class FormXmlParserService {
       }
       this.push(o);
     } else {
+      // Alle Tags, die sich keiner Klasse zuordnen lassen, sind Properties.
       if (this.currentContainer[node.name] && this.currentContainer[node.name].constructor === Array) {
         return;
       }
@@ -48,13 +63,14 @@ export class FormXmlParserService {
     }
   }
 
-  ontext = text => {
+  private ontext = text => {
+    // Zur Laufzeit kann nicht geprüft werden, ob ein Property existiert. Wir hoffen also das Beste.
     if (this.currentProperty) {
       this.currentContainer[this.currentProperty] = text;
     }
   }
 
-  onclosetag = (tagName: string) => {
+  private onclosetag = (tagName: string) => {
     const xmlClass = getXmlClass(tagName);
     if (xmlClass) {
       if (xmlClass.name === this.currentContainer.constructor.name) {
@@ -63,25 +79,18 @@ export class FormXmlParserService {
     }
   }
 
-  onend = () => {
+  private onend = () => {
     this.log.debug(this.root);
   }
 
-  parse(xml: string): Form {
-    this.parser.write(xml);
-    this.parser.close();
-
-    return this.root;
-  }
-
-  push(o): void {
+  private push(o): void {
     if (this.currentContainer) {
       this.containers.push(this.currentContainer);
     }
     this.currentContainer = o;
   }
 
-  pop(): void {
+  private pop(): void {
     if (this.containers.length > 0) {
       this.currentContainer = this.containers.pop();
     }
