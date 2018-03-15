@@ -173,14 +173,19 @@ export class OfficeService {
       const doc = context.document;
       const range = doc.getSelection();
       const cc = range.insertContentControl();
+      const randomColor = this.generateRandomHexColorString();
       cc.title = title;
       cc.tag = tag;
-      cc.color = '#ffed9e';
-      cc.font.color = '#ffed9e';
+      cc.color = randomColor;
+      cc.font.color = randomColor;
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
     });
+  }
+
+  private generateRandomHexColorString(): string {
+    return '#' + Math.floor(Math.random()*16777215).toString(16);
   }
 
   /**
@@ -266,12 +271,11 @@ export class OfficeService {
    * Selektiert ein Content Control.
    * @param id id des ContentControls.
    */
-  async selectContentControlByTitle(id: number): Promise<void> {
+  async selectContentControlById(id: number): Promise<void> {
     await Word.run(context => {
       const doc = this.getDocument(context);
       const control = doc.contentControls.getById(id);
       control.select();
-
       return context.sync();
     });
   }
