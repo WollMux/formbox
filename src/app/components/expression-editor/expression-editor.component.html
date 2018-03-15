@@ -5,10 +5,9 @@
   	<div class="list-group">
   		<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" 
   		  *ngFor="let c of (documentCommands | async); let i=index" 
-  		  (click)="onSelectDocumentCommand(i)" 
+  		  (click)="onSelectDocumentCommand(i, c.id)" 
         routerLink="document-command-editor"
-  		  [ngClass]="{'active': (selectedIndex | async) === i}"
-  		>
+  		  [ngClass]="{'active': (selectedIndex | async) === i}">
   			<div class="d-flex w-100 justify-content-between">
   				<div class="list-label">= {{ c.text }}</div><span class="pull-right icon-hightlight" (click)="onDeleteDocumentCommand(i)"><fa [name]="'times'"></fa></span>
   			</div>
