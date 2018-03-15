@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { DocumentCommand } from '../../store/states/expression-editor-commands-state';
 import { ExpressionEditorCommandsActions } from '../../store/actions/expression-editor-commands-actions';
 import { TemplateActions } from '../../store/actions/template-actions';
+import { OfficeService } from '../../services/office.service';
 
 /**
  * Expression-Editor zum Anlegen und Bearbeiten von Dokumentenkommandos.
@@ -21,6 +22,7 @@ export class ExpressionEditorComponent implements OnInit {
   @select(['expressionEditor', 'expressionEditorCommands', 'documentCommands']) documentCommands: Observable<DocumentCommand[]>;
 
   constructor(
+    private office: OfficeService,
     private actions: ExpressionEditorCommandsActions,
     private templateActions: TemplateActions) { }
 
@@ -39,9 +41,9 @@ export class ExpressionEditorComponent implements OnInit {
     return false;
   }
 
-  onSelectDocumentCommand(n: number): boolean {
+  onSelectDocumentCommand(n: number, contentControlId: number): boolean {
     this.actions.select(n);
-
+    this.office.selectContentControlById(contentControlId);
     return false;
   }
 }
