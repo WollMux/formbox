@@ -177,12 +177,17 @@ export class OfficeService {
       cc.title = title;
       cc.tag = tag;
 <<<<<<< HEAD
+<<<<<<< HEAD
       cc.color = randomColor;
       cc.font.color = randomColor;
 =======
       cc.color = '#ffed9e';
       cc.font.color = '#ffed9e';
 >>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
+=======
+      cc.color = randomColor;
+      cc.font.color = randomColor;
+>>>>>>> Selektion in Kommandoliste selektiert dazugehöriges Content-Control.
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
@@ -277,6 +282,7 @@ export class OfficeService {
    * @param id id des ContentControls.
    */
 <<<<<<< HEAD
+<<<<<<< HEAD
   async selectContentControlById(id: number): Promise<void> {
     await Word.run(context => {
       const doc = this.getDocument(context);
@@ -286,11 +292,13 @@ export class OfficeService {
     });
 =======
   async selectContentControlByTitle(id: number): Promise<void> {
+=======
+  async selectContentControlById(id: number): Promise<void> {
+>>>>>>> Selektion in Kommandoliste selektiert dazugehöriges Content-Control.
     await Word.run(context => {
       const doc = context.document;
       const control = doc.contentControls.getById(id);
       control.select();
-
       return context.sync();
     })
 >>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
