@@ -21,8 +21,6 @@ export function XmlClass(tagName: string): any {
 /**
  * Gibt die Klasse zurück, die einem XML-Tag zugeordnet ist.
  * 
- * @param tag
- * 
  * @returns Constructor-Funktion der Klasse.
  */
 export let getXmlClass = (tag: string) => {

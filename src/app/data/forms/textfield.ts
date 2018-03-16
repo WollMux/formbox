@@ -1,5 +1,5 @@
 import { Label } from './label';
-import { XmlClass } from "../../decorators/xml.decorators";
+import { XmlClass } from '../../decorators/xml.decorators';
 
 @XmlClass('textfield')
 export class Textfield extends Label {
