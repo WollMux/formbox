@@ -54,6 +54,7 @@
     "tassign": "^1.0.0",
     "typescript-fsa": "^2.5.0",
     "typescript-fsa-reducers": "^0.4.5",
+    "xml-formatter": "^1.0.1",
     "zone.js": "^0.8.20"
   },
   "devDependencies": {
