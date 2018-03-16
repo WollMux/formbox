@@ -14,17 +14,20 @@ import { Absender } from './storage/absender';
 import { StorageActions } from './store/actions/storage-actions';
 import { environment } from '../environments/environment';
 import { FormDataService } from './services/form-data.service';
+import { Form } from './data/forms/form';
+import { Label } from './data/forms/label';
+import { Button } from './data/forms/button';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  @select(['template', 'status']) templateStatus: Observable<LoadingStatus>;
-  @select(['absenderliste', 'selected']) absender: Observable<Absender>;
+  @select([ 'template', 'status' ]) templateStatus: Observable<LoadingStatus>;
+  @select([ 'absenderliste', 'selected' ]) absender: Observable<Absender>;
 
   constructor(
     private templates: TemplateService,
@@ -60,6 +63,18 @@ export class AppComponent implements OnInit {
   }
 
   onTestXml(): void {
-    this.formdata.parse(this.formdata.xml);
+    const f = new Form();
+    f.title = 'Form 1';
+    f.controls = [
+      new Label(),
+      new Button()
+    ];
+
+    this.formdata.write(f).then(id => {
+      console.log(id);
+      this.formdata.read().then(form => {
+        console.log(form);
+      });
+    });
   }
 }

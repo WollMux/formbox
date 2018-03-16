@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { parser, QualifiedTag, SAXParser, Tag } from 'sax';
+import * as format from 'xml-formatter';
 import { Logger } from '@nsalaun/ng-logger';
 import '../data/forms/forms';
 import { getXmlClass } from '../decorators/xml.decorators';
@@ -38,6 +39,20 @@ export class FormXmlParserService {
     return this.root;
   }
 
+  /**
+   * Wandelt ein Form-Objekt nach XML um.
+   * 
+   * @param pretty Formatiert das XML.
+   */
+  createXml(form: Form, pretty = false): string {
+    let xml = form.toXml();
+    if (pretty) {
+      xml = format(xml);
+    }
+
+    return xml;
+  }
+
   private onopentag = (node: Tag | QualifiedTag) => {
     // Zuerst wird nach einer Klasse gesucht, die mit @XmlClass dem Tag zugeordnet wurde.
     const xmlClass = getXmlClass(node.name);
@@ -56,7 +71,7 @@ export class FormXmlParserService {
       this.push(o);
     } else {
       // Alle Tags, die sich keiner Klasse zuordnen lassen, sind Properties.
-      if (this.currentContainer[node.name] && this.currentContainer[node.name].constructor === Array) {
+      if (this.currentContainer[ node.name ] && this.currentContainer[ node.name ].constructor === Array) {
         return;
       }
       this.currentProperty = node.name;
@@ -66,7 +81,7 @@ export class FormXmlParserService {
   private ontext = text => {
     // Zur Laufzeit kann nicht geprüft werden, ob ein Property existiert. Wir hoffen also das Beste.
     if (this.currentProperty) {
-      this.currentContainer[this.currentProperty] = text;
+      this.currentContainer[ this.currentProperty ] = text;
     }
   }
 

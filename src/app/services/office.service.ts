@@ -210,11 +210,12 @@ export class OfficeService {
   }
 
   async deleteXmlByNamespace(ns: string): Promise<void> {
-    return new Promise<void>(resolve => {
-      Office.context.document.customXmlParts.getByNamespaceAsync(ns, result => {
+    return new Promise<void>(async resolve => {
+      await Office.context.document.customXmlParts.getByNamespaceAsync(ns, async result => {
         for (const part of result.value) {
-          part.deleteAsync(() => resolve());
+          await part.deleteAsync();
         }
+        resolve();
       });
     });
   }

@@ -88,8 +88,10 @@ export class FormDataService {
   /**
    * Schreibt CustomXML in das aktuelle Dokument. 
    */
-  async write(xml: string): Promise<string> {
+  async write(form: Form): Promise<string> {
     return this.office.deleteXmlByNamespace(FormDataService.namespace).then(() => {
+      const xml = this.convertToXml(form);
+
       return this.office.addXml(xml);
     });
   }
@@ -97,10 +99,13 @@ export class FormDataService {
   /**
    * Liest CustomXML aus dem aktuellen Dokument.
    */
-  async read(): Promise<string> {
+  async read(): Promise<Form> {
     return this.office.getXmlIdsByNamespace(FormDataService.namespace).then(ids => {
       if (ids.length > 0) {
-        return this.office.getXmlById(ids.pop());
+        this.office.getXmlById(ids.pop()).then(xml => {
+          return this.parse(xml);
+        });
+
       } else {
         return Promise.reject('No FormData found.');
       }
@@ -117,7 +122,16 @@ export class FormDataService {
   /**
    * Parst Formulardefinition in XML und gibt ein Form-Objekt zurück. 
    */
-  parse(xml: string): Form {
+  private parse(xml: string): Form {
     return this.formXmlParser.parse(xml);
+  }
+
+  /**
+   * Konvertiert ein Form-Objekt nach XML.
+   * 
+   * @param form
+   */
+  private convertToXml(form: Form): string {
+    return this.formXmlParser.createXml(form);
   }
 }
