@@ -3,11 +3,11 @@ import { XmlClass } from '../../decorators/xml.decorators';
 
 @XmlClass('button')
 export class Button extends Label {
-  action: string = undefined;
+  action = '';
 
-  value: string = undefined;
+  value = '';
 
-  disabled?: boolean = undefined;
+  disabled?: boolean;
 
   toXml(): string {
     let xml = '<button>';

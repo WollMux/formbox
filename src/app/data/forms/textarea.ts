@@ -3,9 +3,9 @@ import { XmlClass } from '../../decorators/xml.decorators';
 
 @XmlClass('textarea')
 export class Textarea extends Textfield {
-  lines: number = undefined;
+  lines = 5;
 
-  wrap: boolean = undefined;
+  wrap = true;
 
   toXml(): string {
     let xml = '<textarea>';
