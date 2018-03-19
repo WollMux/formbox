@@ -1,37 +1,37 @@
 <!-- Liste -->
 
 <div class="row">
-  <div class="col-sm-12">
-  	<div class="list-group">
-  		<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" 
-  		  *ngFor="let c of (documentCommands | async); let i=index" 
-  		  (click)="onSelectDocumentCommand(i, c.id)" 
-        routerLink="document-command-editor"
-  		  [ngClass]="{'active': (selectedIndex | async) === i}">
-  			<div class="d-flex w-100 justify-content-between">
-  				<div class="list-label">= {{ c.text }}</div><span class="pull-right icon-hightlight" (click)="onDeleteDocumentCommand(i)"><fa [name]="'times'"></fa></span>
-  			</div>
-  		</a>
+    <div class="col-sm-12">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let c of (documentCommands | async); let i=index" (click)="onSelectDocumentCommand(i, c.id)" [ngClass]="{'active': (selectedIndex | async) === i}" routerLink="/document-command-editor">
+                <div class="d-flex w-100 justify-content-between">
+                    <div class="list-label">= {{ c.text }}</div><span class="pull-right icon-hightlight" (click)="onDeleteDocumentCommand(i)"><fa [name]="'times'"></fa></span>
+                </div>
+            </a>
+        </div>
     </div>
-  </div>
+</div>
+
+<div class="row">
+    <router-outlet name="document-command-editor-outlet"></router-outlet>
 </div>
 
 <!-- Buttons -->
 
 <div class="row">
-  <div class="col-sm-1">
-    <button type="button" class="btn btn-primary btn-sm" (click)="onNewDocumentCommand()" routerLink="document-command-editor"><fa [name]="'plus'"></fa></button>
-  </div>
-  <div class="col-sm-11">
-	  <div class="btn-group" data-toggle="buttons">
-		  <label class="btn btn-primary" routerLinkActive="active">
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-primary btn-sm" (click)="onNewDocumentCommand()" routerLink="document-command-editor"><fa [name]="'plus'"></fa></button>
+    </div>
+    <div class="col-sm-11">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary" routerLinkActive="active">
 		    <input type="checkbox" checked autocomplete="off" (click)="onSelectDocumentCommand(-1)" routerLink="insert-frag-editor" />insertFrag
 		  </label>
-		  <label class="btn btn-primary" routerLinkActive="active" >
+            <label class="btn btn-primary" routerLinkActive="active">
 		    <input type="checkbox" autocomplete="off" (click)="onSelectDocumentCommand(-1)" routerLink="override-frag-editor" />overrideFrag
 		  </label>
-	  </div>
-  </div>
+        </div>
+    </div>
 </div>
 
-<router-outlet></router-outlet>
+<router-outlet name="insert-frag-editor-outlet"></router-outlet>

@@ -19,9 +19,9 @@ export const appRoutes: Routes = [
   {
     path: 'expression-editor', component: ExpressionEditorComponent,
     children: [
-      { path: 'document-command-editor', component: DocumentCommandEditorComponent },
-      { path: 'insert-frag-editor', component: ExpressionInsertFragComponent },
-      { path: 'override-frag-editor', component: ExpressionOverrideFragComponent }
+      { path: '', component: DocumentCommandEditorComponent, outlet: 'document-command-editor-outlet' },
+      { path: '', component: ExpressionInsertFragComponent, outlet: 'insert-frag-editor-outlet' },
+      { path: '', component: ExpressionOverrideFragComponent, outlet: 'override-frag-editor-outlet' }
     ]
   }
 ];
