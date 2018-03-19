@@ -15,7 +15,7 @@ import { ExpressionEditorCommandsActions } from '../../store/actions/expression-
 export class ExpressionInsertFragComponent {
   @select(['template', 'fragments']) fragments: Observable<string[]>;
 
-  selectedIndex = -1;
+  private selectedIndex = -1;
   private selectedName;
 
   constructor(private expressionActions: ExpressionEditorCommandsActions) { }
