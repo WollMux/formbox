@@ -1,3 +1,11 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.navbar-btn').on('click', function() {
+            $(".nav").find(".navbar-btn-active").removeClass("navbar-btn-active");
+            $(this).addClass('navbar-btn-active');
+        });
+    });
+</script>
 <div class="container">
 
     <div class="nav-bar-container text-center">
