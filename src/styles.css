@@ -1,10 +1,25 @@
 @import '../node_modules/angular-tree-component/dist/angular-tree-component.css';
 body {
-	padding-bottom: 40px;
+    padding-bottom: 40px;
+}
+
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited {
+    background-color: #FCC700;
+    border-color: #ffed9e;
+}
+
+.control-label {
+    color: #555;
+}
+
+.btn-primary:hover {
+    color: #555;
 }
 
 span.icon-hightlight:hover {
-	color: red;
+    color: red;
 }
 
 .container {
@@ -45,26 +60,30 @@ span.icon-hightlight:hover {
     background-color: #FCC700;
 }
 
-
 .btn:hover {
     background-color: #fff;
 }
 
+
 /* overlay Tooltip example*/
+
 .tip {
     text-decoration: none
 }
+
 .tip:hover {
     position: relative
 }
+
 .tip span {
     display: none
 }
+
 .tip:hover span {
     padding: 5px 10px 5px 5px;
     display: block;
-	z-index: 100;
-	background-color: #555;
+    z-index: 100;
+    background-color: #555;
     left: 0px;
     margin: 10px;
     width: auto;
@@ -73,9 +92,11 @@ span.icon-hightlight:hover {
     text-decoration: none
 }
 
+
 /* funktioniert nicht in dokument-treeview-component.css ?*/
+
 .angular-tree-component {
-	background-color: #fde57b;
+    background-color: #fde57b;
     padding-left: 20px;
     padding-top: 10px;
     width: 100%;
@@ -88,4 +109,3 @@ span.icon-hightlight:hover {
     -ms-user-select: none;
     user-select: none;
 }
-
