@@ -83,4 +83,24 @@ export class OfficeMockService {
 
     return Promise.resolve();
   }
+
+  async addXml(xml: string): Promise<string> {
+    return Promise.reject('Not implemented.');
+  }
+
+  async getXmlById(id: string): Promise<string> {
+    return Promise.reject('Not implemented.');
+  }
+
+  async getXmlIdsByNamespace(ns: string): Promise<string[]> {
+    return Promise.reject('Not implemented.');
+  }
+
+  async deleteXmlById(id: string): Promise<void> {
+    return Promise.reject('Not implemented.');
+  }
+
+  async deleteXmlByNamespace(ns: string): Promise<void> {
+    return Promise.reject('Not implemented.');
+  }
 }
