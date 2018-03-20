@@ -19,6 +19,7 @@ if (argv._.length == 0) {
 }
 const name = argv._[0]
 const name_cap = captialize(name);
+const name_var = name_cap.charAt(0).toLowerCase() + name_cap.substr(1);
 
 const base = "/src/app/store"
 
@@ -26,94 +27,96 @@ const base = "/src/app/store"
 var out = path.join(argv.out, base, "states")
 fs.ensureDirSync(out)
 	
-. /!output(path.join(out, name + "-state.ts"))
-. /**
-.  * Status von @{name_cap}.
-.  */
-. export interface @{name_cap}State {
-. }
+./!output(path.join(out, name + "-state.ts"))
+./**
+. * Status von @{name_cap}.
+. */
+.export interface @{name_cap}State {
+.}
 .
-. export const INITIAL_STATE: @{name_cap}State = {
-. };
+.export const INITIAL_STATE: @{name_cap}State = {
+.};
 	
 // Actions
 var out = path.join(argv.out, base, "actions")
 fs.ensureDirSync(out)
 
-. /!output(path.join(out, name + "-actions.ts"))
-. import { Injectable } from '@angular/core';
-. import actionCreatorFactory, { Action } from 'typescript-fsa';
-. import { NgRedux } from '@angular-redux/store';
-. import { @{name_cap}State } from '../states/@{name}-state';
+./!output(path.join(out, name + "-actions.ts"))
+.import { Injectable } from '@angular/core';
+.import actionCreatorFactory, { Action } from 'typescript-fsa';
+.import { NgRedux } from '@angular-redux/store';
+.import { @{name_cap}State } from '../states/@{name}-state';
 . 
-. const actionCreator = actionCreatorFactory();
+.const actionCreator = actionCreatorFactory();
 . 
-. /**
-.  * Aktionen für @{name_cap}.
-.  */
-. @Injectable()
-. export class @{name_cap}Actions {
-.   // static ACTION = actionCreator<any>('ACTION');
+./**
+. * Aktionen für @{name_cap}.
+. */
+.@Injectable()
+.export class @{name_cap}Actions {
+.  // static ACTION = actionCreator<any>('ACTION');
 .
-.   constructor(private ngRedux: NgRedux<@{name_cap}State>) { }
+.  constructor(private ngRedux: NgRedux<@{name_cap}State>) { }
 .
-.   // callAction(): Action<any> {
-.   //   const action = @{name_cap}Actions.ACTION({});
-.   // 
-.   //   return this.ngRedux.dispatch(action);
-.   // }
-. }
+.  // callAction(): Action<any> {
+.  //   const action = @{name_cap}Actions.ACTION({});
+.  //
+.  //   return this.ngRedux.dispatch(action);
+.  // }
+.}
 
 
 // Reducer
 var out = path.join(argv.out, base, "reducers")
 fs.ensureDirSync(out)
 
-. /!output(path.join(out, name + "-reducer.ts"))
-. import { Action, Reducer } from 'redux';
-. import { reducerWithInitialState } from 'typescript-fsa-reducers';
-. import { tassign } from 'tassign';
+./!output(path.join(out, name + "-reducer.ts"))
+.import { Action, Reducer } from 'redux';
+.import { reducerWithInitialState } from 'typescript-fsa-reducers';
+.import { tassign } from 'tassign';
 .
-. import { @{name_cap}State, INITIAL_STATE } from '../states/@{name}-state';
-. import { @{name_cap}Actions } from '../actions/@{name}-actions';
+.import { @{name_cap}State, INITIAL_STATE } from '../states/@{name}-state';
+.import { @{name_cap}Actions } from '../actions/@{name}-actions';
 .
-. // const action = (state: TemplateState): TemplateState => {
-. //   return state;
-. // };
+.// const action = (state: @{name_cap}State): @{name_cap}State => {
+.//   return state;
+.// };
 . 
-. export const templateReducer: Reducer<@{name_cap}State> = reducerWithInitialState(INITIAL_STATE)
-. //   .case(TemplateActions.ACTION, (state, payload) => action(state))
-.   .build();
+.export const @{name_var}Reducer: Reducer<@{name_cap}State> = reducerWithInitialState(INITIAL_STATE)
+.//   .case(@{name_cap}Actions.ACTION, (state, payload) => action(state))
+.  .build();
 
 // Epic
 var out = path.join(argv.out, base, "middleware")
 fs.ensureDirSync(out)
 
-. /!output(path.join(out, name + "-epics.ts"))
-. import { Injectable } from '@angular/core';
-. import { ActionsObservable } from 'redux-observable';
-. import { NgRedux } from '@angular-redux/store';
-. import { Logger } from '@nsalaun/ng-logger';
+./!output(path.join(out, name + "-epics.ts"))
+.import { Injectable } from '@angular/core';
+.import { ActionsObservable } from 'redux-observable';
+.import { NgRedux } from '@angular-redux/store';
+.import { Logger } from '@nsalaun/ng-logger';
 .
-. import { Observable } from 'rxjs/Observable';
-. import 'rxjs/add/operator/mergeMap';
-. import 'rxjs/add/operator/map';
-. import 'rxjs/add/operator/catch';
-. import 'rxjs/add/observable/of';
-. import 'rxjs/add/observable/from';
-. import 'rxjs/add/observable/fromPromise';
-. import 'rxjs/add/observable/concat';
-. import 'rxjs/add/observable/forkJoin';
+.import { Observable } from 'rxjs/Observable';
+.import 'rxjs/add/operator/mergeMap';
+.import 'rxjs/add/operator/map';
+.import 'rxjs/add/operator/catch';
+.import 'rxjs/add/observable/of';
+.import 'rxjs/add/observable/from';
+.import 'rxjs/add/observable/fromPromise';
+.import 'rxjs/add/observable/concat';
+.import 'rxjs/add/observable/forkJoin';
 .
-. @Injectable()
-. export class @{name_cap}Epics {
-.   constructor(
-.     private log: Logger,
-.   ) { }
+.import { @{name_cap}Actions } from '../actions/@{name}-actions';
 .
-. // doingSomething = (action: ActionsObservable<any>) => {
-. //   return action.ofType(@{name_cap}Actions.ACTION)
-. //     .mergeMap(({ payload }, n: number) => {
-. //     });
-. // }
-. }
+.@Injectable()
+.export class @{name_cap}Epics {
+.  constructor(
+.    private log: Logger,
+.  ) { }
+.
+.  // doingSomething = (action: ActionsObservable<any>) => {
+.  //   return action.ofType(@{name_cap}Actions.ACTION)
+.  //     .mergeMap(({ payload }, n: number) => {
+.  //     });
+.  // }
+.}
