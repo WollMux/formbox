@@ -1,5 +1,5 @@
 // tslint:disable-next-line:no-reference
-/// <reference path="../node_modules/@types/office-js/index.d.ts" />
+/// <reference path="../node_modules/@microsoft/office-js/dist/office.d.ts" />
 
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
