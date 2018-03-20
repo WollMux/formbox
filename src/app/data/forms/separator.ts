@@ -1,11 +1,12 @@
-import { Control } from './control';
+import { BaseControl } from './base-control';
 import { XmlClass } from '../../decorators/xml.decorators';
+import { Content } from './content';
 
 @XmlClass('separator')
-export class Separator extends Control {
+export class Separator extends BaseControl implements Content {
   toXml(): string {
     let xml = '<separator>';
-    xml += `<id>${this.id}</id>`;
+    xml += super.toXml();
     xml += '</separator>';
 
     return xml;

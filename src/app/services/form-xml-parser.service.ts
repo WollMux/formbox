@@ -31,7 +31,7 @@ export class FormXmlParserService {
   }
 
   /**
-   * Parst Formulardefinition in XML und gibt ein Form-Objekt zurück. 
+   * Parst Formulardefinition in XML und gibt ein Form-Objekt zurück.
    */
   parse(xml: string): Form {
     this.parser.write(xml);
@@ -42,7 +42,7 @@ export class FormXmlParserService {
 
   /**
    * Wandelt ein Form-Objekt nach XML um.
-   * 
+   *
    * @param pretty Formatiert das XML.
    */
   createXml(form: Form, pretty = false): string {
@@ -62,8 +62,6 @@ export class FormXmlParserService {
 
       if (this.currentContainer && this.currentContainer.hasOwnProperty('controls')) {
         this.currentContainer.controls.push(o);
-      } else if (this.currentContainer instanceof Tabs) {
-        this.currentContainer.pages.push(o);
       } else if (this.currentContainer instanceof Combobox) {
         this.currentContainer.option.push(o);
       }
@@ -77,7 +75,11 @@ export class FormXmlParserService {
       if (this.currentContainer[ node.name ] && this.currentContainer[ node.name ].constructor === Array) {
         return;
       }
-      this.currentProperty = node.name;
+      if (node.name !== 'pages') {
+        this.currentProperty = node.name;
+      } else {
+        this.currentProperty = 'controls';
+      }
     }
   }
 

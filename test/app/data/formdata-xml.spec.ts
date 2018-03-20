@@ -15,11 +15,12 @@ describe('Formdata XML', () => {
   it('writing Form as XML', () => {
     const f = new Form();
     f.title = 'Form 1';
+    f.id = 'myForm';
 
     expect(f.toXml()).toEqual('<form xmlns="http://www.muenchen.de/formbox/forms" ' +
       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
       + 'xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">' +
-      '<title>Form 1</title><controls></controls></form>');
+      '<id>myForm</id><controls></controls><title>Form 1</title></form>');
   });
 
   it('writing Button as XML', () => {
@@ -36,8 +37,9 @@ describe('Formdata XML', () => {
     const cb = new Checkbox();
     cb.id = 'checkbox1';
     cb.title = 'CheckBox 1';
+    cb.ccid = 1;
 
-    expect(cb.toXml()).toEqual('<checkbox><id>checkbox1</id><title>CheckBox 1</title></checkbox>');
+    expect(cb.toXml()).toEqual('<checkbox><id>checkbox1</id><title>CheckBox 1</title><ccid>1</ccid></checkbox>');
   });
 
   it('writing HBox as XML', () => {
@@ -72,30 +74,36 @@ describe('Formdata XML', () => {
   it('writing Tab as XML', () => {
     const tb = new Tab();
     tb.title = 'Tab 1';
+    tb.id = 'tab1';
 
-    expect(tb.toXml()).toEqual('<tab><title>Tab 1</title><controls></controls></tab>');
+    expect(tb.toXml()).toEqual('<tab><id>tab1</id><controls></controls><title>Tab 1</title></tab>');
   });
 
   it('writing Textarea as XML', () => {
     const ta = new Textarea();
     ta.id = 'textarea1';
     ta.title = 'Textarea 1';
+    ta.ccid = 1;
 
-    expect(ta.toXml()).toEqual('<textarea><id>textarea1</id><title>Textarea 1</title><lines>5</lines><wrap>true</wrap></textarea>');
+    expect(ta.toXml())
+      .toEqual('<textarea><id>textarea1</id><title>Textarea 1</title><ccid>1</ccid><lines>5</lines><wrap>true</wrap></textarea>');
   });
 
   it('writing Textfield as XML', () => {
     const tf = new Textfield();
     tf.id = 'textfield1';
     tf.title = 'Textfield 1';
+    tf.ccid = 1;
 
-    expect(tf.toXml()).toEqual('<textfield><id>textfield1</id><title>Textfield 1</title></textfield>');
+    expect(tf.toXml()).toEqual('<textfield><id>textfield1</id><title>Textfield 1</title><ccid>1</ccid></textfield>');
   });
 
   it('writing Combobox as XML', () => {
     const cb = new Combobox();
     cb.id = 'cb1';
     cb.title = 'Combobox 1';
+    cb.ccid = 1;
+    cb.editable = true;
     const option1 = new Option();
     option1.id = 'option1';
     option1.value = 'Item1';
@@ -104,7 +112,7 @@ describe('Formdata XML', () => {
     option2.value = 'Item2';
     cb.option = [option1, option2];
 
-    expect(cb.toXml()).toEqual('<combobox><id>cb1</id><title>Combobox 1</title><option><id>option1</id>' +
-    '<value>Item1</value></option><option><id>option2</id><value>Item2</value></option></combobox>');
+    expect(cb.toXml()).toEqual('<combobox><id>cb1</id><title>Combobox 1</title><ccid>1</ccid><editable>true</editable>' +
+    '<option><id>option1</id><value>Item1</value></option><option><id>option2</id><value>Item2</value></option></combobox>');
   });
 });

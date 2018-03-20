@@ -1,26 +1,20 @@
-import { Control } from './control';
 import { XmlClass } from '../../decorators/xml.decorators';
+import { Container } from './container';
 
 @XmlClass('tab')
-export class Tab {
-  title: string;
+export class Tab extends Container {
+  title = '';
 
-  tooltip?: string;
-
-  controls: Control[] = [];
+  tip?: string;
 
   toXml(): string {
     let xml = '<tab>';
-    xml += `<title>${this.title}</title>`;
-    if (this.tooltip) {
-      xml += `<tooltip>${this.tooltip}</tooltip>`;
-    }
+    xml += super.toXml();
 
-    xml += '<controls>';
-    for (const c of this.controls) {
-      xml += c.toXml();
+    xml += `<title>${this.title}</title>`;
+    if (this.tip) {
+      xml += `<tip>${this.tip}</tip>`;
     }
-    xml += '</controls>';
 
     xml += '</tab>';
 

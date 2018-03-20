@@ -1,17 +1,18 @@
-import { Control } from './control';
+import { BaseControl } from './base-control';
 import { Tab } from './tab';
 import { XmlClass } from '../../decorators/xml.decorators';
+import { Content } from './content';
 
 @XmlClass('tabs')
-export class Tabs extends Control {
-  pages: Tab[] = [];
+export class Tabs extends BaseControl implements Content {
+  controls: Tab[] = [];
 
   toXml(): string {
     let xml = '<tabs>';
-    xml += `<id>${this.id}</id>`;
+    xml += super.toXml();
 
     xml += '<pages>';
-    for (const t of this.pages) {
+    for (const t of this.controls) {
       xml += t.toXml();
     }
     xml += '</pages>';
