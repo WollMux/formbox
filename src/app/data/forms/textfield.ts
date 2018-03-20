@@ -1,27 +1,12 @@
-import { Label } from './label';
+import { FormControl } from './form-control';
 import { XmlClass } from '../../decorators/xml.decorators';
 
 @XmlClass('textfield')
-export class Textfield extends Label {
-  tip?: string = undefined;
-
-  readonly?: boolean = undefined;
-
-  autofill?: boolean = undefined;
+export class Textfield extends FormControl {
 
   toXml(): string {
     let xml = '<textfield>';
-    xml += `<id>${this.id}</id>`;
-    xml += `<title>${this.title}</title>`;
-    if (this.tip) {
-      xml += `<tip>${this.tip}</tip>`;
-    }
-    if (this.readonly) {
-      xml += `<readonly>${this.readonly}</readonly>`;
-    }
-    if (this.autofill) {
-      xml += `<autofill>${this.autofill}</autofill>`;
-    }
+    xml += super.toXml();
     xml += '</textfield>';
 
     return xml;

@@ -1,8 +1,8 @@
 import { XmlClass } from '../../decorators/xml.decorators';
-import { Control } from './control';
 
 @XmlClass('option')
-export class Option extends Control {
+export class Option {
+  id = '';
   value = '';
 
   toXml(): string {

@@ -3,7 +3,7 @@
 <form
   xmlns="http://www.muenchen.de/formbox/forms"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">
-  <title>Title</title>
+  <id>myForm</id>
   <controls>
     <label>
       <id>Label1</id>
@@ -14,15 +14,15 @@
       <title>Label 2</title>
     </label>
     <tabs>
-      <id>tab1</id>
+      <id>tabs</id>
       <pages>
         <tab>
-          <title>Tab 1</title>
-          <tooltip></tooltip>
+          <id>tab1</id>
           <controls>
             <combobox>
               <id>combobox1</id>
               <title>Combobox 1</title>
+              <ccid>1</ccid>
               <editable>true</editable>
               <option>
                 <value>Item1</value>
@@ -45,21 +45,36 @@
               <id>textfeld1</id>
               <title>Eingabefeld</title>
               <tip></tip>
+              <ccid>2</ccid>
               <readonly>false</readonly>
               <autofill>Text</autofill>
             </textfield>
+            <textarea>
+              <id>textare1</id>
+              <title>Eingabefeld mehrzeilig</title>
+              <tip></tip>
+              <ccid>3</ccid>
+              <readonly>false</readonly>
+              <autofill>Text</autofill>
+              <lines>3</lines>
+              <wrap>true</wrap>
+            </textarea>
           </controls>
+          <title>Tab 1</title>
+          <tip></tip>
         </tab>
         <tab>
-          <title>Tab 2</title>
+          <id>tab2</id>
           <controls>
             <checkbox>
               <id>checkbox1</id>
-              <label>Checkbox 1</label>
+              <title>Checkbox 1</title>
+              <ccid>4</ccid>
             </checkbox>
             <checkbox>
               <id>checkbox2</id>
-              <label>Checkbox 1</label>
+              <title>Checkbox 1</title>
+              <ccid>5</ccid>
             </checkbox>
             <separator>
               <id>separator1</id>
@@ -69,13 +84,13 @@
               <controls>
                 <button>
                   <id>button1</id>
-                  <label>Button 1</label>
+                  <title>Button 1</title>
                   <action>openTemplate</action>
                   <value>fragId</value>
                 </button>
                 <button>
                   <id>button2</id>
-                  <label>Button 2</label>
+                  <title>Button 2</title>
                   <action>openExt</action>
                   <value>explorer.exe</value>
                   <disabled>true</disabled>
@@ -83,8 +98,10 @@
               </controls>
             </hbox>
           </controls>
+          <title>Tab 2</title>
         </tab>
       </pages>
     </tabs>
   </controls>
+  <title>Title</title>
 </form>

@@ -7,8 +7,7 @@ export class Label extends Control {
 
   toXml(): string {
     let xml = '<label>';
-    xml += `<id>${this.id}</id>`;
-    xml += `<title>${this.title}</title>`;
+    xml += super.toXml();
     xml += '</label>';
 
     return xml;
