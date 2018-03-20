@@ -46,7 +46,7 @@
     "font-awesome": "^4.7.0",
     "ng-drag-drop": "^4.0.0",
     "ngx-bootstrap": "^2.0.2",
-    "node-sass": "^4.8.1",
+    "node-sass": "^4.8.3",
     "redux": "^3.7.2",
     "redux-observable": "^0.17.0",
     "reflect-metadata": "^0.1.12",
