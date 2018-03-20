@@ -15,8 +15,7 @@ export class OfficeService {
    */
   async openDocument(base64: string): Promise<void> {
     await Word.run(context => {
-      const body = context.document.body;
-      body.insertFileFromBase64(base64, 'Replace');
+      context.application.createDocument(base64).open();
 
       return context.sync();
     });
