@@ -26,7 +26,7 @@ export class TemplateService {
     return this.http.get(`${this.formboxapi}/document/vorlagen/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
-        return res.json().path as string;
+        return res.json() as string;
       });
   }
 
@@ -92,10 +92,10 @@ export class TemplateService {
   async getFragmentUrl(name: string): Promise<{ name: string, url: string }> {
     this.log.debug(`TemplateService.getFragmentUrl(${name})`);
 
-    return this.http.get(`${this.formboxapi}/config/fragmente/${name}`, { responseType: ResponseContentType.Json })
+    return this.http.get(`${this.formboxapi}/document/fragmente/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
-        return { name: name, url: res.json().path as string };
+        return { name: name, url: res.json() as string };
       });
   }
 
