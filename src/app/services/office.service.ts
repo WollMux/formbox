@@ -6,6 +6,8 @@ import { Logger } from '@nsalaun/ng-logger';
  */
 @Injectable()
 export class OfficeService {
+  private document: Word.DocumentCreated;
+
   constructor(private log: Logger) { }
 
   /**
@@ -13,11 +15,18 @@ export class OfficeService {
    * 
    * @param base64 Das Dokument als Base64-String
    */
-  async openDocument(base64: string): Promise<void> {
-    await Word.run(context => {
-      context.application.createDocument(base64).open();
+  async openDocument(base64: string): Promise<Word.DocumentCreated> {
+    return await Word.run(context => {
+      debugger
+      const doc = context.application.createDocument(base64);
+      doc.track();
+      this.document = doc;
+      doc.load('contentControls');
+      doc.open();
 
-      return context.sync();
+      return context.sync().then(() => {
+        return doc;
+      });
     });
   }
 
@@ -26,7 +35,8 @@ export class OfficeService {
    */
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      return c.items.filter(it => it.title && it.title.startsWith('='))
+      debugger;
+      return c.filter(it => it.title && it.title.startsWith('='))
         .map(it => ({ id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }));
     });
   }
@@ -37,6 +47,7 @@ export class OfficeService {
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
     return this.getDocumentCommands().then(c => {
       if (c && c.length > 0) {
+        debugger;
         const sorted = c.sort((cc1, cc2) => {
           let p1 = Number.MAX_SAFE_INTEGER;
           let p2 = Number.MAX_SAFE_INTEGER;
@@ -60,7 +71,7 @@ export class OfficeService {
           return 0;
         });
 
-        const cc = c.pop();
+        const cc = sorted.pop();
 
         return this.deleteContentControlTitle(cc.id).then(() => {
           return cc;
@@ -79,7 +90,13 @@ export class OfficeService {
    */
   async insertFragment(id: number, base64: string): Promise<void> {
     await Word.run(context => {
-      const doc = context.document;
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
+      debugger;
       const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
@@ -221,24 +238,42 @@ export class OfficeService {
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {
     await Word.run(context => {
-      const doc = context.document;
-      const cc = doc.contentControls.getById(id);
-      cc.title = '';
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
+      const controls = doc.contentControls;
+      controls.load('items, items/id');
 
-      return context.sync();
+      return context.sync().then(() => {
+        debugger;
+        const cc = doc.contentControls.getByIdOrNullObject(id);
+        cc.title = '';
+
+        return context.sync();
+      });
     });
   }
 
   /**
    * Gibt eine Liste aller ContentControls im aktiven Dokument zurück.
    */
-  private getAllContentControls = async (): Promise<Word.ContentControlCollection> => {
+  private getAllContentControls = async (): Promise<{ id: number, title: string, tag: string }[]> => {
     return Word.run(context => {
-      const doc = context.document;
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
       const controls = doc.contentControls;
-      controls.load('items');
+      controls.load('items/id, items/title, items/tag');
 
-      return context.sync(controls);
+      return context.sync().then(() => {
+        return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag }));
+      });
     });
   }
 
