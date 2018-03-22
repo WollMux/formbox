@@ -21,7 +21,7 @@ export class OfficeService {
    * @param dialogWidth
 =======
    * Öffnet einen OfficeJs-Dialog.
-   * 
+   *
    * @param url Url oder Pfad einer Komponente.
    * @param dialogHeight Höhe des Dialogs. Angabe in Prozent im Verhältnis zur Bildschirmhöhe (Komplette Höhe = 100).
    * @param dialogWidth Breite des Dialog. Angabe in Prozent im Verhältnis zur Bildschirmbreite.
