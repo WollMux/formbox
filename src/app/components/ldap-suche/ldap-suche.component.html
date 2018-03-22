@@ -17,6 +17,7 @@
 
       <button type="submit" class="btn btn-lg btn-primary btn-block" id='search' [disabled]="!ldapForm.form.valid || !ldapForm.form.dirty">Suchen</button>
     </form>
+<<<<<<< HEAD
   </div>
 <<<<<<< HEAD
 =======
@@ -31,12 +32,14 @@
     <button type="submit" class="btn btn-lg btn-primary btn-block" id='search' [disabled]="!ldapForm.form.valid || !ldapForm.form.dirty">Suchen</button>
   </form>
 >>>>>>> Suchfeld in Absenderliste entfernt, in Absender verwalten Suche und PAL zusammengefasst.
+=======
+>>>>>>> Lint behoben.
 </div>
 <div class="panel-body">
   <div class="list-group" id='resultlist'>
     <a *ngFor="let res of result | async; let i = index" class="list-group-item" draggable [dragEnabled]="dragEnabled" [dragData]="res">
       <span class="list-label">{{ res.nachname }}, {{ res.vorname }} ({{ res.ou }})</span>
-      <span *ngIf="action" class="glyphicon glyphicon-star pull-right" (click)="action(res)"></span>
+      <span class="glyphicon glyphicon-star pull-right" (click)="emitEvent(res)"></span>
     </a>
   </div>
 </div>

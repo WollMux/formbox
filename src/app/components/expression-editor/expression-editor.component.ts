@@ -42,8 +42,13 @@ export class ExpressionEditorComponent implements OnInit {
   }
 
   onSelectDocumentCommand(n: number, contentControlId: number): boolean {
+<<<<<<< HEAD
     this.actions.select(n);
     this.office.selectContentControlById(contentControlId);
+=======
+    this.actions.select(n, contentControlId);
+
+>>>>>>> Lint behoben.
     return false;
   }
 }

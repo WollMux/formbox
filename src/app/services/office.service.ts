@@ -14,13 +14,20 @@ export class OfficeService {
   constructor(private log: Logger) { }
 
   /**
+<<<<<<< HEAD
    *
    * @param url Öffnet einen OfficeJs-Dialog.
    * @param dialogHeight
    * @param dialogWidth
+=======
+   * Öffnet einen OfficeJs-Dialog.
+   * 
+   * @param url Url oder Pfad einer Komponente.
+   * @param dialogHeight Höhe des Dialogs. Angabe in Prozent im Verhältnis zur Bildschirmhöhe (Komplette Höhe = 100).
+   * @param dialogWidth Breite des Dialog. Angabe in Prozent im Verhältnis zur Bildschirmbreite.
+>>>>>>> Lint behoben.
    */
   async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
-    this.log.debug("OfficeService.openDialog()");
     return Office.context.ui.displayDialogAsync(url, { height: dialogHeight, width: dialogWidth });
   }
 
@@ -150,7 +157,7 @@ export class OfficeService {
 
       return context.sync().then(() => {
         if (value) {
-          control.insertText(value, 'Replace');         
+          control.insertText(value, 'Replace');
         }
         control.delete(true);
 
@@ -194,8 +201,8 @@ export class OfficeService {
     });
   }
 
-  private generateRandomHexColorString(): string {
-    return '#' + Math.floor(Math.random()*16777215).toString(16);
+  generateRandomHexColorString(): string {
+    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   }
 
   /**
@@ -299,9 +306,14 @@ export class OfficeService {
       const doc = context.document;
       const control = doc.contentControls.getById(id);
       control.select();
+
       return context.sync();
+<<<<<<< HEAD
     })
 >>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
+=======
+    });
+>>>>>>> Lint behoben.
   }
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {

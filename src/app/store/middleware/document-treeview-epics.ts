@@ -14,8 +14,8 @@ export class DocumentTreeViewEpics {
   ) { }
 
   /**
-    * Liste verfügbarer Dokumente von der Formbox-API abholen.
-  */
+   * Liste verfügbarer Dokumente von der Formbox-API abholen.
+   */
   getTemplateList = (action: ActionsObservable<any>) => {
     return action.ofType(DocumentTreeViewActions.GET_TREEVIEW_NODES.started)
       .mergeMap((value, n) => {

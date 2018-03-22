@@ -33,7 +33,7 @@ export class ExpressionInsertFragComponent {
 
   onInsert(): boolean {
     this.expressionActions.create(`insertFrag('${this.selectedName}')`, Number.MAX_SAFE_INTEGER);
-
+        
     return false;
   }
 }
