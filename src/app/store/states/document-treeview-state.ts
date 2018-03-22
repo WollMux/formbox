@@ -1,5 +1,5 @@
 export interface DocumentTreeViewState {
-    tree: any[]
+    tree: any[];
 }
 
 export const INITIAL_STATE: DocumentTreeViewState = { tree: [] };

@@ -51,7 +51,7 @@ const selectCommand = (state: ExpressionEditorCommandsState, index: number): Exp
   return tassign(state,
     {
       selected_index: index,
-      selected: selected,
+      selected: selected
     });
 };
 

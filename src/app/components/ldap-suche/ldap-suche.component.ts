@@ -47,5 +47,4 @@ export class LDAPSucheComponent implements OnInit, OnDestroy {
     this.log.debug(JSON.stringify(res));
     this.selected.emit(res);
   }
-
 }

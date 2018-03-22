@@ -125,7 +125,7 @@ export class TemplateService {
    */
   async getTemplates(): Promise<any[]> {
     this.log.debug('TemplateService.getTemplate()');
-    
+
     return this.http.get(`${this.formboxapi}/config/vorlagen`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
@@ -133,6 +133,7 @@ export class TemplateService {
       })
       .catch(error => {
         this.log.error(error);
+                
         return undefined;
       });
   }

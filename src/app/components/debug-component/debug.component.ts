@@ -8,13 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./debug.component.css']
 })
 export class DebugComponent implements OnInit {
-  
+
   constructor(
     private log: Logger,
-    private router: Router,
+    private router: Router
   ) { }
 
   async ngOnInit(): Promise<void> {
-
+    // debug
   }
 }
