@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="panel-default panel-heading text-center">
-				<span class="fa fa-compass fa-lg text-success"></span>Navigator</div>
+			<span class="fa fa-compass fa-lg text-success"></span>Navigator</div>
 		<div class="list-group">
 			<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let c of (documentCommands | async); let i=index"
 			 (click)="onSelectDocumentCommand(i, c.id)" [ngClass]="{'active': (selectedIndex | async) === i}" routerLink="document-command-editor">
@@ -21,13 +21,11 @@
 <!-- Buttons -->
 
 <div class="row">
-	<div class="col-xs-1">
-		<button type="button" class="btn btn-primary" (click)="onNewDocumentCommand()" routerLink="document-command-editor">
-			<fa [name]="'plus'"></fa>
-		</button>
-	</div>
-	<div class="col-xs-11">
-		<div class="btn-group" data-toggle="buttons">
+	<div class="col-sm-12">
+		<div class="btn-group btn-group-justified" data-toggle="buttons">
+			<button type="button" class="btn btn-primary" (click)="onNewDocumentCommand()" routerLink="document-command-editor">
+				<fa [name]="'plus'"></fa>
+			</button>
 			<label class="btn btn-primary" routerLinkActive="active">
 				<input type="checkbox" checked autocomplete="off" routerLink="insert-frag-editor" />insertFrag
 			</label>
