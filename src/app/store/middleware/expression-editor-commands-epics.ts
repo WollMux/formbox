@@ -48,18 +48,6 @@ export class ExpressionEditorCommandsEpics {
       });
   }
 
-  // creatingDocumentCommandDone = (action: ActionsObservable<any>) => {
-  //   return action.ofType(ExpressionEditorCommandsActions.CREATE.done)
-  //     .mergeMap(({ payload }, n: number) => {
-
-  //       return this.office.selectContentControlById(payload.contentControlId).then(() => {
-  //         const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload.index });
-
-  //         return act;
-  //       }).catch(error => this.log.error(error));
-  //     });
-  // }
-
   /**
    * Speichert Änderungen am Dokumentenkommando im Dokument.
    */
