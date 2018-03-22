@@ -19,7 +19,7 @@ export class TemplateService {
 
   /**
    * Gibt die Url zurück, über die das Template vom Server geladen werden kann.
-   * 
+   *
    * @param name Name des Templates
    */
   async getTemplateUrl(name: string): Promise<string> {
@@ -63,7 +63,7 @@ export class TemplateService {
 
   /**
    * Erzeugt ein neues Dokumentenkommando im aktuellen Dokument.
-   * Dem Text des Kommandos wird ein '=' vorangestellt. Daran werden 
+   * Dem Text des Kommandos wird ein '=' vorangestellt. Daran werden
    * Dokumentenkommandos wiedererkannt.
    */
   async createDocumentCommand(cmd: string, order: number): Promise<number> {
@@ -86,7 +86,7 @@ export class TemplateService {
 
   /**
    * Gibt die Url eines Fragments zurück.
-   * 
+   *
    * @param name Name des Fragments.
    */
   async getFragmentUrl(name: string): Promise<{ name: string, url: string }> {
@@ -102,7 +102,7 @@ export class TemplateService {
   /**
    * Lädt eine Datei über eine Url und gibt den Inhalt als Base64-String
    * zurück.
-   * 
+   *
    * @param url Url der Datei
    */
   async getFileAsBase64(url: string): Promise<string> {
@@ -120,11 +120,12 @@ export class TemplateService {
 
   /**
    * Lädt eine Liste aller serverseitig gespeicherten Dokumente.
-   * 
+   *
    * @returns Treeviewstruktur als Javascript-Array
    */
   async getTemplates(): Promise<any[]> {
     this.log.debug('TemplateService.getTemplate()');
+
     return this.http.get(`${this.formboxapi}/config/vorlagen`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
@@ -132,7 +133,7 @@ export class TemplateService {
       })
       .catch(error => {
         this.log.error(error);
-                
+
         return undefined;
       });
   }
@@ -148,7 +149,7 @@ export class TemplateService {
 
   /**
    * Lädt ein Fragment über eine Url und fügt es in das aktuelle Dokument ein.
-   * 
+   *
    * @param name Name des Fragments
    * @param url Url des Fragments
    */
@@ -162,7 +163,7 @@ export class TemplateService {
 
   /**
    * Fügt den Wert einer Expression in das Dokument ein.
-   * 
+   *
    * @param id Id des Felds, in das der Wert eingefügt werden soll
    * @param value Der Wert der eingefügt werden soll
    */

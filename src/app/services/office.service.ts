@@ -10,7 +10,7 @@ export class OfficeService {
 
   /**
    * Öffnet einen OfficeJs-Dialog.
-   * 
+   *
    * @param url Url oder Pfad einer Komponente.
    * @param dialogHeight Höhe des Dialogs. Angabe in Prozent im Verhältnis zur Bildschirmhöhe (Komplette Höhe = 100).
    * @param dialogWidth Breite des Dialog. Angabe in Prozent im Verhältnis zur Bildschirmbreite.
@@ -21,7 +21,7 @@ export class OfficeService {
 
   /**
    * Öffnet ein Dokument in MS Office.
-   * 
+   *
    * @param base64 Das Dokument als Base64-String
    */
   async openDocument(base64: string): Promise<void> {
@@ -85,7 +85,7 @@ export class OfficeService {
 
   /**
    * Fügt ein Fragment in das aktive Dokument ein.
-   * 
+   *
    * @param name Name des Fragments
    * @param base64 Fragmentdatei als Base64-String
    */
@@ -111,7 +111,7 @@ export class OfficeService {
 
   /**
    * Ersetzt ein ContentControl durch den angegebenen Wert.
-   * 
+   *
    * @param id Interne Id des ContentControls im Dokument
    */
   async insertValue(id: number, value: string): Promise<void> {
@@ -121,7 +121,7 @@ export class OfficeService {
 
       return context.sync().then(() => {
         if (value) {
-          control.insertText(value, 'Replace');         
+          control.insertText(value, 'Replace');
         }
         control.delete(true);
 
@@ -137,7 +137,7 @@ export class OfficeService {
   /**
    * Fügt ein neues ContentControl an der aktuellen Cursorpsoition ein.
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
-   * Text herum angelegt. 
+   * Text herum angelegt.
    */
   async insertContentControl(title: string, tag: string): Promise<number> {
     return Word.run(context => {
@@ -161,7 +161,7 @@ export class OfficeService {
 
   /**
    * Ändert Titel und Tag des angegebenen ContentControls.
-   * 
+   *
    * @param id Interne Id des Controls im Dokument.
    */
   async updateContentControl(id: number, title: string, tag: string): Promise<void> {
