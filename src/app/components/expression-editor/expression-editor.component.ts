@@ -41,7 +41,9 @@ export class ExpressionEditorComponent implements OnInit {
     return false;
   }
 
-  onSelectDocumentCommand(n: number, contentControlId: number): void {
+  onSelectDocumentCommand(n: number, contentControlId: number): boolean {
     this.actions.select(n, contentControlId);
+
+    return false;
   }
 }

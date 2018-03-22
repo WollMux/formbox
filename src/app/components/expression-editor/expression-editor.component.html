@@ -1,17 +1,14 @@
 <!-- Liste -->
 
-
-
 <div class="row">
 	<div class="col-sm-12">
-
 		<div class="panel-default panel-heading text-center">
 				<span class="fa fa-compass fa-lg text-success"></span>Navigator</div>
 		<div class="list-group">
 			<a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let c of (documentCommands | async); let i=index"
 			 (click)="onSelectDocumentCommand(i, c.id)" [ngClass]="{'active': (selectedIndex | async) === i}" routerLink="document-command-editor">
 				<div class="d-flex w-100 justify-content-between">
-					<div class="list-label">= {{ c.text }}</div>
+					<div class="list-label">= {{ c.text }} </div>
 					<span class="pull-right icon-hightlight" (click)="onDeleteDocumentCommand(i)">
 						<fa [name]="'times'"></fa>
 					</span>
@@ -19,10 +16,6 @@
 			</a>
 		</div>
 	</div>
-</div>
-
-<div class="row">
-	<router-outlet></router-outlet>
 </div>
 
 <!-- Buttons -->
@@ -36,13 +29,13 @@
 	<div class="col-xs-11">
 		<div class="btn-group" data-toggle="buttons">
 			<label class="btn btn-primary" routerLinkActive="active">
-				<input type="checkbox" checked autocomplete="off" (click)="onSelectDocumentCommand(-1)" routerLink="insert-frag-editor" />insertFrag
+				<input type="checkbox" checked autocomplete="off" routerLink="insert-frag-editor" />insertFrag
 			</label>
 			<label class="btn btn-primary" routerLinkActive="active">
-				<input type="checkbox" autocomplete="off" (click)="onSelectDocumentCommand(-1)" routerLink="override-frag-editor" />overrideFrag
+				<input type="checkbox" autocomplete="off" routerLink="override-frag-editor" />overrideFrag
 			</label>
 		</div>
 	</div>
 </div>
 
-<router-outlet name="insert-frag-editor-outlet"></router-outlet>
+<router-outlet></router-outlet>

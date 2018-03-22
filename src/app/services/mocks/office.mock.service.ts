@@ -103,7 +103,7 @@ export class OfficeMockService {
   async deleteXmlByNamespace(ns: string): Promise<void> {
     return Promise.reject('Not implemented.');
   }
-  
+          
   async selectContentControlById(contentControlId: number): Promise<number> {
     return Promise.resolve(1);
   }

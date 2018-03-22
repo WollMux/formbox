@@ -64,11 +64,6 @@ export class AppComponent implements OnInit {
   }
 
   onInsertDocument(): void {
-    this.templates.getTemplateUrl('Externer Briefkopf').then(url => {
-      this.templates.getFileAsBase64(url).then(base64 => {
-        this.office.openDocument(base64);
-      })
-    })
     this.actions.loadTemplate('Externer_Briefkopf');
   }
 
