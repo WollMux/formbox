@@ -18,6 +18,7 @@ import { Form } from './data/forms/form';
 import { Label } from './data/forms/label';
 import { Button } from './data/forms/button';
 import { Router } from '@angular/router';
+import { FormularEditorActions } from './store/actions/formular-editor-actions';
 
 @Component({
   selector: 'app-root',
@@ -32,13 +33,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private templates: TemplateService,
     private actions: TemplateActions,
     private absenderlisteActions: AbsenderlisteActions,
     private storageActions: StorageActions,
     private storage: StorageService,
     private expressions: ExpressionsService,
     private formdata: FormDataService,
+    private formularEditorActions: FormularEditorActions,
     private log: Logger) {
   }
 
@@ -52,14 +53,15 @@ export class AppComponent implements OnInit {
         this.absenderlisteActions.loadAbsenderState();
       });
     } else {
-      this.storage.reset().then(() => {
-        this.absenderlisteActions.loadAbsenderState();
-      });
+      await this.storage.reset();
+      this.absenderlisteActions.loadAbsenderState();
     }
 
     this.templateStatus.subscribe(status => {
       this.log.debug(status);
     });
+
+    this.formularEditorActions.load();
   }
 
   onInsertDocument(): void {

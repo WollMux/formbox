@@ -3,16 +3,18 @@ import { AbsenderlisteState } from './absender-state';
 import { INITIAL_STATE as ldapInit, LDAPState } from './ldap-state';
 import { ExpressionEditorState } from './expression-editor-state';
 import { INITIAL_STATE as EEC_INITIAL_STATE } from './expression-editor-commands-state';
+import { FormularEditorState, INITIAL_STATE as FE_INITIAL_STATE } from './formular-editor-state';
 
 /**
  * Globales Statusobjekt für FormBox.
- * Dient als Root für untergeordnete Statusobjekte. 
+ * Dient als Root für untergeordnete Statusobjekte.
  */
 export interface FormBoxState {
   absenderliste: AbsenderlisteState;
   template: TemplateState;
   ldap: LDAPState;
   expressionEditor: ExpressionEditorState;
+  formularEditor: FormularEditorState;
 }
 
 /**
@@ -26,5 +28,6 @@ export const INITIAL_STATE: FormBoxState = {
   expressionEditor: {
     expressionEditorCommands: EEC_INITIAL_STATE,
     expressionEditorOverrideFrags: { overrideFrags: [] }
-  }
+  },
+  formularEditor: FE_INITIAL_STATE
 };

@@ -7,6 +7,7 @@ import { StorageEpics } from './storage-epics';
 import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epics';
 import { DocumentTreeViewEpics } from './document-treeview-epics';
 import { DialogEpics } from './dialog-epics';
+import { FormularEditorEpics } from './formular-editor-epics';
 
 @Injectable()
 export class RootEpic {
@@ -17,7 +18,8 @@ export class RootEpic {
     private storageEpics: StorageEpics,
     private expressEditorCommandsEpics: ExpressionEditorCommandsEpics,
     private documentTreeViewEpics: DocumentTreeViewEpics,
-    private dialogEpics: DialogEpics
+    private dialogEpics: DialogEpics,
+    private formularEpics: FormularEditorEpics
   ) { }
 
   epics = () => combineEpics(
@@ -44,6 +46,14 @@ export class RootEpic {
     this.expressEditorCommandsEpics.startSelectingCommand,
     this.expressEditorCommandsEpics.selectCommand,
     this.documentTreeViewEpics.getBarList,
-    this.dialogEpics.displayDialog
+    this.dialogEpics.displayDialog,
+    this.formularEpics.loadingForm,
+    this.formularEpics.startSavingForm,
+    this.formularEpics.savingForm,
+    this.formularEpics.creatingForm,
+    this.formularEpics.creatingControl,
+    this.formularEpics.deletingControl,
+    this.formularEpics.editingControl,
+    this.formularEpics.hidingControl
   )
 }
