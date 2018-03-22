@@ -18,6 +18,121 @@ export class OfficeMockService {
     { id: 100, cmd: '=insertFrag(\'Email\')'.substr(1).trim() }
   ];
 
+  xml = `<?xml version="1.0" encoding="utf-8" ?>
+  <!DOCTYPE xml>
+  <form
+    xmlns="http://www.muenchen.de/formbox/forms"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">
+    <id>myForm</id>
+    <title>Title</title>
+    <controls>
+      <label>
+        <id>Label1</id>
+        <title>Label 1</title>
+      </label>
+      <label>
+        <id>Label2</id>
+        <title>Label 2</title>
+      </label>
+      <tabs>
+        <id>tabs</id>
+        <pages>
+          <tab>
+            <id>tab1</id>
+            <controls>
+              <combobox>
+                <id>combobox1</id>
+                <title>Combobox 1</title>
+                <ccid>1</ccid>
+                <editable>true</editable>
+                <options>
+                  <option>
+                    <id>1</id>
+                    <value>Item1</value>
+                  </option>
+                  <option>
+                    <id>2</id>
+                    <value>Item2</value>
+                  </option>
+                  <option>
+                    <id>3</id>
+                    <value>Item3</value>
+                  </option>
+                  <option>
+                    <id>4</id>
+                    <value>Item4</value>
+                  </option>
+                </options>
+              </combobox>
+              <label>
+                <id>label1</id>
+                <title>Label1</title>
+              </label>
+              <textfield>
+                <id>textfeld1</id>
+                <title>Eingabefeld</title>
+                <tip></tip>
+                <ccid>2</ccid>
+                <readonly>false</readonly>
+                <autofill>Text</autofill>
+              </textfield>
+              <textarea>
+                <id>textare1</id>
+                <title>Eingabefeld mehrzeilig</title>
+                <tip></tip>
+                <ccid>3</ccid>
+                <readonly>false</readonly>
+                <autofill>Text</autofill>
+                <lines>3</lines>
+                <wrap>true</wrap>
+              </textarea>
+            </controls>
+            <title>Tab 1</title>
+            <tip></tip>
+          </tab>
+          <tab>
+            <id>tab2</id>
+            <controls>
+              <checkbox>
+                <id>checkbox1</id>
+                <title>Checkbox 1</title>
+                <ccid>4</ccid>
+              </checkbox>
+              <checkbox>
+                <id>checkbox2</id>
+                <title>Checkbox 1</title>
+                <ccid>5</ccid>
+              </checkbox>
+              <separator>
+                <id>separator1</id>
+              </separator>
+              <hbox>
+                <id>hbox1</id>
+                <controls>
+                  <button>
+                    <id>button1</id>
+                    <title>Button 1</title>
+                    <action>openTemplate</action>
+                    <value>fragId</value>
+                  </button>
+                  <button>
+                    <id>button2</id>
+                    <title>Button 2</title>
+                    <action>openExt</action>
+                    <value>explorer.exe</value>
+                    <disabled>true</disabled>
+                  </button>
+                </controls>
+              </hbox>
+            </controls>
+            <title>Tab 2</title>
+          </tab>
+        </pages>
+      </tabs>
+    </controls>
+  </form>`;
+
   constructor(private log: Logger) { }
 
   async openDocument(base64: string): Promise<void> {
@@ -81,23 +196,23 @@ export class OfficeMockService {
   }
 
   async addXml(xml: string): Promise<string> {
-    return Promise.reject('Not implemented.');
+    return Promise.resolve('form');
   }
 
   async getXmlById(id: string): Promise<string> {
-    return Promise.reject('Not implemented.');
+    return Promise.resolve(this.xml);
   }
 
   async getXmlIdsByNamespace(ns: string): Promise<string[]> {
-    return Promise.reject('Not implemented.');
+    return Promise.resolve([ this.xml ]);
   }
 
   async deleteXmlById(id: string): Promise<void> {
-    return Promise.reject('Not implemented.');
+    return Promise.resolve();
   }
 
   async deleteXmlByNamespace(ns: string): Promise<void> {
-    return Promise.reject('Not implemented.');
+    return Promise.resolve();
   }
 
   async selectContentControlById(contentControlId: number): Promise<number> {

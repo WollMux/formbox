@@ -57,6 +57,9 @@ import { DialogActions } from './store/actions/dialog-actions';
 import { DialogEpics } from './store/middleware/dialog-epics';
 import { DialogService } from './services/dialog.service';
 import { BarService } from './services/bar.service';
+import { FormularEditorActions } from './store/actions/formular-editor-actions';
+import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
+import { FormularEditorService } from './services/formular-editor.service';
 
 @NgModule({
   declarations: [
@@ -113,7 +116,10 @@ import { BarService } from './services/bar.service';
     { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService },
     FormDataService,
     FormXmlParserService,
-    BarService
+    BarService,
+    FormularEditorActions,
+    FormularEditorEpics,
+    FormularEditorService
   ],
   bootstrap: [AppComponent]
 })
