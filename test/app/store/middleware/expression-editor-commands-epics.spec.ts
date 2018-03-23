@@ -9,6 +9,8 @@ import { TemplateActions } from '../../../../src/app/store/actions/template-acti
 import { ExpressionEditorCommandsActions } from '../../../../src/app/store/actions/expression-editor-commands-actions';
 import { ExpressionEditorCommandsEpics } from '../../../../src/app/store/middleware/expression-editor-commands-epics';
 import { FormBoxState } from '../../../../src/app/store/states/formbox-state';
+import { OfficeMockService } from '../../../../src/app/services/mocks/office.mock.service';
+import { OfficeService } from '../../../../src/app/services/office.service';
 
 describe('Expression Editor epics', () => {
   beforeEach(() => {
@@ -19,6 +21,7 @@ describe('Expression Editor epics', () => {
       ],
       providers: [
         { provide: TemplateService, useClass: TemplateMockService },
+        { provide: OfficeService, useClass:OfficeMockService },
         TemplateActions,
         ExpressionEditorCommandsActions,
         ExpressionEditorCommandsEpics
