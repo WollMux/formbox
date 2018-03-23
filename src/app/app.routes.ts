@@ -13,7 +13,6 @@ import { DebugComponent } from './components/debug-component/debug.component';
 export const appRoutes: Routes = [
   { path: 'absender-verwalten', component: AbsenderVerwaltenComponent },
   { path: 'absender-auswahl', component: AbsenderAuswahlComponent },
-  { path: 'ldap-suche', component: LDAPSucheComponent },
   { path: 'document-treeview', component: DocumentTreeviewComponent },
   { path: 'debug', component: DebugComponent},
   {
