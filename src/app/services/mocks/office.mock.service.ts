@@ -107,4 +107,8 @@ export class OfficeMockService {
   async selectContentControlById(contentControlId: number): Promise<number> {
     return Promise.resolve(1);
   }
+
+  async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
+    return Promise.reject('Not implemented.');
+  }
 }
