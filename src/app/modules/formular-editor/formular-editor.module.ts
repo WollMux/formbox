@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormularEditorLabelComponent } from '../../components/formular-editor-label/formular-editor-label.component';
 import { FormularEditorCheckboxComponent } from '../../components/formular-editor-checkbox/formular-editor-checkbox.component';
 import { FormularEditorTextfieldComponent } from '../../components/formular-editor-textfield/formular-editor-textfield.component';
+import { FormularEditorTabComponent } from '../../components/formular-editor-tab/formular-editor-tab.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,8 @@ const routes: Routes = [
     FormularEditorComponent,
     FormularEditorLabelComponent,
     FormularEditorCheckboxComponent,
-    FormularEditorTextfieldComponent
+    FormularEditorTextfieldComponent,
+    FormularEditorTabComponent
   ],
   exports: [
     RouterModule

@@ -54,6 +54,7 @@
               <app-formular-editor-label *ngSwitchCase="'Label'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-label>
               <app-formular-editor-checkbox *ngSwitchCase="'Checkbox'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-checkbox>
               <app-formular-editor-textfield *ngSwitchCase="'Textfield'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-textfield>
+              <app-formular-editor-tab *ngSwitchCase="'Tab'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-tab>
             </div>
           </ng-container>
         </ng-template>
