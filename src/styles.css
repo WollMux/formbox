@@ -104,13 +104,6 @@ span.icon-hightlight:hover {
     text-decoration: none
 }
 
-
-/* funktioniert nicht in dokument-treeview-component.css ?*/
-
-.angular-tree-component {
-    background-color: #fde57b;
-}
-
 .container {
     background-color: #ffed9e
 }
@@ -148,33 +141,7 @@ span.icon-hightlight:hover {
     background-color: #FCC700;
 }
 
-/* overlay Tooltip example*/
-
-.tip {
-    text-decoration: none
-}
-
-.tip:hover {
-    position: relative
-}
-
-.tip span {
-    display: none
-}
-
-.tip:hover span {
-    padding: 5px 10px 5px 5px;
-    display: block;
-    z-index: 100;
-    background-color: #555;
-    left: 0px;
-    margin: 10px;
-    width: auto;
-    position: absolute;
-    top: 50px;
-    text-decoration: none
-}
-
+/* funktioniert nicht in dokument-treeview-component.css ?*/
 .angular-tree-component {
     background-color: #fde57b;
     padding-left: 20px;

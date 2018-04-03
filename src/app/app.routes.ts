@@ -22,5 +22,9 @@ export const appRoutes: Routes = [
       { path: 'insert-frag-editor', component: ExpressionInsertFragComponent },
       { path: 'override-frag-editor', component: ExpressionOverrideFragComponent }
     ]
+  },
+  {
+    path: 'formular-editor',
+    loadChildren: 'app/modules/formular-editor/formular-editor.module#FormularEditorModule'
   }
 ];

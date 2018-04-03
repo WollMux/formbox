@@ -1,0 +1,11 @@
+.btn:hover {
+  background-color: #FCC700;
+}
+
+.glyphicon-nav-bar {
+  font-size: 16px;
+}
+
+.glyphicon-nav-bar:hover {
+  color: black;
+}
