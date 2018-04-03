@@ -23,7 +23,7 @@ export class TemplateService {
    * @param name Name des Templates
    */
   async getTemplateUrl(name: string): Promise<string> {
-    return this.http.get(`${this.formboxapi}/config/vorlagen/${name}`, { responseType: ResponseContentType.Json })
+    return this.http.get(`${this.formboxapi}/document/vorlagen/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
         return res.json().path as string;
@@ -34,7 +34,7 @@ export class TemplateService {
    * Liefert eine Liste der Namen aller Fragmenten vom Server zurück.
    */
   async getFragmentNames(): Promise<string[]> {
-    return this.http.get(`${this.formboxapi}/config/fragmente`, { responseType: ResponseContentType.Json })
+    return this.http.get(`${this.formboxapi}/document/fragmente`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => res.json() as string[])
       .catch(error => {
@@ -92,7 +92,7 @@ export class TemplateService {
   async getFragmentUrl(name: string): Promise<{ name: string, url: string }> {
     this.log.debug(`TemplateService.getFragmentUrl(${name})`);
 
-    return this.http.get(`${this.formboxapi}/config/fragmente/${name}`, { responseType: ResponseContentType.Json })
+    return this.http.get(`${this.formboxapi}/document/fragmente/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
         return { name: name, url: res.json().path as string };
