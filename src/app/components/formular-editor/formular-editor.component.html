@@ -52,6 +52,7 @@
           <ng-container *ngIf="(isEdit | async)?.indexOf(node.data.id) >= 0">
             <div [ngSwitch]="node.data.constructor.name">
               <app-formular-editor-label *ngSwitchCase="'Label'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-label>
+              <app-formular-editor-checkbox *ngSwitchCase="'Checkbox'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-checkbox>
             </div>
           </ng-container>
         </ng-template>

@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormularEditorComponent } from '../../components/formular-editor/formular-editor.component';
 import { CommonModule } from '@angular/common';
 import { FormularEditorLabelComponent } from '../../components/formular-editor-label/formular-editor-label.component';
+import { FormularEditorCheckboxComponent } from '../../components/formular-editor-checkbox/formular-editor-checkbox.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
   ],
   declarations: [
     FormularEditorComponent,
-    FormularEditorLabelComponent
+    FormularEditorLabelComponent,
+    FormularEditorCheckboxComponent
   ],
   exports: [
     RouterModule
