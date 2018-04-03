@@ -1,0 +1,26 @@
+<form >
+  <div class="form-group">
+    <label for="label">Label</label>
+    <input type="text" class="form-control" id="label" [(ngModel)]="newControl.title" name="label" required>
+  </div>
+  <div class="form-group">
+    <label for="tip">Tip</label>
+    <input type="text" class="form-control" id="tip" [(ngModel)]="newControl.tip" name="tip" required>
+  </div>
+  <div class="form-group">
+    <label for="action">Aktion</label>
+    <input type="text" class="form-control" id="action" [(ngModel)]="newControl.action" name="action" required>
+  </div>
+  <div class="form-group">
+    <label for="value">Wert</label>
+    <input type="text" class="form-control" id="value" [(ngModel)]="newControl.value" name="value" required>
+  </div>
+  <div class="form-group">
+    <label for="disabled">
+      <input type="checkbox" class="form-control" id="disabled" [(ngModel)]="newControl.disabled" name="disabled">
+      Deaktiviert
+    </label>
+  </div>
+  <span class="glyphicon glyphicon-ok pull-right" (click)="emitUpdate()" title="Ok"></span>
+  <span class="glyphicon glyphicon-remove pull-right" (click)="emitClose()" title="Abbrechen"></span>
+</form>
