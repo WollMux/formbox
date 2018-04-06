@@ -1,0 +1,8 @@
+<form >
+  <div class="form-group">
+    <label for="label">Titel</label>
+    <input type="text" class="form-control" id="label" [(ngModel)]="newControl.title" name="label" required>
+  </div>
+  <span class="glyphicon glyphicon-ok pull-right" (click)="emitUpdate()" title="Ok"></span>
+  <span class="glyphicon glyphicon-remove pull-right" (click)="emitClose()" title="Abbrechen"></span>
+</form>
