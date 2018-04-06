@@ -8,6 +8,7 @@ import { Form } from '../data/forms/form';
 import { Container } from '../data/forms/container';
 import { Tabs } from '../data/forms/tabs';
 import { Tab } from '../data/forms/tab';
+import { Combobox } from '../data/forms/combobox';
 
 /**
  * Parser für Formulardefinition in XML.
@@ -63,6 +64,8 @@ export class FormXmlParserService {
         this.currentContainer.controls.push(o);
       } else if (this.currentContainer instanceof Tabs) {
         this.currentContainer.pages.push(o);
+      } else if (this.currentContainer instanceof Combobox) {
+        this.currentContainer.option.push(o);
       }
 
       if (!this.root) {
