@@ -10,6 +10,7 @@ import { FormularEditorTextfieldComponent } from '../../components/formular-edit
 import { FormularEditorTabComponent } from '../../components/formular-editor-tab/formular-editor-tab.component';
 import { FormularEditorButtonComponent } from '../../components/formular-editor-button/formular-editor-button.component';
 import { FormularEditorFormComponent } from '../../components/formular-editor-form/formular-editor-form.component';
+import { FormularEditorTextareaComponent } from '../../components/formular-editor-textarea/formular-editor-textarea.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,8 @@ const routes: Routes = [
     FormularEditorTextfieldComponent,
     FormularEditorTabComponent,
     FormularEditorButtonComponent,
-    FormularEditorFormComponent
+    FormularEditorFormComponent,
+    FormularEditorTextareaComponent
   ],
   exports: [
     RouterModule
