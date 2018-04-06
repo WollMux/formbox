@@ -9,6 +9,7 @@ import { FormularEditorCheckboxComponent } from '../../components/formular-edito
 import { FormularEditorTextfieldComponent } from '../../components/formular-editor-textfield/formular-editor-textfield.component';
 import { FormularEditorTabComponent } from '../../components/formular-editor-tab/formular-editor-tab.component';
 import { FormularEditorButtonComponent } from '../../components/formular-editor-button/formular-editor-button.component';
+import { FormularEditorFormComponent } from '../../components/formular-editor-form/formular-editor-form.component';
 
 const routes: Routes = [
   {
@@ -30,7 +31,8 @@ const routes: Routes = [
     FormularEditorCheckboxComponent,
     FormularEditorTextfieldComponent,
     FormularEditorTabComponent,
-    FormularEditorButtonComponent
+    FormularEditorButtonComponent,
+    FormularEditorFormComponent
   ],
   exports: [
     RouterModule
