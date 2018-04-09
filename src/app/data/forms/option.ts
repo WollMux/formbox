@@ -6,6 +6,11 @@ export class Option extends Control {
   value = '';
 
   toXml(): string {
-    return `<option>${this.value}</option>`;
+    let xml = '<option>';
+    xml += `<id>${this.id}</id>`;
+    xml += `<value>${this.value}</value>`;
+    xml += '</option>';
+
+    return xml;
   }
 }
