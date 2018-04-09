@@ -98,12 +98,13 @@ describe('Formdata XML', () => {
     cb.title = 'Combobox 1';
     const option1 = new Option();
     option1.id = 'option1';
-    option1.value = 'Item1'
+    option1.value = 'Item1';
     const option2 = new Option();
     option2.id = 'option2';
     option2.value = 'Item2';
     cb.option = [option1, option2];
 
-    expect(cb.toXml()).toEqual('<combobox><id>cb1</id><title>Combobox 1</title><option><id>option1</id><value>Item1</value></option><option><id>option2</id><value>Item2</value></option></combobox>');
+    expect(cb.toXml()).toEqual('<combobox><id>cb1</id><title>Combobox 1</title><option><id>option1</id>' +
+    '<value>Item1</value></option><option><id>option2</id><value>Item2</value></option></combobox>');
   });
 });
