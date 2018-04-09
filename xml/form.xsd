@@ -34,7 +34,6 @@
    		<xsd:element name="tabs" type="tabsType"></xsd:element>
    		<xsd:element name="textarea" type="textareaType"></xsd:element>
    		<xsd:element name="textfield" type="textfieldType"></xsd:element>
-		<xsd:element name="option" type="optionType"></xsd:element>
    	</xsd:choice>
    </xsd:complexType>
 
