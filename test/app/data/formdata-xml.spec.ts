@@ -8,6 +8,8 @@ import { Tabs } from '../../../src/app/data/forms/tabs';
 import { Tab } from '../../../src/app/data/forms/tab';
 import { Textarea } from '../../../src/app/data/forms/textarea';
 import { Textfield } from '../../../src/app/data/forms/textfield';
+import { Combobox } from '../../../src/app/data/forms/combobox';
+import { Option } from '../../../src/app/data/forms/option';
 
 describe('Formdata XML', () => {
   it('writing Form as XML', () => {
@@ -88,5 +90,20 @@ describe('Formdata XML', () => {
     tf.title = 'Textfield 1';
 
     expect(tf.toXml()).toEqual('<textfield><id>textfield1</id><title>Textfield 1</title></textfield>');
+  });
+
+  it('writing Combobox as XML', () => {
+    const cb = new Combobox();
+    cb.id = 'cb1';
+    cb.title = 'Combobox 1';
+    const option1 = new Option();
+    option1.id = 'option1';
+    option1.value = 'Item1'
+    const option2 = new Option();
+    option2.id = 'option2';
+    option2.value = 'Item2';
+    cb.option = [option1, option2];
+
+    expect(cb.toXml()).toEqual('<combobox><id>cb1</id><title>Combobox 1</title><option><id>option1</id><value>Item1</value></option><option><id>option2</id><value>Item2</value></option></combobox>');
   });
 });
