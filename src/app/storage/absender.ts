@@ -1,6 +1,6 @@
 /**
  * Beschreibt die Struktur der Persönlichen Absenderliste.
- * 
+ *
  * Wird nur für Typinformationen benötigt.
  */
 export interface Absender {
@@ -22,6 +22,7 @@ export interface Absender {
   referat?: string;
   oberOrga?: string;
   orgaName?: string;
+  orgaKurz?: string;
   rolle?: string;
   orgaLang?: string;
   postanschrift?: string;

@@ -8,6 +8,7 @@ import { ITreeOptions, KEYS, TREE_ACTIONS } from 'angular-tree-component';
 import { ITreeNode } from 'angular-tree-component/dist/defs/api';
 import { Logger } from '@nsalaun/ng-logger';
 import { Router } from '@angular/router';
+import { TemplateService } from '../../services/template.service';
 
 @Component({
   selector: 'app-document-treeview',
@@ -42,6 +43,7 @@ export class DocumentTreeviewComponent implements OnInit {
     private router: Router,
     private treeActions: DocumentTreeViewActions,
     private templateActions: TemplateActions,
+    private templateService: TemplateService,
     private officeService: OfficeService
   ) { }
 
@@ -54,11 +56,12 @@ export class DocumentTreeviewComponent implements OnInit {
   }
 
   nodeClicked = (node: ITreeNode) => {
-    if (node.isRoot) {
-      return;
-    }
-
-    this.templateActions.insertFragment(0, node.data.name);
+    this.templateService.getTemplateUrl(node.data.name).then(url => {
+      this.log.debug(url);
+      this.templateService.getFileAsBase64(url).then(base64 => {
+        this.templateActions.openTemplate(base64);
+      });
+    });
   }
 
   getNodeIsExpandedClass = (node: ITreeNode): any => {

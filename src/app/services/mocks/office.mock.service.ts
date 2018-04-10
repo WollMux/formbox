@@ -6,7 +6,8 @@ export class OfficeMockService {
   cmds = [
     { id: 0, cmd: '=insertFrag(\'Adresse_Angaben\')'.substr(1).trim() },
     { id: 1, cmd: '=insertFrag(\'Empfaengerfeld\')'.substr(1).trim() },
-    { id: 100, cmd: '=insertFrag(\'Email\')'.substr(1).trim() }
+    { id: 100, cmd: '=insertFrag(\'Email\')'.substr(1).trim() },
+    { id: 5, cmd: '=nachname'.substr(1).trim() }
   ];
 
   cmds1 = [
@@ -80,6 +81,12 @@ export class OfficeMockService {
 
   async insertFragment(id: number, base64: string): Promise<void> {
     this.log.debug('OfficeMockService.insertFragment');
+
+    return Promise.resolve();
+  }
+
+  async insertValue(id: number, value: string): Promise<void> {
+    this.log.debug(`OfficeMockService.insertValue(${id}, ${value})`);
 
     return Promise.resolve();
   }

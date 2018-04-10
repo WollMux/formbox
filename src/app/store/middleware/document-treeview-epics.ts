@@ -19,7 +19,7 @@ export class DocumentTreeViewEpics {
   getTemplateList = (action: ActionsObservable<any>) => {
     return action.ofType(DocumentTreeViewActions.GET_TREEVIEW_NODES.started)
       .mergeMap((value, n) => {
-        return this.templateService.getTemplates().then(templateList => {
+        return this.templateService.getTreeView().then(templateList => {
           const act = DocumentTreeViewActions.GET_TREEVIEW_NODES.done({ params: {}, result: templateList });
 
           return act;

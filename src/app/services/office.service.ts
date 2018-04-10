@@ -72,7 +72,7 @@ export class OfficeService {
           return 0;
         });
 
-        const cc = c.pop();
+        const cc = sorted.pop();
 
         return this.deleteContentControlTitle(cc.id).then(() => {
           return cc;

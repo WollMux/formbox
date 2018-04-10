@@ -11,12 +11,12 @@ import { TemplateService } from './template.service';
 /**
  * Klasse zum Parsen und Ausführen von Javascript-Expressions.
  * Diese Expressions werden in den Dokumentenkommandos verwendet.
- * 
+ *
  * Über die Klasse Context können Expressions auf die Eigenschaften des
  * aktuellen Absenders zugreifen.
  * Außerdem steht auch eine Datumsfunktion date() zur Verfügung.
  * Javascript-Funktionen Math. parseInt, parseFloat, isNaN, Array können verwendet
- * werden. 
+ * werden.
  */
 @Injectable()
 export class ExpressionsService {
@@ -24,9 +24,9 @@ export class ExpressionsService {
 
   /**
    * Der Formatter kann dazu verwendet werden ein Datum über einen Formatstring
-   * zu fomatieren. Formatter werden mit einer Pipe ('|') an das Kommando 
+   * zu fomatieren. Formatter werden mit einer Pipe ('|') an das Kommando
    * angehängt
-   * 
+   *
    * z.B.: date() | format('yyyy-mm-dd')
    */
   private formmatters = {
@@ -57,7 +57,7 @@ export class ExpressionsService {
   /**
    * Parst eine Expression ohne sie auszuführen. Die Funktion kann später
    * mit call() aufegrufen werden.
-   * 
+   *
    * Fehler in der Expression lösen eine Exception aus. Das kann zur Validierung
    * in der GUI verwendet werden.
    */

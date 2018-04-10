@@ -26,7 +26,7 @@ export class TemplateService {
     return this.http.get(`${this.formboxapi}/document/vorlagen/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
-        return res.json().path as string;
+        return res.json().path;
       });
   }
 
@@ -95,7 +95,7 @@ export class TemplateService {
     return this.http.get(`${this.formboxapi}/document/fragmente/${name}`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
-        return { name: name, url: res.json().path as string };
+        return { name: name, url: res.json().path };
       });
   }
 
@@ -127,6 +127,26 @@ export class TemplateService {
     this.log.debug('TemplateService.getTemplate()');
 
     return this.http.get(`${this.formboxapi}/document/vorlagen`, { responseType: ResponseContentType.Json })
+      .toPromise()
+      .then(res => {
+        return res.json();
+      })
+      .catch(error => {
+        this.log.error(error);
+
+        return undefined;
+      });
+  }
+
+  /**
+   * Lädt eine Liste aller serverseitig gespeicherten Dokumente.
+   *
+   * @returns Treeviewstruktur als Javascript-Array
+   */
+  async getTreeView(): Promise<any[]> {
+    this.log.debug('TemplateService.getTemplate()');
+
+    return this.http.get(`${this.formboxapi}/document/treeview`, { responseType: ResponseContentType.Json })
       .toPromise()
       .then(res => {
         return res.json();

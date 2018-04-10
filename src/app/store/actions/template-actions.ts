@@ -46,4 +46,10 @@ export class TemplateActions {
 
     return this.ngRedux.dispatch(action);
   }
+
+  openTemplate(content: string): any {
+    const action = TemplateActions.OPEN_TEMPLATE(content);
+
+    return this.ngRedux.dispatch(action);
+  }
 }
