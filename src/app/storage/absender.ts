@@ -3,36 +3,36 @@
  *
  * Wird nur für Typinformationen benötigt.
  */
-export interface Absender {
+export class Absender {
   id?: number;
   uid: string;
   vorname: string;
   nachname: string;
-  anrede?: string;
-  titel?: string;
-  telefon?: string;
-  orgaTelefon?: string;
-  orgaFax?: string;
-  fax?: string;
-  zimmer?: string;
-  mail?: string;
-  dienstBezKurz?: string;
-  zustaendigkeit?: string;
-  funktion?: string;
-  referat?: string;
-  oberOrga?: string;
-  orgaName?: string;
-  orgaKurz?: string;
-  rolle?: string;
-  orgaLang?: string;
-  postanschrift?: string;
-  postPLZ?: string;
-  postOrt?: string;
-  dienstgebaeude?: string;
-  dienstgebaeudePLZ?: string;
-  dienstgebaeudeOrt?: string;
-  orgaEmail?: string;
-  oeffungszeiten?: string;
-  persErreichbarkeit?: string;
-  OID?: string;
+  anrede: string = undefined;
+  titel: string = undefined;
+  telefon: string = undefined;
+  orgaTelefon: string = undefined;
+  orgaFax: string = undefined;
+  fax: string = undefined;
+  zimmer: string = undefined;
+  mail: string = undefined;
+  dienstBezKurz: string = undefined;
+  zustaendigkeit: string = undefined;
+  funktion: string = undefined;
+  referat: string = undefined;
+  oberOrga: string = undefined;
+  orgaName: string = undefined;
+  orgaKurz: string = undefined;
+  rolle: string = undefined;
+  orgaLang: string = undefined;
+  postanschrift: string = undefined;
+  postPLZ: string = undefined;
+  postOrt: string = undefined;
+  dienstgebaeude: string = undefined;
+  dienstgebaeudePLZ: string = undefined;
+  dienstgebaeudeOrt: string = undefined;
+  orgaEmail: string = undefined;
+  oeffungszeiten: string = undefined;
+  persErreichbarkeit: string = undefined;
+  OID: string = undefined;
 }

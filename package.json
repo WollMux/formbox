@@ -8,7 +8,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true",
+    "start": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=false",
     "build": "ng build && ng lint",
     "build-jenkins": "ng build && ng lint --format json > lint.json",
     "test": "ng test",

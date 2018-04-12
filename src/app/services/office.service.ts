@@ -38,15 +38,19 @@ export class OfficeService {
    */
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      return c.items.filter(it => it.title && it.title.startsWith('='))
-        .map(it => ({ id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }));
+      return c.items.filter(it => {
+        return it.title && it.title.startsWith('=');
+      })
+        .map(it => {
+          this.log.debug(JSON.stringify({tag: it.tag, title: it.title}));
+          return { id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }; });
     });
   }
 
   /**
    * Liefert das nächste DocumentCommand zurück.
    */
-  async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
+  async getNextDocumentCommand(): Promise<{ id: number, tag: string, cmd: string }> {
     return this.getDocumentCommands().then(c => {
       if (c && c.length > 0) {
         const sorted = c.sort((cc1, cc2) => {

@@ -118,7 +118,7 @@ export class TemplateEpics {
 
   /**
    * Fügt ein Fragment in das aktive Dokument ein.
-   * 
+   *
    * Action: INSERT_FRAGMENT.started
    * Payload: Id und Name des Fragments
    */
@@ -137,7 +137,7 @@ export class TemplateEpics {
 
   /**
    * Führt ein DokumentenKommando aus.
-   * 
+   *
    * Action: EXECUTE_COMMAND.started
    * Payload: Id des Kommandos und Expression.
    */

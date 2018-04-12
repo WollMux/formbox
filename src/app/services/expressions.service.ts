@@ -50,6 +50,7 @@ export class ExpressionsService {
         Object.keys(absender).forEach(key => {
           expressions.globals[key] = absender[key];
         });
+        console.log(JSON.stringify(expressions.globals));
       }
     });
   }
@@ -91,6 +92,10 @@ class Context {
     this.templates.getFragmentUrl(of).then(async url => {
       await this.templates.insertFragment(this.id, url.url);
     });
+  }
+
+  insertValue(name: string) {
+    console.log(name);
   }
 
   overrideFrag(...overrides: { fragId: string, newFragId: string }[]): void {
