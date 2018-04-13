@@ -57,9 +57,26 @@ import { DialogActions } from './store/actions/dialog-actions';
 import { DialogEpics } from './store/middleware/dialog-epics';
 import { DialogService } from './services/dialog.service';
 import { BarService } from './services/bar.service';
+<<<<<<< HEAD
 import { FormularEditorActions } from './store/actions/formular-editor-actions';
 import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
 import { FormularEditorService } from './services/formular-editor.service';
+=======
+import { FormularGuiComponent } from './components/formular-gui/formular-gui.component';
+import { TabsModule } from 'ngx-tabs';
+<<<<<<< Updated upstream
+>>>>>>> Formular-GUI.
+=======
+import { FormularGuiLabelComponent } from './components/formular-gui-label/formular-gui-label.component';
+import { FormularGuiCheckboxComponent } from './components/formular-gui-checkbox/formular-gui-checkbox.component';
+import { FormularGuiTextfieldComponent } from './components/formular-gui-textfield/formular-gui-textfield.component';
+import { FormularGuiButtonComponent } from './components/formular-gui-button/formular-gui-button.component';
+import { FormularGuiTextareaComponent } from './components/formular-gui-textarea/formular-gui-textarea.component';
+import { FormularGuiComboboxComponent } from './components/formular-gui-combobox/formular-gui-combobox.component';
+import { FormularGuiBase } from './components/formular-gui-base/formular-gui-base';
+import { FormularGuiSeperatorComponent } from './components/formular-gui-seperator/formular-gui-seperator.component';
+import { FormularGuiFormComponent } from './components/formular-gui-form/formular-gui-form.component';
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [
@@ -74,7 +91,16 @@ import { FormularEditorService } from './services/formular-editor.service';
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
     DocumentTreeviewComponent,
-    DebugComponent
+    DebugComponent,
+    FormularGuiComponent,
+    FormularGuiLabelComponent,
+    FormularGuiCheckboxComponent,
+    FormularGuiTextfieldComponent,
+    FormularGuiButtonComponent,
+    FormularGuiTextareaComponent,
+    FormularGuiComboboxComponent,
+    FormularGuiSeperatorComponent,
+    FormularGuiFormComponent
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -88,7 +114,8 @@ import { FormularEditorService } from './services/formular-editor.service';
     FormsModule,
     Angular2FontawesomeModule,
     TreeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TabsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

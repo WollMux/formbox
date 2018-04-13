@@ -9,6 +9,7 @@ import { ExpressionOverrideFragComponent } from './components/expression-overrid
 import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
 import { LDAPSucheComponent } from './components/ldap-suche/ldap-suche.component';
 import { DebugComponent } from './components/debug-component/debug.component';
+import { FormularGuiComponent } from './components/formular-gui/formular-gui.component';
 
 export const appRoutes: Routes = [
   { path: 'absender-verwalten', component: AbsenderVerwaltenComponent },
@@ -23,8 +24,12 @@ export const appRoutes: Routes = [
       { path: 'override-frag-editor', component: ExpressionOverrideFragComponent }
     ]
   },
+<<<<<<< HEAD
   {
     path: 'formular-editor',
     loadChildren: 'app/modules/formular-editor/formular-editor.module#FormularEditorModule'
   }
+=======
+  { path: 'formular-gui', component: FormularGuiComponent }
+>>>>>>> Formular-GUI.
 ];
