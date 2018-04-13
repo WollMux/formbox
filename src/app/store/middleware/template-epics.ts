@@ -145,11 +145,18 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.EXECUTE_COMMAND.started)
       .mergeMap(({ payload }, n: number) => {
         const val = this.expr.eval(payload.cmd, payload.id);
-        if (val) {
-          this.templates.insertValue(payload.id, val);
-        }
+        if (val && val instanceof Promise) {
+          return val.then(() => {
+            return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+          });
+        } else if (val) {
+          // val muss unbeding ein String sein, da sonst die Werte nicht ins Dokument eingefügt werden
+          this.templates.insertValue(payload.id, `${val}`);
 
-        return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+          return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+        } else {
+          return Promise.resolve(TemplateActions.ERROR({payload: payload}));
+        }
       });
   }
 

@@ -56,12 +56,7 @@ export class DocumentTreeviewComponent implements OnInit {
   }
 
   nodeClicked = (node: ITreeNode) => {
-    this.templateService.getTemplateUrl(node.data.id).then(url => {
-      this.log.debug(url);
-      this.templateService.getFileAsBase64(url).then(base64 => {
-        this.templateActions.openTemplate(base64);
-      });
-    });
+    this.templateActions.loadTemplate(node.data.id);
   }
 
   getNodeIsExpandedClass = (node: ITreeNode): any => {

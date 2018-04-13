@@ -87,15 +87,18 @@ class Context {
 
   constructor(private templates: TemplateService) { /*Empty */ }
 
-  insertFrag(name: string): void {
+  insertFrag(name: string): Promise<void> {
     const of = this.getOverrideFrag(name) || name;
-    this.templates.getFragmentUrl(of).then(async url => {
-      await this.templates.insertFragment(this.id, url.url);
+
+    return this.templates.getFragmentUrl(of).then(url => {
+      return this.templates.insertFragment(this.id, url.url).then(() => {
+        return;
+      });
     });
   }
 
-  insertValue(name: string) {
-    console.log(name);
+  insertValue(): void {
+    console.log('insertValue');
   }
 
   overrideFrag(...overrides: { fragId: string, newFragId: string }[]): void {

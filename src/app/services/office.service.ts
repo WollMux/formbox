@@ -38,11 +38,14 @@ export class OfficeService {
    */
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      return c.items.filter(it => {
+      this.log.debug(`length: ${c.items.length}`);
+      const filtered = c.items.filter(it => {
         return it.title && it.title.startsWith('=');
-      })
+      });
+      this.log.debug(`filtered length: ${filtered.length}`);
+      return filtered
         .map(it => {
-          this.log.debug(JSON.stringify({tag: it.tag, title: it.title}));
+          // this.log.debug(JSON.stringify({tag: it.tag, title: it.title}));
           return { id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }; });
     });
   }
