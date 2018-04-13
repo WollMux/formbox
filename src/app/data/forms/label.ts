@@ -3,7 +3,6 @@ import { TitelControl } from './titel-control';
 
 @XmlClass('label')
 export class Label extends TitelControl {
-  title = '';
 
   constructor(c?: Label) {
     super(c);

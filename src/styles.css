@@ -156,3 +156,26 @@ span.icon-hightlight:hover {
     -ms-user-select: none;
     user-select: none;
 }
+
+
+.flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.hbox {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.flex-item {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
