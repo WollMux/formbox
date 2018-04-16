@@ -50,7 +50,6 @@ export class ExpressionsService {
         Object.keys(absender).forEach(key => {
           expressions.globals[key] = absender[key];
         });
-        console.log(JSON.stringify(expressions.globals));
       }
     });
   }
@@ -97,12 +96,12 @@ class Context {
     });
   }
 
-  insertValue(): void {
-    console.log('insertValue');
-  }
+  overrideFrag(overrides: { oldFrag: string, newFrag: string }[]): Promise<void> {
+    for (const override of overrides) {
+      this.overrideFrags.push({fragId: override.oldFrag, newFragId: override.newFrag});
+    }
 
-  overrideFrag(...overrides: { fragId: string, newFragId: string }[]): void {
-    this.overrideFrags.push(...overrides);
+    return Promise.resolve();
   }
 
   date = (): Date => {

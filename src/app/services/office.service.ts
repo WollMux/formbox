@@ -38,15 +38,10 @@ export class OfficeService {
    */
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      this.log.debug(`length: ${c.items.length}`);
-      const filtered = c.items.filter(it => {
-        return it.title && it.title.startsWith('=');
-      });
-      this.log.debug(`filtered length: ${filtered.length}`);
-      return filtered
-        .map(it => {
-          // this.log.debug(JSON.stringify({tag: it.tag, title: it.title}));
-          return { id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }; });
+      const filtered = c.items.filter(it => it.title && it.title.startsWith('='));
+
+      return filtered.map(it => {
+        return { id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }; });
     });
   }
 
