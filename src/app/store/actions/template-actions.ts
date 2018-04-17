@@ -6,7 +6,7 @@ import { FormBoxState } from '../states/formbox-state';
 const actionCreator = actionCreatorFactory();
 
 // tslint:disable:interface-over-type-literal
-export type OverrideFrag = { fragId: string, newFragId: string };
+export type OverrideFrag = { oldFrag: string, newFrag: string };
 export type DocumentCommand = { id: number, cmd: string };
 
 /**
