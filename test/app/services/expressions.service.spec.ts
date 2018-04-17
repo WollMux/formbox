@@ -40,9 +40,8 @@ describe('ExpressionsService', () => {
 
   it('evaluate overrideFrag', inject([ExpressionsService], (service: ExpressionsService) => {
     const spy = spyOn(service.ctx, 'overrideFrag').and.callThrough();
-    const ret = service.eval('overrideFrag({fragId: \'Adresse_Angaben\', newFragId: \'Empfaengerfeld\'})', 0);
+    const ret = service.eval('overrideFrag({oldFrag: \'Adresse_Angaben\', newFrag: \'Empfaengerfeld\'})', 0);
 
-    expect(ret).toBeUndefined();
-    expect(spy).toHaveBeenCalledWith({ fragId: 'Adresse_Angaben', newFragId: 'Empfaengerfeld' });
+    expect(spy).toHaveBeenCalledWith({ oldFrag: 'Adresse_Angaben', newFrag: 'Empfaengerfeld' });
   }));
 });

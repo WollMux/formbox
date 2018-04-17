@@ -93,8 +93,10 @@ class Context {
     });
   }
 
-  overrideFrag(...overrides: { fragId: string, newFragId: string }[]): void {
+  overrideFrag(overrides: { oldFrag: string, newFrag: string }[]): Promise<void> {
     this.overrideFrags.push(...overrides);
+
+    return Promise.resolve();
   }
 
   date = (): Date => {
@@ -102,9 +104,9 @@ class Context {
   }
 
   private getOverrideFrag(fragId: string): string {
-    const of = this.overrideFrags.find(it => it.fragId === fragId);
+    const of = this.overrideFrags.find(it => it.oldFrag === fragId);
     if (of) {
-      return of.newFragId;
+      return of.newFrag;
     }
 
     return undefined;
