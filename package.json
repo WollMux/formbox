@@ -34,7 +34,7 @@
     "@angular/platform-browser": "^5.2.8",
     "@angular/platform-browser-dynamic": "^5.2.8",
     "@angular/router": "^5.2.8",
-    "@microsoft/office-js": "git://github.com/OfficeDev/office-js.git#beta",
+    "@microsoft/office-js": "git://github.com/OfficeDev/office-js.git#v1.1.3-beta-next.4",
     "@nsalaun/ng-logger": "^5.0.0",
     "angular2-fontawesome": "^0.9.3",
     "bootstrap": "^3.3.7",
@@ -85,6 +85,6 @@
     "tslint": "5.8.0",
     "tslint-language-service": "^0.9.8",
     "typedoc": "^0.9.0",
-    "typescript": "~2.4.2"
+    "typescript": "^2.6.2"
   }
 }

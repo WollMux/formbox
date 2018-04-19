@@ -53,6 +53,17 @@ export class TemplateEpics {
       });
   }
 
+  loadingTemplateDone = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.LOAD_TEMPLATE.done)
+      .mergeMap(({ payload }, n: number) => {
+        return this.templates.showDocument().then(() => {
+          const act = TemplateActions.DOCUMENT_SHOWN({});
+
+          return act;
+        });
+      });
+  }
+
   /**
    * Lädt ein Template als Base64 über eine Url.
    * Action: GET_TEMPLATE

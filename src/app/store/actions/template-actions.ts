@@ -19,6 +19,7 @@ export class TemplateActions {
   static LOAD_TEMPLATE = actionCreator.async<string, any>('LOAD_TEMPLATE');
   static GET_TEMPLATE = actionCreator<string>('GET_TEMPLATE');
   static OPEN_TEMPLATE = actionCreator<string>('OPEN_TEMPLATE');
+  static DOCUMENT_SHOWN = actionCreator<any>('DOCUMENT_SHOWN');
 
   static INSERT_FRAGMENT = actionCreator.async<{ id: number, name: string }, number>('INSERT_FRAGMENT');
 
