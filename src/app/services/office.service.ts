@@ -17,16 +17,25 @@ export class OfficeService {
    */
   async openDocument(base64: string): Promise<Word.DocumentCreated> {
     return await Word.run(context => {
-      debugger
       const doc = context.application.createDocument(base64);
-      doc.track();
+      context.trackedObjects.add(doc);
+      context.load(doc);
       this.document = doc;
-      doc.load('contentControls');
-      doc.open();
+      doc.load('contentControls/items');
 
       return context.sync().then(() => {
         return doc;
       });
+    });
+  }
+
+  async showDocument(): Promise<void> {
+    Word.run(context => {
+      if (this.document) {
+        this.document.open();
+
+        return this.document.context.sync();
+      }
     });
   }
 
@@ -35,7 +44,6 @@ export class OfficeService {
    */
   async getDocumentCommands(): Promise<{ id: number, tag: string, cmd: string }[]> {
     return this.getAllContentControls().then(c => {
-      debugger;
       return c.filter(it => it.title && it.title.startsWith('='))
         .map(it => ({ id: it.id, tag: it.tag, cmd: it.title.substr(1).trim() }));
     });
@@ -47,7 +55,6 @@ export class OfficeService {
   async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
     return this.getDocumentCommands().then(c => {
       if (c && c.length > 0) {
-        debugger;
         const sorted = c.sort((cc1, cc2) => {
           let p1 = Number.MAX_SAFE_INTEGER;
           let p2 = Number.MAX_SAFE_INTEGER;
@@ -96,7 +103,6 @@ export class OfficeService {
       } else {
         doc = context.document;
       }
-      debugger;
       const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
@@ -121,7 +127,12 @@ export class OfficeService {
    */
   async insertValue(id: number, value: string): Promise<void> {
     await Word.run(context => {
-      const doc = context.document;
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
       const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
@@ -146,7 +157,12 @@ export class OfficeService {
    */
   async insertContentControl(title: string, tag: string): Promise<number> {
     return Word.run(context => {
-      const doc = context.document;
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
       const range = doc.getSelection();
       const cc = range.insertContentControl();
       cc.title = title;
@@ -164,7 +180,12 @@ export class OfficeService {
    */
   async updateContentControl(id: number, title: string, tag: string): Promise<void> {
     await Word.run(context => {
-      const doc = context.document;
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
       const cc = doc.contentControls.getById(id);
       cc.title = title;
       cc.tag = tag;
@@ -179,7 +200,12 @@ export class OfficeService {
    */
   async deleteContentControl(id: number): Promise<void> {
     await Word.run(context => {
-      const doc = context.document;
+      let doc;
+      if (this.document) {
+        doc = this.document;
+      } else {
+        doc = context.document;
+      }
       const cc = doc.contentControls.getById(id);
       cc.delete(true);
 
@@ -245,14 +271,13 @@ export class OfficeService {
         doc = context.document;
       }
       const controls = doc.contentControls;
-      controls.load('items, items/id');
+      controls.load('items/id, items/title, items/tag');
 
-      return context.sync().then(() => {
-        debugger;
-        const cc = doc.contentControls.getByIdOrNullObject(id);
+      return doc.context.sync().then(() => {
+        const cc = controls.getByIdOrNullObject(id);
         cc.title = '';
 
-        return context.sync();
+        return doc.context.sync();
       });
     });
   }
@@ -262,16 +287,17 @@ export class OfficeService {
    */
   private getAllContentControls = async (): Promise<{ id: number, title: string, tag: string }[]> => {
     return Word.run(context => {
-      let doc;
+      let doc: Word.Document | Word.DocumentCreated;
       if (this.document) {
         doc = this.document;
       } else {
         doc = context.document;
       }
       const controls = doc.contentControls;
+      doc.context.load(controls, 'id, title, tag');
       controls.load('items/id, items/title, items/tag');
 
-      return context.sync().then(() => {
+      return doc.context.sync().then(() => {
         return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag }));
       });
     });

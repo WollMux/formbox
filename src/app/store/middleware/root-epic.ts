@@ -18,6 +18,7 @@ export class RootEpic {
 
   epics = () => combineEpics(
     this.templateEpics.loadingTemplate,
+    this.templateEpics.loadingTemplateDone,
     this.templateEpics.gettingTemplateFromUrl,
     this.templateEpics.openingTemplate,
     this.templateEpics.gettingNextCommand,
