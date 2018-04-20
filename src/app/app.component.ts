@@ -21,13 +21,13 @@ import { Button } from './data/forms/button';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  @select(['template', 'status']) templateStatus: Observable<LoadingStatus>;
-  @select(['absenderliste', 'selected']) absender: Observable<Absender>;
+  @select([ 'template', 'status' ]) templateStatus: Observable<LoadingStatus>;
+  @select([ 'absenderliste', 'selected' ]) absender: Observable<Absender>;
 
   constructor(
     private templates: TemplateService,
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.log.debug('AppComponent.ngOnInit');
 
-    if (environment.production || !environment.test) {
+    if (environment.production) {
       this.storage.open().then(() => {
         this.absenderlisteActions.loadAbsenderState();
       });
