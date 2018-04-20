@@ -11,6 +11,7 @@ import { FormularEditorTabComponent } from '../../components/formular-editor-tab
 import { FormularEditorButtonComponent } from '../../components/formular-editor-button/formular-editor-button.component';
 import { FormularEditorFormComponent } from '../../components/formular-editor-form/formular-editor-form.component';
 import { FormularEditorTextareaComponent } from '../../components/formular-editor-textarea/formular-editor-textarea.component';
+import { FormularEditorComboboxComponent } from '../../components/formular-editor-combobox/formular-editor-combobox.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ const routes: Routes = [
     FormularEditorTabComponent,
     FormularEditorButtonComponent,
     FormularEditorFormComponent,
-    FormularEditorTextareaComponent
+    FormularEditorTextareaComponent,
+    FormularEditorComboboxComponent
   ],
   exports: [
     RouterModule
