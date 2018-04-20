@@ -7,6 +7,17 @@ export class Button extends Control {
   value = '';
   disabled?: boolean;
 
+  constructor(c?: Button) {
+    super(c);
+    if (c) {
+      this.action = c.action;
+      this.value = c.value;
+      if (c.disabled) {
+        this.disabled = c.disabled;
+      }
+    }
+  }
+
   toXml(): string {
     let xml = '<button>';
     xml += super.toXml();

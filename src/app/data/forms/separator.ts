@@ -4,6 +4,11 @@ import { Content } from './content';
 
 @XmlClass('separator')
 export class Separator extends BaseControl implements Content {
+
+  constructor(c?: Separator) {
+    super(c);
+  }
+
   toXml(): string {
     let xml = '<separator>';
     xml += super.toXml();

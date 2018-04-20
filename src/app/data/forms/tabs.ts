@@ -7,6 +7,13 @@ import { Content } from './content';
 export class Tabs extends BaseControl implements Content {
   controls: Tab[] = [];
 
+  constructor(c?: Tabs) {
+    super(c);
+    if (c) {
+      this.controls = c.controls;
+    }
+  }
+
   toXml(): string {
     let xml = '<tabs>';
     xml += super.toXml();

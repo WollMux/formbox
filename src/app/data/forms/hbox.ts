@@ -4,6 +4,10 @@ import { XmlClass } from '../../decorators/xml.decorators';
 @XmlClass('hbox')
 export class Hbox extends Container {
 
+  constructor(c?: Hbox) {
+    super(c);
+  }
+
   toXml(): string {
     let xml = '<hbox>';
     xml += super.toXml();

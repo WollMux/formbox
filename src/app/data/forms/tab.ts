@@ -4,8 +4,17 @@ import { Container } from './container';
 @XmlClass('tab')
 export class Tab extends Container {
   title = '';
-
   tip?: string;
+
+  constructor(c?: Tab) {
+    super(c);
+    if (c) {
+      this.title = c.title;
+      if (c.tip) {
+        this.tip = c.tip;
+      }
+    }
+  }
 
   toXml(): string {
     let xml = '<tab>';
