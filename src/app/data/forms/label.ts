@@ -5,6 +5,13 @@ import { Control } from './control';
 export class Label extends Control {
   title = '';
 
+  constructor(c?: Label) {
+    super(c);
+    if (c) {
+      this.title = c.title;
+    }
+  }
+
   toXml(): string {
     let xml = '<label>';
     xml += super.toXml();

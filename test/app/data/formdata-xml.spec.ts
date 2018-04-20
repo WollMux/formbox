@@ -21,6 +21,7 @@ describe('Formdata XML', () => {
       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
       + 'xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">' +
       '<id>myForm</id><controls></controls><title>Form 1</title></form>');
+    expect(new Form(f)).toEqual(f);
   });
 
   it('writing Button as XML', () => {
@@ -31,6 +32,7 @@ describe('Formdata XML', () => {
     b.value = 'Value';
 
     expect(b.toXml()).toEqual('<button><id>button1</id><title>Button 1</title><action>Action</action><value>Value</value></button>');
+    expect(new Button(b)).toEqual(b);
   });
 
   it('writing Checkbox as XML', () => {
@@ -40,6 +42,7 @@ describe('Formdata XML', () => {
     cb.ccid = 1;
 
     expect(cb.toXml()).toEqual('<checkbox><id>checkbox1</id><title>CheckBox 1</title><ccid>1</ccid></checkbox>');
+    expect(new Checkbox(cb)).toEqual(cb);
   });
 
   it('writing HBox as XML', () => {
@@ -47,6 +50,7 @@ describe('Formdata XML', () => {
     hb.id = 'hbox1';
 
     expect(hb.toXml()).toEqual('<hbox><id>hbox1</id><controls></controls></hbox>');
+    expect(new Hbox(hb)).toEqual(hb);
   });
 
   it('writing Label as XML', () => {
@@ -55,6 +59,7 @@ describe('Formdata XML', () => {
     lb.title = 'Label 1';
 
     expect(lb.toXml()).toEqual('<label><id>label1</id><title>Label 1</title></label>');
+    expect(new Label(lb)).toEqual(lb);
   });
 
   it('writing Separator as XML', () => {
@@ -62,6 +67,7 @@ describe('Formdata XML', () => {
     sp.id = 'separator1';
 
     expect(sp.toXml()).toEqual('<separator><id>separator1</id></separator>');
+    expect(new Separator(sp)).toEqual(sp);
   });
 
   it('writing Tabs as XML', () => {
@@ -69,6 +75,7 @@ describe('Formdata XML', () => {
     tb.id = 'tabs1';
 
     expect(tb.toXml()).toEqual('<tabs><id>tabs1</id><pages></pages></tabs>');
+    expect(new Tabs(tb)).toEqual(tb);
   });
 
   it('writing Tab as XML', () => {
@@ -77,6 +84,7 @@ describe('Formdata XML', () => {
     tb.id = 'tab1';
 
     expect(tb.toXml()).toEqual('<tab><id>tab1</id><controls></controls><title>Tab 1</title></tab>');
+    expect(new Tab(tb)).toEqual(tb);
   });
 
   it('writing Textarea as XML', () => {
@@ -87,6 +95,7 @@ describe('Formdata XML', () => {
 
     expect(ta.toXml())
       .toEqual('<textarea><id>textarea1</id><title>Textarea 1</title><ccid>1</ccid><lines>5</lines><wrap>true</wrap></textarea>');
+    expect(new Textarea(ta)).toEqual(ta);
   });
 
   it('writing Textfield as XML', () => {
@@ -96,6 +105,7 @@ describe('Formdata XML', () => {
     tf.ccid = 1;
 
     expect(tf.toXml()).toEqual('<textfield><id>textfield1</id><title>Textfield 1</title><ccid>1</ccid></textfield>');
+    expect(new Textfield(tf)).toEqual(tf);
   });
 
   it('writing Combobox as XML', () => {
@@ -114,5 +124,7 @@ describe('Formdata XML', () => {
 
     expect(cb.toXml()).toEqual('<combobox><id>cb1</id><title>Combobox 1</title><ccid>1</ccid><editable>true</editable>' +
     '<option><id>option1</id><value>Item1</value></option><option><id>option2</id><value>Item2</value></option></combobox>');
+    expect(new Option(option1)).toEqual(option1);
+    expect(new Combobox(cb)).toEqual(cb);
   });
 });

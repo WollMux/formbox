@@ -7,6 +7,14 @@ export class Combobox extends FormControl {
   option: Option[] = [];
   editable = false;
 
+  constructor(c?: Combobox) {
+    super(c);
+    if (c) {
+      this.editable = c.editable;
+      this.option = c.option.map(o => new Option(o));
+    }
+  }
+
   toXml(): string {
     let xml = '<combobox>';
     xml += super.toXml();

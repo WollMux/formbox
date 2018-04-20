@@ -5,6 +5,13 @@ export class Option {
   id = '';
   value = '';
 
+  constructor(o?: Option) {
+    if (o) {
+      this.id = o.id;
+      this.value = o.value;
+    }
+  }
+
   toXml(): string {
     let xml = '<option>';
     xml += `<id>${this.id}</id>`;

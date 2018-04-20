@@ -4,6 +4,13 @@ import { Content } from './content';
 export abstract class Container extends BaseControl {
   controls: Content[] = [];
 
+  constructor(c?: Container) {
+    super(c);
+    if (c) {
+      this.controls = c.controls;
+    }
+  }
+
   toXml(): string {
     let xml = super.toXml();
     xml += '<controls>';
