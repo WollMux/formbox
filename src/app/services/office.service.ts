@@ -16,7 +16,7 @@ export class OfficeService {
    * @param base64 Das Dokument als Base64-String
    */
   async openDocument(base64: string): Promise<Word.DocumentCreated> {
-    return await Word.run(context => {
+    return Word.run(context => {
       const doc = context.application.createDocument(base64);
       context.trackedObjects.add(doc);
       context.load(doc);
@@ -29,6 +29,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Zeigt ein Dokument an, dass mit openDocument geöffnet wurde.
+   * 
+   * Die Funktion kann nur einmal aufgerufen werden, danach hat sie keine
+   * Funktion mehr. Nachdem das Dokument angezeigt wird, kann das aktuelle
+   * Addon keine Änderungen daran mehr vornehmen.
+   */
   async showDocument(): Promise<void> {
     Word.run(context => {
       if (this.document) {
@@ -80,6 +87,8 @@ export class OfficeService {
 
         const cc = sorted.pop();
 
+        // Wir löschen den Title des ContentControls, damit es nicht noch einmal
+        // gefunden wird.
         return this.deleteContentControlTitle(cc.id).then(() => {
           return cc;
         });
@@ -97,12 +106,7 @@ export class OfficeService {
    */
   async insertFragment(id: number, base64: string): Promise<void> {
     await Word.run(context => {
-      let doc;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = this.getDocument(context);
       const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
@@ -127,12 +131,7 @@ export class OfficeService {
    */
   async insertValue(id: number, value: string): Promise<void> {
     await Word.run(context => {
-      let doc;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = this.getDocument(context);
       const control = doc.contentControls.getById(id);
 
       return context.sync().then(() => {
@@ -157,12 +156,7 @@ export class OfficeService {
    */
   async insertContentControl(title: string, tag: string): Promise<number> {
     return Word.run(context => {
-      let doc;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = context.document;
       const range = doc.getSelection();
       const cc = range.insertContentControl();
       cc.title = title;
@@ -180,12 +174,7 @@ export class OfficeService {
    */
   async updateContentControl(id: number, title: string, tag: string): Promise<void> {
     await Word.run(context => {
-      let doc;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
       cc.title = title;
       cc.tag = tag;
@@ -200,12 +189,7 @@ export class OfficeService {
    */
   async deleteContentControl(id: number): Promise<void> {
     await Word.run(context => {
-      let doc;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
       cc.delete(true);
 
@@ -264,12 +248,7 @@ export class OfficeService {
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {
     await Word.run(context => {
-      let doc;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = this.getDocument(context);
       const controls = doc.contentControls;
       controls.load('items/id, items/title, items/tag');
 
@@ -287,12 +266,7 @@ export class OfficeService {
    */
   private getAllContentControls = async (): Promise<{ id: number, title: string, tag: string }[]> => {
     return Word.run(context => {
-      let doc: Word.Document | Word.DocumentCreated;
-      if (this.document) {
-        doc = this.document;
-      } else {
-        doc = context.document;
-      }
+      const doc = this.getDocument(context);
       const controls = doc.contentControls;
       doc.context.load(controls, 'id, title, tag');
       controls.load('items/id, items/title, items/tag');
@@ -303,4 +277,14 @@ export class OfficeService {
     });
   }
 
+  private getDocument(context: Word.RequestContext): Word.Document | Word.DocumentCreated {
+    let doc: Word.Document | Word.DocumentCreated;
+    if (this.document) {
+      doc = this.document;
+    } else {
+      doc = context.document;
+    }
+
+    return doc;
+  }
 }
