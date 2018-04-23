@@ -22,22 +22,14 @@ export class OfficeMockService {
 
   async openDocument(base64: string): Promise<void> {
     this.log.debug('OfficeMockService.openDocument');
+
+    return Promise.resolve();
   }
 
-  async getFragmentNames(): Promise<string[]> {
-    this.log.debug('OfficeMockService.getFragmentNames');
+  async showDocument(): Promise<void> {
+    this.log.debug('OfficeMockService.showDocument');
 
-    return Promise.resolve([
-      'Adresse_Angaben',
-      'Email',
-      'Empfaengerfeld',
-      'Fensterzeile',
-      'Fusszeile_Dateinname',
-      'Fusszeile_Rahmen',
-      'Hauptabteilung',
-      'Logo',
-      'Zusatz'
-    ]);
+    return Promise.resolve();
   }
 
   async getDocumentCommands(): Promise<{ id: number, cmd: string }[]> {
@@ -81,6 +73,10 @@ export class OfficeMockService {
   async insertFragment(id: number, base64: string): Promise<void> {
     this.log.debug('OfficeMockService.insertFragment');
 
+    return Promise.resolve();
+  }
+
+  async insertValue(id: number, value: string): Promise<void> {
     return Promise.resolve();
   }
 
