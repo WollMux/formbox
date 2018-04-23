@@ -1,8 +1,9 @@
 import { Container } from './container';
 import { XmlClass } from '../../decorators/xml.decorators';
+import { Content } from './content';
 
 @XmlClass('hbox')
-export class Hbox extends Container {
+export class Hbox extends Container implements Content {
 
   constructor(c?: Hbox) {
     super(c);

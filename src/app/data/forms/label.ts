@@ -1,8 +1,8 @@
 import { XmlClass } from '../../decorators/xml.decorators';
-import { Control } from './control';
+import { TitelControl } from './titel-control';
 
 @XmlClass('label')
-export class Label extends Control {
+export class Label extends TitelControl {
   title = '';
 
   constructor(c?: Label) {

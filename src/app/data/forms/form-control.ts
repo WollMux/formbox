@@ -1,6 +1,6 @@
-import { Control } from './control';
+import { TitelControl } from './titel-control';
 
-export abstract class FormControl extends Control {
+export abstract class FormControl extends TitelControl {
   ccid: number = undefined;
   readonly?: boolean = undefined;
   autofill?: string = undefined;

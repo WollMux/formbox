@@ -24,7 +24,7 @@ describe('FormXmlParserService', () => {
     const xml = '<form xmlns="http://www.muenchen.de/formbox/forms" ' +
       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
       'xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">' +
-      '<id>myForm</id><controls></controls><title>Form 1</title></form>';
+      '<id>myForm</id><title>Form 1</title><controls></controls></form>';
 
     const f = service.parse(xml);
 
@@ -44,6 +44,6 @@ describe('FormXmlParserService', () => {
     expect(xml).toEqual('<form xmlns="http://www.muenchen.de/formbox/forms" ' +
       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
       'xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">' +
-      '<id>myForm</id><controls></controls><title>Form 1</title></form>');
+      '<id>myForm</id><title>Form 1</title><controls></controls></form>');
   }));
 });

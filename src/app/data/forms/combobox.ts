@@ -4,14 +4,14 @@ import { FormControl } from './form-control';
 
 @XmlClass('combobox')
 export class Combobox extends FormControl {
-  option: Option[] = [];
+  options: Option[] = [];
   editable = false;
 
   constructor(c?: Combobox) {
     super(c);
     if (c) {
       this.editable = c.editable;
-      this.option = c.option.map(o => new Option(o));
+      this.options = c.options.map(o => new Option(o));
     }
   }
 
@@ -19,9 +19,11 @@ export class Combobox extends FormControl {
     let xml = '<combobox>';
     xml += super.toXml();
     xml += `<editable>${this.editable}</editable>`;
-    for (const o of this.option) {
+    xml += '<options>';
+    for (const o of this.options) {
       xml += o.toXml();
     }
+    xml += '</options>';
     xml += '</combobox>';
 
     return xml;

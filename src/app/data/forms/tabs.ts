@@ -1,10 +1,10 @@
-import { BaseControl } from './base-control';
+import { Control } from './control';
 import { Tab } from './tab';
 import { XmlClass } from '../../decorators/xml.decorators';
 import { Content } from './content';
 
 @XmlClass('tabs')
-export class Tabs extends BaseControl implements Content {
+export class Tabs extends Control implements Content {
   controls: Tab[] = [];
 
   constructor(c?: Tabs) {

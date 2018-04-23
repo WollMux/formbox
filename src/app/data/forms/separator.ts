@@ -1,9 +1,9 @@
-import { BaseControl } from './base-control';
+import { Control } from './control';
 import { XmlClass } from '../../decorators/xml.decorators';
 import { Content } from './content';
 
 @XmlClass('separator')
-export class Separator extends BaseControl implements Content {
+export class Separator extends Control implements Content {
 
   constructor(c?: Separator) {
     super(c);

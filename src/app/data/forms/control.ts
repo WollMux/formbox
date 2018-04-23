@@ -1,26 +1,13 @@
-import { BaseControl } from './base-control';
-
-export abstract class Control extends BaseControl {
-  title: string = undefined;
-  tip?: string;
+export abstract class Control {
+  id: string;
 
   constructor(c?: Control) {
-    super(c);
     if (c) {
-      this.title = c.title;
-      if (c.tip) {
-        this.tip = c.tip;
-      }
+      this.id = c.id;
     }
   }
 
   toXml(): string {
-    let xml = super.toXml();
-    xml += `<title>${this.title}</title>`;
-    if (this.tip) {
-      xml += `<tip>${this.tip}</tip>`;
-    }
-
-    return xml;
+    return `<id>${this.id}</id>`;
   }
 }
