@@ -27,15 +27,19 @@
               <editable>true</editable>
               <options>
                 <option>
+                  <id>1</id>
                   <value>Item1</value>
                 </option>
                 <option>
+                  <id>2</id>
                   <value>Item2</value>
                 </option>
                 <option>
+                  <id>3</id>
                   <value>Item3</value>
                 </option>
                 <option>
+                  <id>4</id>
                   <value>Item4</value>
                 </option>
               </options>
