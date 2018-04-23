@@ -9,8 +9,7 @@
     "target": "es5",
     "types": [
       "jasmine",
-      "node",
-      "office-js"
+      "node"
     ]
   },
   "files": [
