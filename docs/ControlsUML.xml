@@ -18,8 +18,9 @@ tip
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>250</x><y>220</y><w>340</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>320;10;10;30</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>220</y><w>500</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;480;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>150</x><y>410</y><w>100</w><h>60</h></coordinates><panel_attributes>tabType
 --
 title
-tip</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>80</y><w>130</w><h>60</h></coordinates><panel_attributes>formType
+tip</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>80</y><w>130</w><h>80</h></coordinates><panel_attributes>formType
 --
+id
 title
 controls: controlType[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>310</x><y>410</y><w>100</w><h>60</h></coordinates><panel_attributes>hboxType
 --
