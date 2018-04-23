@@ -4,6 +4,7 @@
   xmlns="http://www.muenchen.de/formbox/forms"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.muenchen.de/formbox/forms http://www.muenchen.de/formbox/form.xsd">
   <id>myForm</id>
+  <title>Title</title>
   <controls>
     <label>
       <id>Label1</id>
@@ -24,18 +25,20 @@
               <title>Combobox 1</title>
               <ccid>1</ccid>
               <editable>true</editable>
-              <option>
-                <value>Item1</value>
-              </option>
-              <option>
-                <value>Item2</value>
-              </option>
-              <option>
-                <value>Item3</value>
-              </option>
-              <option>
-                <value>Item4</value>
-              </option>
+              <options>
+                <option>
+                  <value>Item1</value>
+                </option>
+                <option>
+                  <value>Item2</value>
+                </option>
+                <option>
+                  <value>Item3</value>
+                </option>
+                <option>
+                  <value>Item4</value>
+                </option>
+              </options>
             </combobox>
             <label>
               <id>label1</id>
@@ -103,5 +106,4 @@
       </pages>
     </tabs>
   </controls>
-  <title>Title</title>
 </form>

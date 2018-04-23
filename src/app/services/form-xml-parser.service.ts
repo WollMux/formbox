@@ -63,7 +63,7 @@ export class FormXmlParserService {
       if (this.currentContainer && this.currentContainer.hasOwnProperty('controls')) {
         this.currentContainer.controls.push(o);
       } else if (this.currentContainer instanceof Combobox) {
-        this.currentContainer.option.push(o);
+        this.currentContainer.options.push(o);
       }
 
       if (!this.root) {

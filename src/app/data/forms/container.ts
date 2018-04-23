@@ -1,7 +1,7 @@
-import { BaseControl } from './base-control';
+import { Control } from './control';
 import { Content } from './content';
 
-export abstract class Container extends BaseControl {
+export abstract class Container extends Control {
   controls: Content[] = [];
 
   constructor(c?: Container) {

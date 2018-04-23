@@ -11,7 +11,7 @@ import './tab';
 import './tabs';
 import './textarea';
 import './textfield';
-import './base-control';
+import './titel-control';
 import './form-control';
 import './content';
 import './option';

@@ -1,8 +1,8 @@
-import { Control } from './control';
+import { TitelControl } from './titel-control';
 import { XmlClass } from '../../decorators/xml.decorators';
 
 @XmlClass('button')
-export class Button extends Control {
+export class Button extends TitelControl {
   action = '';
   value = '';
   disabled?: boolean;
