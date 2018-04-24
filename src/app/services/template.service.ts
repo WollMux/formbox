@@ -180,6 +180,16 @@ export class TemplateService {
   }
 
   /**
+   * Selektiert ein Content Control.
+   * @param id id des ContentControls.
+   */
+  async selectContentControlById(contentControlId: number): Promise<void> {
+    this.log.debug(`TemplateService.selectContentControlById(${contentControlId})`);
+
+    await this.office.selectContentControlById(contentControlId);
+  }
+
+  /**
    * Codiert ein Byte-Array als Base64.
    *
    * @param arraybuffer Array, das codiert werden soll.

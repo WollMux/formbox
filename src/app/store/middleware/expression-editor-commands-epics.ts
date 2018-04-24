@@ -6,7 +6,6 @@ import { Logger } from '@nsalaun/ng-logger';
 import { TemplateService } from '../../services/template.service';
 import { ExpressionEditorCommandsActions } from '../actions/expression-editor-commands-actions';
 import { FormBoxState } from '../states/formbox-state';
-import { OfficeService } from '../../services/office.service';
 
 /**
  * Epics für den ExpressionEditor.
@@ -15,8 +14,7 @@ import { OfficeService } from '../../services/office.service';
 export class ExpressionEditorCommandsEpics {
   constructor(
     private log: Logger,
-    private templates: TemplateService,
-    private office: OfficeService
+    private templates: TemplateService
   ) { }
 
   /**
@@ -85,7 +83,7 @@ export class ExpressionEditorCommandsEpics {
     return action.ofType(ExpressionEditorCommandsActions.SELECT.started)
       .mergeMap(({ payload }, n: number) => {
 
-        return this.office.selectContentControlById(payload.contentControlId).then(() => {
+        return this.templates.selectContentControlById(payload.contentControlId).then(() => {
           const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload.index });
 
           return act;
