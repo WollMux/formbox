@@ -82,9 +82,10 @@ export class ExpressionEditorCommandsEpics {
   selectCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(ExpressionEditorCommandsActions.SELECT.started)
       .mergeMap(({ payload }, n: number) => {
+        const id = store.getState().expressionEditor.expressionEditorCommands.documentCommands[payload].id;
 
-        return this.templates.selectContentControlById(payload.contentControlId).then(() => {
-          const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload.index });
+        return this.templates.selectContentControlById(id).then(() => {
+          const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload });
 
           return act;
         }).catch(error => this.log.error(error));

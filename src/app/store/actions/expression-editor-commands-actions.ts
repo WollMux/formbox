@@ -10,7 +10,7 @@ const actionCreator = actionCreatorFactory('EXPRESSION_EDITOR_COMMANDS');
 @Injectable()
 export class ExpressionEditorCommandsActions {
   static INIT = actionCreator.async<any, DocumentCommand[]>('INIT');
-  static SELECT = actionCreator.async<{ index: number, contentControlId: number }, number>('SELECT');
+  static SELECT = actionCreator.async<number, number>('SELECT');
   static CREATE = actionCreator.async<{ cmd: string, order: number }, number>('CREATE');
   static SAVE = actionCreator.async<{ index: number, cmd: DocumentCommand }, number>('SAVE');
   static DELETE = actionCreator.async<number, number>('DELETE');
@@ -37,8 +37,8 @@ export class ExpressionEditorCommandsActions {
     return this.ngRedux.dispatch(action);
   }
 
-  select(n: number, contentControlId: number): Action<any> {
-    const action = ExpressionEditorCommandsActions.SELECT.started({ index: n, contentControlId: contentControlId });
+  select(n: number): Action<any> {
+    const action = ExpressionEditorCommandsActions.SELECT.started(n);
 
     return this.ngRedux.dispatch(action);
   }
