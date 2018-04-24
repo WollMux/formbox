@@ -17,8 +17,6 @@ import { Router } from '@angular/router';
 export class DocumentTreeviewComponent implements OnInit {
   @select(['documentTree', 'tree']) documentTree: Observable<any[]>;
 
-<<<<<<< HEAD
-=======
   options: ITreeOptions = {
     isExpandedField: 'expanded',
     actionMapping: {
@@ -39,7 +37,6 @@ export class DocumentTreeviewComponent implements OnInit {
     animateAcceleration: 1.2
   };
 
->>>>>>> Lint behoben.
   constructor(
     private log: Logger,
     private router: Router,

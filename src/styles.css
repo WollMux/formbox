@@ -38,8 +38,6 @@ body {
 }
 
 span.icon-hightlight:hover {
-<<<<<<< HEAD
-<<<<<<< HEAD
     color: red;
 }
 
@@ -118,12 +116,6 @@ span.icon-hightlight:hover {
 
 .angular-tree-component {
     background-color: #fde57b;
-=======
-	color: red;
->>>>>>> Suchfeld in Absenderliste entfernt, in Absender verwalten Suche und PAL zusammengefasst.
-=======
-    color: red;
->>>>>>> Document-Command-Editor GUI mit Named Routes
 }
 
 .container {
@@ -209,8 +201,4 @@ span.icon-hightlight:hover {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> Document-Command-Editor GUI mit Named Routes

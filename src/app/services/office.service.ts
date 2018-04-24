@@ -14,18 +14,11 @@ export class OfficeService {
   constructor(private log: Logger) { }
 
   /**
-<<<<<<< HEAD
-   *
-   * @param url Öffnet einen OfficeJs-Dialog.
-   * @param dialogHeight
-   * @param dialogWidth
-=======
    * Öffnet einen OfficeJs-Dialog.
    *
    * @param url Url oder Pfad einer Komponente.
    * @param dialogHeight Höhe des Dialogs. Angabe in Prozent im Verhältnis zur Bildschirmhöhe (Komplette Höhe = 100).
    * @param dialogWidth Breite des Dialog. Angabe in Prozent im Verhältnis zur Bildschirmbreite.
->>>>>>> Lint behoben.
    */
   async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
     return Office.context.ui.displayDialogAsync(url, { height: dialogHeight, width: dialogWidth });
@@ -183,18 +176,8 @@ export class OfficeService {
       const randomColor = this.generateRandomHexColorString();
       cc.title = title;
       cc.tag = tag;
-<<<<<<< HEAD
-<<<<<<< HEAD
       cc.color = randomColor;
       cc.font.color = randomColor;
-=======
-      cc.color = '#ffed9e';
-      cc.font.color = '#ffed9e';
->>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
-=======
-      cc.color = randomColor;
-      cc.font.color = randomColor;
->>>>>>> Selektion in Kommandoliste selektiert dazugehöriges Content-Control.
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
@@ -288,8 +271,6 @@ export class OfficeService {
    * Selektiert ein Content Control.
    * @param id id des ContentControls.
    */
-<<<<<<< HEAD
-<<<<<<< HEAD
   async selectContentControlById(id: number): Promise<void> {
     await Word.run(context => {
       const doc = this.getDocument(context);
@@ -297,23 +278,6 @@ export class OfficeService {
       control.select();
       return context.sync();
     });
-=======
-  async selectContentControlByTitle(id: number): Promise<void> {
-=======
-  async selectContentControlById(id: number): Promise<void> {
->>>>>>> Selektion in Kommandoliste selektiert dazugehöriges Content-Control.
-    await Word.run(context => {
-      const doc = context.document;
-      const control = doc.contentControls.getById(id);
-      control.select();
-
-      return context.sync();
-<<<<<<< HEAD
-    })
->>>>>>> Vorbereitung Selektion/Farbliche Markierung von Content Controls bei Erstellung/Auswahl eines Controls.
-=======
-    });
->>>>>>> Lint behoben.
   }
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {
