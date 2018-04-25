@@ -9,6 +9,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgDragDropModule } from 'ng-drag-drop';
 import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { TreeModule } from 'angular-tree-component';
 
 import { FormBoxState, INITIAL_STATE } from './store/states/formbox-state';
 import { AppComponent } from './app.component';
@@ -50,7 +51,6 @@ import { FormDataService } from './services/form-data.service';
 import { FormXmlParserService } from './services/form-xml-parser.service';
 import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
 import { DebugComponent } from './components/debug-component/debug.component';
-import { TreeModule } from 'angular-tree-component';
 import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
 import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
 import { DialogActions } from './store/actions/dialog-actions';
@@ -60,6 +60,7 @@ import { BarService } from './services/bar.service';
 import { FormularEditorActions } from './store/actions/formular-editor-actions';
 import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
 import { FormularEditorService } from './services/formular-editor.service';
+import { SachleitendeVerfuegungService } from "./services/sachleitende-verfuegung.service";
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import { FormularEditorService } from './services/formular-editor.service';
     BarService,
     FormularEditorActions,
     FormularEditorEpics,
-    FormularEditorService
+    FormularEditorService,
+    SachleitendeVerfuegungService
   ],
   bootstrap: [AppComponent]
 })

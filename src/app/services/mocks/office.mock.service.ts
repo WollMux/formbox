@@ -222,4 +222,12 @@ export class OfficeMockService {
   async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
     return Promise.reject('Not implemented.');
   }
+
+  async hideRange(range: Word.Range): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async unhideRange(range: Word.Range): Promise<void> {
+    return Promise.resolve();
+  }
 }

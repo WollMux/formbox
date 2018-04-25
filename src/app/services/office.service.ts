@@ -43,6 +43,17 @@ export class OfficeService {
     });
   }
 
+  async newDocument(): Promise<Word.DocumentCreated> {
+    return Word.run(context => {
+      const doc = context.application.createDocument();
+      context.load(doc);
+
+      return context.sync().then(() => {
+        return doc;
+      });
+    });
+  }
+
   /**
    * Zeigt ein Dokument an, dass mit openDocument geöffnet wurde.
    *
@@ -50,13 +61,36 @@ export class OfficeService {
    * Funktion mehr. Nachdem das Dokument angezeigt wird, kann das aktuelle
    * Addon keine Änderungen daran mehr vornehmen.
    */
-  async showDocument(): Promise<void> {
+  async showDocument(document?: Word.DocumentCreated): Promise<void> {
     Word.run(context => {
-      if (this.document) {
-        this.document.open();
-
-        return this.document.context.sync();
+      let doc = document;
+      if (!doc) {
+        doc = this.document;
+        context.trackedObjects.remove(this.document);
+        this.document = undefined;
       }
+      if (doc) {
+        doc.open();
+
+        return doc.context.sync();
+      }
+    });
+  }
+
+  async copyDocument(target: Word.DocumentCreated): Promise<void> {
+    await Word.run(async context => {
+      debugger;
+      const doc: Word.Document = context.document;
+      const body: Word.Body = doc.body;
+
+      const ooxml = body.getOoxml();
+
+      return await context.sync().then(() => {
+        debugger;
+        target.body.insertOoxml(ooxml.value, Word.InsertLocation.end);
+
+        return context.sync();
+      });
     });
   }
 
@@ -271,6 +305,64 @@ export class OfficeService {
       control.select();
 
       return context.sync();
+    });
+  }
+
+  async hideRange(range: Word.Range): Promise<void> {
+    Word.run(context => {
+      range.select();
+
+      return context.sync().then(async () => {
+        await Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, async result => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(result.value, 'application/xml');
+
+          const el = doc.getElementsByTagName('w:t');
+
+          for (let i = 0; i < el.length; i++) {
+            const t = el.item(i);
+            const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
+            let rpr = t.previousSibling;
+
+            if (!rpr) {
+              rpr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
+              t.parentNode.insertBefore(rpr, t);
+            }
+
+            rpr.appendChild(vanish);
+          }
+
+          const ser = new XMLSerializer();
+          const xml = ser.serializeToString(doc);
+
+          await Office.context.document.setSelectedDataAsync(xml, { coercionType: Office.CoercionType.Ooxml });
+        });
+      });
+    }).catch(error => Promise.reject(error));
+  }
+
+  async unhideRange(range: Word.Range): Promise<void> {
+    Word.run(async context => {
+      range.select();
+
+      return context.sync().then(async () => {
+        await Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, async result => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(result.value, 'application/xml');
+
+          const el = doc.getElementsByTagName('w:vanish');
+
+          while (el.length > 0) {
+            const t = el.item(0);
+            t.parentNode.removeChild(t);
+          }
+
+          const ser = new XMLSerializer();
+          const xml = ser.serializeToString(doc);
+
+          await Office.context.document.setSelectedDataAsync(xml, { coercionType: Office.CoercionType.Ooxml });
+        });
+      });
     });
   }
 
