@@ -6,6 +6,7 @@ import { LDAPEpics } from './ldap-epics';
 import { StorageEpics } from './storage-epics';
 import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epics';
 import { DocumentTreeViewEpics } from './document-treeview-epics';
+import { DialogEpics } from './dialog-epics';
 
 @Injectable()
 export class RootEpic {
@@ -15,7 +16,8 @@ export class RootEpic {
     private ldapEpics: LDAPEpics,
     private storageEpics: StorageEpics,
     private expressEditorCommandsEpics: ExpressionEditorCommandsEpics,
-    private documentTreeViewEpics: DocumentTreeViewEpics
+    private documentTreeViewEpics: DocumentTreeViewEpics,
+    private dialogEpics: DialogEpics
   ) { }
 
   epics = () => combineEpics(
@@ -39,6 +41,8 @@ export class RootEpic {
     this.expressEditorCommandsEpics.creatingDocumentCommand,
     this.expressEditorCommandsEpics.savingDocumentCommand,
     this.expressEditorCommandsEpics.deletingDocumentCommand,
-    this.documentTreeViewEpics.getTemplateList
+    this.expressEditorCommandsEpics.selectCommand,
+    this.documentTreeViewEpics.getTemplateList,
+    this.dialogEpics.displayDialog
   )
 }

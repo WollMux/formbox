@@ -3,11 +3,11 @@ import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { DocumentTreeViewActions } from '../../store/actions/document-treeview-actions';
 import { TemplateActions } from '../../store/actions/template-actions';
-import { OfficeService } from '../../services/office.service';
 import { ITreeOptions, KEYS, TREE_ACTIONS } from 'angular-tree-component';
 import { ITreeNode } from 'angular-tree-component/dist/defs/api';
 import { Logger } from '@nsalaun/ng-logger';
 import { Router } from '@angular/router';
+import { DialogActions } from '../../store/actions/dialog-actions';
 
 @Component({
   selector: 'app-document-treeview',
@@ -42,7 +42,7 @@ export class DocumentTreeviewComponent implements OnInit {
     private router: Router,
     private treeActions: DocumentTreeViewActions,
     private templateActions: TemplateActions,
-    private officeService: OfficeService
+    private dialogActions: DialogActions
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -94,6 +94,6 @@ export class DocumentTreeviewComponent implements OnInit {
         break;
     }
 
-    this.officeService.openDialog(url, 80, 30);
+    this.dialogActions.displayDialog(url, 80, 30);
   }
 }

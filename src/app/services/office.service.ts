@@ -20,7 +20,7 @@ export class OfficeService {
    * @param dialogHeight Höhe des Dialogs. Angabe in Prozent im Verhältnis zur Bildschirmhöhe (Komplette Höhe = 100).
    * @param dialogWidth Breite des Dialog. Angabe in Prozent im Verhältnis zur Bildschirmbreite.
    */
-  async openDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
+  async displayDialog(url: string, dialogHeight: number, dialogWidth: number): Promise<void> {
     return Office.context.ui.displayDialogAsync(url, { height: dialogHeight, width: dialogWidth });
   }
 
