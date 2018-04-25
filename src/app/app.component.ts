@@ -3,6 +3,7 @@ import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { LoadingStatus } from './store/states/template-state';
 import { Logger } from '@nsalaun/ng-logger';
+import { Router } from '@angular/router';
 
 import { StorageService } from './services/storage.service';
 import { TemplateService } from './services/template.service';
@@ -17,22 +18,24 @@ import { FormDataService } from './services/form-data.service';
 import { Form } from './data/forms/form';
 import { Label } from './data/forms/label';
 import { Button } from './data/forms/button';
-import { Router } from '@angular/router';
 import { FormularEditorActions } from './store/actions/formular-editor-actions';
+import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegung.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'app';
 
-  @select([ 'template', 'status' ]) templateStatus: Observable<LoadingStatus>;
-  @select([ 'absenderliste', 'selected' ]) absender: Observable<Absender>;
+  @select(['template', 'status']) templateStatus: Observable<LoadingStatus>;
+  @select(['absenderliste', 'selected']) absender: Observable<Absender>;
 
   constructor(
     private router: Router,
+    private templates: TemplateService,
+    private slv: SachleitendeVerfuegungService,
     private actions: TemplateActions,
     private absenderlisteActions: AbsenderlisteActions,
     private storageActions: StorageActions,
@@ -70,17 +73,9 @@ export class AppComponent implements OnInit {
   }
 
   onTestXml(): void {
-    const f = new Form();
-    f.title = 'Form 1';
-    f.controls = [
-      new Label(),
-      new Button()
-    ];
-
-    this.formdata.write(f).then(id => {
-      // console.log(id);
-      this.formdata.read().then(form => {
-        // console.log(form);
+    this.slv.copyCurrentDocument().then(() => {
+      this.slv.copyCurrentDocument().then(() => {
+        this.slv.showDocument();
       });
     });
   }
