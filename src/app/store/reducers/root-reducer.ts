@@ -6,9 +6,10 @@ import { absenderlisteReducer } from './absenderliste-reducer';
 import { ldapReducer } from './ldap-reducer';
 import { expressionEditorReducer } from './expression-editor-reducer';
 import { documentTreeViewReducer } from './document-treeview-reducer';
+import { dialogReducer } from './dialog-reducer';
 
 /**
- * Erzeugt aus mehreren Reducern einen Root-Reducer, der beim Start der 
+ * Erzeugt aus mehreren Reducern einen Root-Reducer, der beim Start der
  * Anwendung an Redux übergeben wird.
  * Alle neuen Reducer müssen hier eingetragen werden.
  */
@@ -18,5 +19,6 @@ export const rootReducer: Reducer<FormBoxState> =
     template: templateReducer,
     ldap: ldapReducer,
     expressionEditor: expressionEditorReducer,
-    documentTree: documentTreeViewReducer
+    documentTree: documentTreeViewReducer,
+    dialog: dialogReducer
   });

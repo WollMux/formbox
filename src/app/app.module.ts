@@ -3,7 +3,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DevToolsExtension, NgRedux, NgReduxModule } from '@angular-redux/store';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgDragDropModule } from 'ng-drag-drop';
@@ -53,6 +53,11 @@ import { DebugComponent } from './components/debug-component/debug.component';
 import { TreeModule } from 'angular-tree-component';
 import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
 import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
+import { FormularGuiComponent } from './components/formular-gui/formular-gui.component';
+import { TabsModule } from 'ngx-tabs';
+import { DialogActions } from './store/actions/dialog-actions';
+import { DialogEpics } from './store/middleware/dialog-epics';
+import { DialogService } from './services/dialog.service';
 
 @NgModule({
   declarations: [
@@ -67,7 +72,8 @@ import { DocumentTreeViewActions } from './store/actions/document-treeview-actio
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
     DocumentTreeviewComponent,
-    DebugComponent
+    DebugComponent,
+    FormularGuiComponent
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -80,7 +86,9 @@ import { DocumentTreeViewActions } from './store/actions/document-treeview-actio
     NgReduxModule,
     FormsModule,
     Angular2FontawesomeModule,
-    TreeModule
+    TreeModule,
+    ReactiveFormsModule,
+    TabsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -98,6 +106,9 @@ import { DocumentTreeViewActions } from './store/actions/document-treeview-actio
     LDAPEpics,
     StorageEpics,
     RootEpic,
+    DialogActions,
+    DialogEpics,
+    DialogService,
     DocumentTreeViewEpics,
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
     ExpressionsService,
