@@ -1,5 +1,4 @@
-<div class="panel panel-default" style="padding: 15px">
-  <div class="panel-heading">
+<div class="panel panel-default">
     <form (ngSubmit)="onSubmit()" #ldapForm="ngForm">
       <div class="form-group" #fgFilter="ngModelGroup" ngModelGroup="filter" [appLdapFilterValidator]="filter">
         <label for="uid">Benutzername/Email</label>
@@ -9,7 +8,7 @@
         <input type="text" class="form-control" id="nachname" [(ngModel)]="filter.nachname" name="nachname">
 
         <label for="vorname">Vorname</label>
-        <input type="text" class="form-control" id="vorname" [(ngModel)]="filter.vorname" name="vorname">
+        <input type="text" class="form-control" id="vorname" [(ngModel)]="filter.vorname" name="vorname" >
 
         <label for="ou">Organisationseinheit</label>
         <input type="text" class="form-control" id="ou" [(ngModel)]="filter.ou" name="ou">
@@ -17,23 +16,6 @@
 
       <button type="submit" class="btn btn-lg btn-primary btn-block" id='search' [disabled]="!ldapForm.form.valid || !ldapForm.form.dirty">Suchen</button>
     </form>
-<<<<<<< HEAD
-  </div>
-<<<<<<< HEAD
-=======
-  <div class="panel-body">
-    <div class="list-group" id='resultlist'>
-      <a *ngFor="let res of result | async; let i = index" class="list-group-item" draggable [dragEnabled]="dragEnabled" [dragData]="res">
-        <span class="list-label">{{ res.nachname }}, {{ res.vorname }} ({{ res.ou }})</span>
-        <span class="glyphicon glyphicon-star pull-right" (click)="emitEvent(res)"></span>
-      </a>
-    </div>
-
-    <button type="submit" class="btn btn-lg btn-primary btn-block" id='search' [disabled]="!ldapForm.form.valid || !ldapForm.form.dirty">Suchen</button>
-  </form>
->>>>>>> Suchfeld in Absenderliste entfernt, in Absender verwalten Suche und PAL zusammengefasst.
-=======
->>>>>>> Lint behoben.
 </div>
 <div class="panel-body">
   <div class="list-group" id='resultlist'>

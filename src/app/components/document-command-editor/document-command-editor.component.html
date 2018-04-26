@@ -1,5 +1,4 @@
-<div class="panel-default panel-heading text-center">
-    Formeleditor</div>
+<div class="panel-default panel-heading text-center">Formeleditor</div>
 <form class="form-horizontal form-default" #dcform="ngForm">
     <div class="form-group">
         <label class="control-label col-xs-2" for="formel">Formel</label>
@@ -12,8 +11,8 @@
         <div class="col-xs-10">
             <input type="number" class="form-control" id="order" name="Order" [(ngModel)]="model.cmd.order" />
         </div>
-        <div class="form-group">
-            <button type="button" class="btn btn-primary" (click)="save(); dcform.form.markAsPristine()" [disabled]="!dcform.form.valid || !dcform.form.dirty">Speichern</button>
-        </div>
-    </form>
-</div>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary pull-right" (click)="save(); dcform.form.markAsPristine()" [disabled]="!dcform.form.valid || !dcform.form.dirty">Speichern</button>
+    </div>
+</form>
