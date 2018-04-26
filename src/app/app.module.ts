@@ -53,8 +53,6 @@ import { DebugComponent } from './components/debug-component/debug.component';
 import { TreeModule } from 'angular-tree-component';
 import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
 import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
-import { FormularGuiComponent } from './components/formular-gui/formular-gui.component';
-import { TabsModule } from 'ngx-tabs';
 import { DialogActions } from './store/actions/dialog-actions';
 import { DialogEpics } from './store/middleware/dialog-epics';
 import { DialogService } from './services/dialog.service';
@@ -72,8 +70,7 @@ import { DialogService } from './services/dialog.service';
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
     DocumentTreeviewComponent,
-    DebugComponent,
-    FormularGuiComponent
+    DebugComponent
   ],
   imports: [
     AccordionModule.forRoot(),
@@ -87,8 +84,7 @@ import { DialogService } from './services/dialog.service';
     FormsModule,
     Angular2FontawesomeModule,
     TreeModule,
-    ReactiveFormsModule,
-    TabsModule
+    ReactiveFormsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
