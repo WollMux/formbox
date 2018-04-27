@@ -29,4 +29,8 @@ export class Tab extends Container {
 
     return xml;
   }
+
+  deepCopy(): Tab {
+    return new Tab(this);
+  }
 }

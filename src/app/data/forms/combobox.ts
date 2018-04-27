@@ -28,4 +28,8 @@ export class Combobox extends FormControl {
 
     return xml;
   }
+
+  deepCopy(): Combobox {
+    return new Combobox(this);
+  }
 }

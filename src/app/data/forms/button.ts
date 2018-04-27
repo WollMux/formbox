@@ -30,4 +30,8 @@ export class Button extends TitelControl {
 
     return xml;
   }
+
+  deepCopy(): Button {
+    return new Button(this);
+  }
 }

@@ -16,4 +16,8 @@ export class Hbox extends Container implements Content {
 
     return xml;
   }
+
+  deepCopy(): Hbox {
+    return new Hbox(this);
+  }
 }

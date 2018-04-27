@@ -10,7 +10,7 @@ export class Tabs extends Control implements Content {
   constructor(c?: Tabs) {
     super(c);
     if (c) {
-      this.controls = c.controls;
+      this.controls = c.controls.map(t => t.deepCopy());
     }
   }
 
@@ -27,5 +27,9 @@ export class Tabs extends Control implements Content {
     xml += '</tabs>';
 
     return xml;
+  }
+
+  deepCopy(): Tabs {
+    return new Tabs(this);
   }
 }

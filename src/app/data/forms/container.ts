@@ -4,10 +4,10 @@ import { Content } from './content';
 export abstract class Container extends Control {
   controls: Content[] = [];
 
-  constructor(c?: Container) {
-    super(c);
-    if (c) {
-      this.controls = c.controls;
+  constructor(container?: Container) {
+    super(container);
+    if (container) {
+      this.controls = container.controls.map(c => c.deepCopy());
     }
   }
 
