@@ -1,22 +1,44 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
+
 import { OfficeService } from './office.service';
 
 @Injectable()
 export class SachleitendeVerfuegungService {
   private document = undefined;
 
-  constructor(private office: OfficeService) { /* Leer */ }
+  constructor(private log: Logger, private office: OfficeService) { /* Leer */ }
 
-  async copyCurrentDocument(): Promise<void> {
-    return await this.office.newDocument().then(async doc => {
-      await this.office.copyDocument(doc).then(() => {
-        this.document = doc;
-      });
+  async newDocument(): Promise<void> {
+    this.log.debug('SachleitendeVerfuegungService.newDocument()');
+
+    if (this.document) {
+      return Promise.reject('Es ist bereits ein Dokument in Bearbeitung.');
+    }
+
+    return this.office.newDocument().then(doc => {
+      this.document = doc;
+
+      return Promise.resolve();
+    });
+  }
+
+  async copyCurrentDocument(pageBreak = false): Promise<void> {
+    this.log.debug('SachleitendeVerfuegungService.copyCurrentDocument()');
+
+    return this.office.copyDocument(this.document).then(() => {
+      if (pageBreak) {
+        return this.office.insertPageBreak(this.document);
+      }
+
+      return Promise.resolve();
     });
   }
 
   async showDocument(): Promise<void> {
-    if (document) {
+    this.log.debug('SachleitendeVerfuegungService.showDocument()');
+
+    if (this.document) {
       return this.office.showDocument(this.document).then(() => this.document = undefined);
     }
 

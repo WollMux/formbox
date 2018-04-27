@@ -60,7 +60,7 @@ import { BarService } from './services/bar.service';
 import { FormularEditorActions } from './store/actions/formular-editor-actions';
 import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
 import { FormularEditorService } from './services/formular-editor.service';
-import { SachleitendeVerfuegungService } from "./services/sachleitende-verfuegung.service";
+import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegung.service';
 
 @NgModule({
   declarations: [

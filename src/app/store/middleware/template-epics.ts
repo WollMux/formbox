@@ -137,11 +137,11 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.INSERT_FRAGMENT.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.getFragmentUrl(payload.name).then(it => {
-          return this.templates.insertFragment(payload.id, it.url).then(() => {
-            const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
+          return this.templates.insertFragment(payload.id, it.url);
+        }).then(() => {
+          const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
 
-            return act;
-          });
+          return act;
         });
       });
   }
