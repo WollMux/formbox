@@ -23,4 +23,8 @@ export class Textarea extends FormControl {
 
     return xml;
   }
+
+  deepCopy(): Textarea {
+    return new Textarea(this);
+  }
 }

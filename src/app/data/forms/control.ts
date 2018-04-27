@@ -10,4 +10,6 @@ export abstract class Control {
   toXml(): string {
     return `<id>${this.id}</id>`;
   }
+
+  abstract deepCopy(c?: Control): Control;
 }

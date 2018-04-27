@@ -19,4 +19,8 @@ export class Label extends TitelControl {
 
     return xml;
   }
+
+  deepCopy(): Label {
+    return new Label(this);
+  }
 }

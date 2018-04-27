@@ -16,4 +16,8 @@ export class Separator extends Control implements Content {
 
     return xml;
   }
+
+  deepCopy(): Separator {
+    return new Separator(this);
+  }
 }
