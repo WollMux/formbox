@@ -3,6 +3,7 @@
 
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+import { XMLSerializer } from 'xmldom';
 
 /**
  * Service für die Interaktion mit MS Office.
@@ -30,7 +31,7 @@ export class OfficeService {
    * @param base64 Das Dokument als Base64-String
    */
   async openDocument(base64: string): Promise<Word.DocumentCreated> {
-    return Word.run(context => {
+    return Word.run(async context => {
       const doc = context.application.createDocument(base64);
       context.trackedObjects.add(doc);
       context.load(doc);
@@ -44,7 +45,7 @@ export class OfficeService {
   }
 
   async newDocument(): Promise<Word.DocumentCreated> {
-    return Word.run(context => {
+    return Word.run(async context => {
       const doc = context.application.createDocument();
       context.load(doc);
 
@@ -62,7 +63,7 @@ export class OfficeService {
    * Addon keine Änderungen daran mehr vornehmen.
    */
   async showDocument(document?: Word.DocumentCreated): Promise<void> {
-    Word.run(context => {
+    return Word.run(context => {
       let doc = document;
       if (!doc) {
         doc = this.document;
@@ -72,25 +73,31 @@ export class OfficeService {
       if (doc) {
         doc.open();
 
-        return doc.context.sync();
+        return doc.context.sync().then(() => Promise.resolve());
       }
     });
   }
 
   async copyDocument(target: Word.DocumentCreated): Promise<void> {
-    await Word.run(async context => {
-      debugger;
+    return Word.run(context => {
       const doc: Word.Document = context.document;
       const body: Word.Body = doc.body;
 
       const ooxml = body.getOoxml();
 
-      return await context.sync().then(() => {
-        debugger;
+      return context.sync().then(() => {
         target.body.insertOoxml(ooxml.value, Word.InsertLocation.end);
 
-        return context.sync();
+        return context.sync().then(() => Promise.resolve());
       });
+    });
+  }
+
+  async insertPageBreak(target: Word.Document | Word.DocumentCreated): Promise<void> {
+    return Word.run(context => {
+      target.body.insertBreak(Word.BreakType.page, Word.InsertLocation.end);
+
+      return context.sync().then(() => Promise.resolve());
     });
   }
 
@@ -153,7 +160,7 @@ export class OfficeService {
    * @param base64 Fragmentdatei als Base64-String
    */
   async insertFragment(id: number, base64: string): Promise<void> {
-    await Word.run(context => {
+    return Word.run(context => {
       const doc = this.getDocument(context);
       const control = doc.contentControls.getById(id);
 
@@ -178,7 +185,7 @@ export class OfficeService {
    * @param id Interne Id des ContentControls im Dokument
    */
   async insertValue(id: number, value: string): Promise<void> {
-    await Word.run(context => {
+    return Word.run(context => {
       const doc = this.getDocument(context);
       const control = doc.contentControls.getById(id);
 
@@ -221,13 +228,13 @@ export class OfficeService {
    * @param id Interne Id des Controls im Dokument.
    */
   async updateContentControl(id: number, title: string, tag: string): Promise<void> {
-    await Word.run(context => {
+    return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
       cc.title = title;
       cc.tag = tag;
 
-      return context.sync();
+      return context.sync().then(() => Promise.resolve());
     });
   }
 
@@ -236,12 +243,12 @@ export class OfficeService {
    * erhalten.
    */
   async deleteContentControl(id: number): Promise<void> {
-    await Word.run(context => {
+    return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
       cc.delete(true);
 
-      return context.sync();
+      return context.sync().then(() => Promise.resolve());
     });
   }
 
@@ -308,14 +315,43 @@ export class OfficeService {
     });
   }
 
+  async getSelection(): Promise<Word.Range> {
+    return Word.run(context => {
+      const sel = context.document.getSelection();
+      context.load(sel);
+
+      return context.sync().then(() => {
+        sel.track();
+
+        return Promise.resolve(sel);
+      });
+    });
+  }
+
+  async getSelectedData(): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, (result: Office.AsyncResult) => {
+        resolve(result.value);
+      });
+    });
+  }
+
+  async setSelectedData(ooxml: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      Office.context.document.setSelectedDataAsync(ooxml, { coercionType: Office.CoercionType.Ooxml }, (result: Office.AsyncResult) => {
+        resolve();
+      });
+    });
+  }
+
   async hideRange(range: Word.Range): Promise<void> {
-    Word.run(context => {
+    return Word.run(range, context => {
       range.select();
 
       return context.sync().then(async () => {
-        await Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, async result => {
+        return this.getSelectedData().then(ooxml => {
           const parser = new DOMParser();
-          const doc = parser.parseFromString(result.value, 'application/xml');
+          const doc = parser.parseFromString(ooxml, 'application/xml');
 
           const el = doc.getElementsByTagName('w:t');
 
@@ -335,20 +371,20 @@ export class OfficeService {
           const ser = new XMLSerializer();
           const xml = ser.serializeToString(doc);
 
-          await Office.context.document.setSelectedDataAsync(xml, { coercionType: Office.CoercionType.Ooxml });
-        });
+          return Promise.resolve(xml);
+        }).then(xml => this.setSelectedData(xml));
       });
     }).catch(error => Promise.reject(error));
   }
 
   async unhideRange(range: Word.Range): Promise<void> {
-    Word.run(async context => {
+    return Word.run(async context => {
       range.select();
 
       return context.sync().then(async () => {
-        await Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, async result => {
+        return this.getSelectedData().then(ooxml => {
           const parser = new DOMParser();
-          const doc = parser.parseFromString(result.value, 'application/xml');
+          const doc = parser.parseFromString(ooxml, 'application/xml');
 
           const el = doc.getElementsByTagName('w:vanish');
 
@@ -360,14 +396,14 @@ export class OfficeService {
           const ser = new XMLSerializer();
           const xml = ser.serializeToString(doc);
 
-          await Office.context.document.setSelectedDataAsync(xml, { coercionType: Office.CoercionType.Ooxml });
-        });
+          return Promise.resolve(xml);
+        }).then(xml => this.setSelectedData(xml));
       });
     });
   }
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {
-    await Word.run(context => {
+    return Word.run(context => {
       const doc = this.getDocument(context);
       const controls = doc.contentControls;
       controls.load('items/id, items/title, items/tag');
@@ -376,7 +412,7 @@ export class OfficeService {
         const cc = controls.getByIdOrNullObject(id);
         cc.title = '';
 
-        return doc.context.sync();
+        return doc.context.sync().then(() => Promise.resolve());
       });
     });
   }

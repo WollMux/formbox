@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private templates: TemplateService,
+    private office: OfficeService,
     private slv: SachleitendeVerfuegungService,
     private actions: TemplateActions,
     private absenderlisteActions: AbsenderlisteActions,
@@ -72,11 +73,19 @@ export class AppComponent implements OnInit {
     this.actions.loadTemplate('Externer_Briefkopf');
   }
 
-  onTestXml(): void {
-    this.slv.copyCurrentDocument().then(() => {
-      this.slv.copyCurrentDocument().then(() => {
-        this.slv.showDocument();
-      });
+  onSLV(): void {
+    this.slv.newDocument().then(() => {
+      return this.slv.copyCurrentDocument(true);
+    }).then(() => {
+      return this.slv.copyCurrentDocument();
+    }).then(() => {
+      this.slv.showDocument();
+    });
+  }
+
+  onHide(): void {
+    this.office.getSelection().then(sel => {
+      this.office.hideRange(sel).then(() => sel.untrack());
     });
   }
 }
