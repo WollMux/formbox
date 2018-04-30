@@ -73,7 +73,7 @@ export class OfficeService {
   /**
    * Liefert das nächste DocumentCommand zurück.
    */
-  async getNextDocumentCommand(): Promise<{ id: number, cmd: string }> {
+  async getNextDocumentCommand(): Promise<{ id: number, tag: string, cmd: string }> {
     return this.getDocumentCommands().then(c => {
       if (c && c.length > 0) {
         const sorted = c.sort((cc1, cc2) => {
