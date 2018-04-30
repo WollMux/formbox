@@ -42,3 +42,7 @@ Startet den Server ohne Anbindung an MS Office. Das Add-On kann über einen Brow
 
 Wenn die Anwendung mit `nooffice` (s.o.) gestartet wird, muss im Browser die Extension [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension) installiert sein.
 Nach der Installation können die DevTools über das Kontextmenü (rechte Maustaste im Browserfenster) aufgerufen werden.
+
+## Kompatibilität MS Office
+
+Formbox verwendet Funktionen aus der Word JavaScript API 1.3. Diese API wird nur von Office 365 for Windows ab der Version 1612 (Build 7668.1000) unterstützt. Näheres dazu [hier](https://github.com/OfficeDev/office-js-docs/blob/master/reference/requirement-sets/word-api-requirement-sets.md).
