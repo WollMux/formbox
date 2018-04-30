@@ -1,4 +1,4 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { async, inject, TestBed } from '@angular/core/testing';
 
 import { ExpressionsService } from '../../../src/app/services/expressions.service';
 import { NgReduxModule } from '@angular-redux/store';
@@ -8,6 +8,7 @@ import { NgLoggerModule } from '@nsalaun/ng-logger';
 import { environment } from '../../../src/environments/environment';
 import { HttpModule } from '@angular/http';
 import { OfficeService } from '../../../src/app/services/office.service';
+import { TemplateMockService } from './mocks/template-mock.service';
 
 describe('ExpressionsService', () => {
   beforeEach(() => {
@@ -19,7 +20,7 @@ describe('ExpressionsService', () => {
       ],
       providers: [
         TemplateActions,
-        TemplateService,
+        { provide: TemplateService, useClass: TemplateMockService },
         ExpressionsService,
         OfficeService
       ]
@@ -30,18 +31,17 @@ describe('ExpressionsService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('evaluate insertFrag', inject([ExpressionsService], (service: ExpressionsService) => {
+  it('evaluate insertFrag', async(inject([ExpressionsService], (service: ExpressionsService) => {
     const spy = spyOn(service.ctx, 'insertFrag').and.callThrough();
     const ret = service.eval('insertFrag(\'Externer_Briefkopf\')', 0);
 
-    expect(ret).toBeUndefined();
-    expect(spy).toHaveBeenCalledWith('Externer_Briefkopf');
-  }));
+    ret.then(() => expect(spy).toHaveBeenCalledWith('Externer_Briefkopf'));
+  })));
 
-  it('evaluate overrideFrag', inject([ExpressionsService], (service: ExpressionsService) => {
+  it('evaluate overrideFrag', async(inject([ExpressionsService], (service: ExpressionsService) => {
     const spy = spyOn(service.ctx, 'overrideFrag').and.callThrough();
     const ret = service.eval('overrideFrag({oldFrag: \'Adresse_Angaben\', newFrag: \'Empfaengerfeld\'})', 0);
 
-    expect(spy).toHaveBeenCalledWith({ oldFrag: 'Adresse_Angaben', newFrag: 'Empfaengerfeld' });
-  }));
+    ret.then(() => expect(spy).toHaveBeenCalledWith({ oldFrag: 'Adresse_Angaben', newFrag: 'Empfaengerfeld' }));
+  })));
 });
