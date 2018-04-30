@@ -90,7 +90,7 @@ export class DexieStorage extends Dexie {
         telefon: '0123/393767192',
         titel: 'Dr.',
         zimmer: '45'
-      });
+      } as Absender);
       this.selected.put(id);
       this.pal.put({
         uid: 'donald.duck',
@@ -106,7 +106,7 @@ export class DexieStorage extends Dexie {
         telefon: '0123/393767200',
         titel: '',
         zimmer: '47'
-      });
+      } as Absender);
     });
   }
 }
