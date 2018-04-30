@@ -19,7 +19,7 @@ export class MockStorageService extends StorageService {
   }
 
   async getPAL(): Promise<Absender[]> {
-    return Promise.resolve([{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}]);
+    return Promise.resolve([{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1} as Absender]);
   }
 
   async getSelected(): Promise<number> {

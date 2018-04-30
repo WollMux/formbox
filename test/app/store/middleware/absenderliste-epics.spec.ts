@@ -10,6 +10,9 @@ import { StorageService } from '../../../../src/app/services/storage.service';
 import { MockStorageService } from '../../services/mocks/storage-mock.service';
 import { INITIAL_STATE } from '../../../../src/app/store/states/formbox-state';
 import configureStore from 'redux-mock-store'; // tslint:disable-line no-implicit-dependencies
+import { Absender } from '../../../../src/app/storage/absender';
+
+const absender = {uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1} as Absender;
 
 describe('Absenderliste epics', () => {
   let mockStore;
@@ -40,7 +43,7 @@ describe('Absenderliste epics', () => {
         payload: {
           params: {},
           result: {
-            pal: [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}],
+            pal: [absender],
             selected: 1
           }
         }
@@ -50,7 +53,7 @@ describe('Absenderliste epics', () => {
 
   it('changing Absender', inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
     const store = mockStore(INITIAL_STATE);
-    store.getState().absenderliste.pal = [{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}];
+    store.getState().absenderliste.pal = [absender];
     const action = AbsenderlisteActions.CHANGE_ABSENDER(1);
     const p = epics.changingAbsender(ActionsObservable.of(action), store);
 
@@ -64,7 +67,7 @@ describe('Absenderliste epics', () => {
 
   it('saving PAL', inject([AbsenderlisteEpics], (epics: AbsenderlisteEpics) => {
     const store = mockStore(INITIAL_STATE);
-    const action = AbsenderlisteActions.ADD_ABSENDER({uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1});
+    const action = AbsenderlisteActions.ADD_ABSENDER(absender);
     const p = epics.savingPAL(ActionsObservable.of(action), store);
 
     p.subscribe(result => {

@@ -7,6 +7,7 @@ import { StorageService } from '../../../src/app/services/storage.service';
 import { NgLoggerModule } from '@nsalaun/ng-logger';
 import { environment } from '../../../src/environments/environment';
 import { MockStorageService } from './mocks/storage-mock.service';
+import { Absender } from '../../../src/app/storage/absender';
 
 describe('AbsenderlisteService', () => {
   beforeEach(() => {
@@ -25,7 +26,7 @@ describe('AbsenderlisteService', () => {
 
   it('loadAbsenderliste', async(inject([AbsenderlisteService], (service: AbsenderlisteService) => {
     service.loadAbsenderliste().then(result => {
-      expect(result).toEqual([{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1}]);
+      expect(result).toEqual([{uid: 'max.mustermann', vorname: 'max', nachname: 'mustermann', id: 1} as Absender]);
     });
   })));
 
