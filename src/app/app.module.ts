@@ -56,6 +56,7 @@ import { DocumentTreeViewActions } from './store/actions/document-treeview-actio
 import { DialogActions } from './store/actions/dialog-actions';
 import { DialogEpics } from './store/middleware/dialog-epics';
 import { DialogService } from './services/dialog.service';
+import { BarService } from './services/bar.service';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { DialogService } from './services/dialog.service';
     ExpressionEditorCommandsEpics,
     { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService },
     FormDataService,
-    FormXmlParserService
+    FormXmlParserService,
+    BarService
   ],
   bootstrap: [AppComponent]
 })
