@@ -68,11 +68,11 @@ export class ExpressionsService {
   /**
    * Parst eine Expression und führt sie gleich aus.
    */
-  eval(expr: string, id?: number): any {
+  eval(expr: string, id?: number): Promise<any> {
     const fn = this.parse(expr);
     this.ctx.id = id;
 
-    return fn.call(this.ctx);
+    return Promise.resolve(fn.call(this.ctx));
   }
 }
 

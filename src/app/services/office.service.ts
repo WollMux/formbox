@@ -142,13 +142,15 @@ export class OfficeService {
 
         const cc = sorted.pop();
 
-        // Wir löschen den Title des ContentControls, damit es nicht noch einmal
-        // gefunden wird.
-        return this.deleteContentControlTitle(cc.id).then(() => {
-          return cc;
-        });
+        return cc;
       } else {
         return undefined;
+      }
+    }).then(cc => {
+      // Wir löschen den Title des ContentControls, damit es nicht noch einmal
+      // gefunden wird.
+      if (cc) {
+        return this.deleteContentControlTitle(cc.id).then(() => cc);
       }
     });
   }

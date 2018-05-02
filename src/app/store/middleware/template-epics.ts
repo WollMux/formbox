@@ -155,18 +155,13 @@ export class TemplateEpics {
   executingCommand = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.EXECUTE_COMMAND.started)
       .mergeMap(({ payload }, n: number) => {
-        const val = this.expr.eval(payload.cmd, payload.id);
-        if (val && val instanceof Promise) {
-          return val.then(() => {
-            return TemplateActions.EXECUTE_COMMAND.done({params: payload, result: payload.id});
-          });
-        } else if (val) {
-          return this.templates.insertValue(payload.id, val).then(() => {
-            return TemplateActions.EXECUTE_COMMAND.done({params: payload, result: payload.id});
-          });
-        }
-
-        return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+        return this.expr.eval(payload.cmd, payload.id).then(val => {
+          if (val) {
+            this.templates.insertValue(payload.id, val);
+          }
+        }).then(() => {
+          return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+        });
       });
   }
 
