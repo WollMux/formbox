@@ -42,7 +42,7 @@ export class RootEpic {
     this.expressEditorCommandsEpics.savingDocumentCommand,
     this.expressEditorCommandsEpics.deletingDocumentCommand,
     this.expressEditorCommandsEpics.selectCommand,
-    this.documentTreeViewEpics.getTemplateList,
+    this.documentTreeViewEpics.getBarList,
     this.dialogEpics.displayDialog
   )
 }

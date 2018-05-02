@@ -119,26 +119,6 @@ export class TemplateService {
   }
 
   /**
-   * Lädt eine Liste aller serverseitig gespeicherten Dokumente.
-   *
-   * @returns Treeviewstruktur als Javascript-Array
-   */
-  async getTemplates(): Promise<any[]> {
-    this.log.debug('TemplateService.getTemplate()');
-
-    return this.http.get(`${this.formboxapi}/document/vorlagen`, { responseType: ResponseContentType.Json })
-      .toPromise()
-      .then(res => {
-        return res.json();
-      })
-      .catch(error => {
-        this.log.error(error);
-
-        return undefined;
-      });
-  }
-
-  /**
    * Öffnet ein Dokument in Office.
    */
   async openDocument(base64: string): Promise<void> {
