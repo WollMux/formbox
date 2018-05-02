@@ -276,6 +276,7 @@ export class OfficeService {
       const doc = this.getDocument(context);
       const control = doc.contentControls.getById(id);
       control.select();
+
       return context.sync();
     });
   }
