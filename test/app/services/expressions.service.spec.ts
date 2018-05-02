@@ -35,7 +35,8 @@ describe('ExpressionsService', () => {
     const spy = spyOn(service.ctx, 'insertFrag').and.callThrough();
     const ret = service.eval('insertFrag(\'Externer_Briefkopf\')', 0);
 
-    ret.then(() => expect(spy).toHaveBeenCalledWith('Externer_Briefkopf'));
+    expect(typeof (ret.then)).toEqual('function');
+    expect(spy).toHaveBeenCalledWith('Externer_Briefkopf');
   })));
 
   it('evaluate overrideFrag', async(inject([ExpressionsService], (service: ExpressionsService) => {

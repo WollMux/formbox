@@ -74,14 +74,14 @@ export class TemplateService {
    * Speichert Änderungen an einem Dokumentenkommando im aktuellen Dokument.
    */
   async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
-    await this.office.updateContentControl(id, `= ${cmd}`, order.toString());
+    return this.office.updateContentControl(id, `= ${cmd}`, order.toString());
   }
 
   /**
    * Löscht ein Dokumentenkommando anhand der Id aus dem aktuellen Dokument.
    */
   async deleteDocumentCommand(id: number): Promise<void> {
-    await this.office.deleteContentControl(id);
+    return this.office.deleteContentControl(id);
   }
 
   /**
@@ -124,13 +124,13 @@ export class TemplateService {
   async openDocument(base64: string): Promise<void> {
     this.log.debug('TemplateService.openDocument(...)');
 
-    await this.office.openDocument(base64);
+    return this.office.openDocument(base64).then(() => Promise.resolve());
   }
 
   async showDocument(): Promise<void> {
     this.log.debug('TemplateService.showDocument()');
 
-    await this.office.showDocument();
+    return this.office.showDocument();
   }
 
   /**
@@ -142,8 +142,8 @@ export class TemplateService {
   async insertFragment(id: number, url: string): Promise<void> {
     this.log.debug(`TemplateService.insertFragment(${id}, ${url})`);
 
-    await this.getFileAsBase64(url).then(async s => {
-      await this.office.insertFragment(id, s);
+    return this.getFileAsBase64(url).then(s => {
+      return this.office.insertFragment(id, s);
     });
   }
 
@@ -156,7 +156,7 @@ export class TemplateService {
   async insertValue(id: number, value: string): Promise<void> {
     this.log.debug(`TemplateService.insertValue(${id}, ${value})`);
 
-    await this.office.insertValue(id, value);
+    return this.office.insertValue(id, value);
   }
 
   /**
@@ -180,10 +180,10 @@ export class TemplateService {
     let base64 = '';
 
     for (let i = 0; i < len; i += 3) {
-      base64 += this.chars[ bytes[ i ] >> 2 ];
-      base64 += this.chars[ ((bytes[ i ] & 3) << 4) | (bytes[ i + 1 ] >> 4) ];
-      base64 += this.chars[ ((bytes[ i + 1 ] & 15) << 2) | (bytes[ i + 2 ] >> 6) ];
-      base64 += this.chars[ bytes[ i + 2 ] & 63 ];
+      base64 += this.chars[bytes[i] >> 2];
+      base64 += this.chars[((bytes[i] & 3) << 4) | (bytes[i + 1] >> 4)];
+      base64 += this.chars[((bytes[i + 1] & 15) << 2) | (bytes[i + 2] >> 6)];
+      base64 += this.chars[bytes[i + 2] & 63];
     }
 
     if ((len % 3) === 2) {
