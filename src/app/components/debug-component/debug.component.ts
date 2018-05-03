@@ -39,8 +39,28 @@ export class DebugComponent implements OnInit {
   }
 
   onHide(): void {
-    this.office.getSelection().then(sel => {
-      this.office.hideRange(sel).then(() => sel.untrack());
+    //    this.office.getSelection().then(sel => {
+    //      this.office.hideRange(sel).then(() => sel.untrack());
+    //    });
+    Word.run(context => {
+      const cc = context.document.contentControls.getFirstOrNullObject();
+
+      return context.sync(cc);
+    }).then(cc => {
+      return this.office.hideContentControl(cc);
+    });
+  }
+
+  onUnhide(): void {
+    //    this.office.getSelection().then(sel => {
+    //      this.office.hideRange(sel).then(() => sel.untrack());
+    //    });
+    Word.run(context => {
+      const cc = context.document.contentControls.getFirstOrNullObject();
+
+      return context.sync(cc);
+    }).then(cc => {
+      return this.office.unhideContentControl(cc);
     });
   }
 }
