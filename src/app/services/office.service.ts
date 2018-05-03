@@ -382,7 +382,7 @@ export class OfficeService {
   }
 
   async unhideRange(range: Word.Range): Promise<Word.Range> {
-    return Word.run(async context => {
+    return Word.run(range, context => {
       const ooxml = range.getOoxml();
 
       return context.sync().then(() => {
@@ -406,6 +406,28 @@ export class OfficeService {
         return context.sync().then(() => Promise.resolve(ret));
       });
     });
+  }
+
+  async hideContentControl(cc: Word.ContentControl): Promise<void> {
+    return Word.run(cc, context => {
+      const range = cc.getRange(Word.RangeLocation.whole);
+
+      return context.sync(range);
+    }).then(range => {
+      return this.hideRange(range);
+    })
+      .then(() => Promise.resolve());
+  }
+
+  async unhideContentControl(cc: Word.ContentControl): Promise<void> {
+    return Word.run(cc, context => {
+      const range = cc.getRange(Word.RangeLocation.whole);
+
+      return context.sync(range);
+    }).then(range => {
+      return this.unhideRange(range);
+    })
+      .then(() => Promise.resolve());
   }
 
   private deleteContentControlTitle = async (id: number): Promise<void> => {
