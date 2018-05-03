@@ -57,10 +57,7 @@ export class AppComponent implements OnInit {
       .then(res => {
         let fileContent = res;
         console.log(fileContent);
-        document.getElementById("TheImageContents").innerHTML =
-          '<h2>The image that you selected</h2><p><img width="200" src="' +
-          fileContent +
-          '" /></p>';
+        document.getElementById("FileContentBase64").innerHTML = fileContent;
       })
       .catch(error => {});
   }
