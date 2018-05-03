@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { Router } from '@angular/router';
 import { TemplateActions } from '../../store/actions/template-actions';
+import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
+import { OfficeService } from '../../services/office.service';
 
 @Component({
   selector: 'app-debug-component',
@@ -13,7 +15,9 @@ export class DebugComponent implements OnInit {
   constructor(
     private log: Logger,
     private router: Router,
-    private templateActions: TemplateActions
+    private templateActions: TemplateActions,
+    private office: OfficeService,
+    private slv: SachleitendeVerfuegungService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -22,5 +26,21 @@ export class DebugComponent implements OnInit {
 
   performCommands(): void {
     this.templateActions.performCommands();
+  }
+
+  onSLV(): void {
+    this.slv.newDocument().then(() => {
+      return this.slv.copyCurrentDocument(true);
+    }).then(() => {
+      return this.slv.copyCurrentDocument();
+    }).then(() => {
+      this.slv.showDocument();
+    });
+  }
+
+  onHide(): void {
+    this.office.getSelection().then(sel => {
+      this.office.hideRange(sel).then(() => sel.untrack());
+    });
   }
 }
