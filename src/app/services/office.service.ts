@@ -346,60 +346,64 @@ export class OfficeService {
     });
   }
 
-  async hideRange(range: Word.Range): Promise<void> {
+  async hideRange(range: Word.Range): Promise<Word.Range> {
     return Word.run(range, context => {
-      range.select();
+      const ooxml = range.getOoxml();
 
-      return context.sync().then(async () => {
-        return this.getSelectedData().then(ooxml => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(ooxml, 'application/xml');
+      return context.sync().then(() => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(ooxml.value, 'application/xml');
 
-          const el = doc.getElementsByTagName('w:t');
+        const el = doc.getElementsByTagName('w:t');
 
-          for (let i = 0; i < el.length; i++) {
-            const t = el.item(i);
-            const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
-            let rpr = t.previousSibling;
+        for (let i = 0; i < el.length; i++) {
+          const t = el.item(i);
+          const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
+          let rpr = t.previousSibling;
 
-            if (!rpr) {
-              rpr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
-              t.parentNode.insertBefore(rpr, t);
-            }
-
-            rpr.appendChild(vanish);
+          if (!rpr) {
+            rpr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
+            t.parentNode.insertBefore(rpr, t);
           }
 
-          const ser = new XMLSerializer();
-          const xml = ser.serializeToString(doc);
+          rpr.appendChild(vanish);
+        }
 
-          return Promise.resolve(xml);
-        }).then(xml => this.setSelectedData(xml));
+        const ser = new XMLSerializer();
+        const xml = ser.serializeToString(doc);
+
+        return Promise.resolve(xml);
+      }).then(xml => {
+        const ret = range.insertOoxml(xml, Word.InsertLocation.replace);
+
+        return context.sync().then(() => Promise.resolve(ret));
       });
-    }).catch(error => Promise.reject(error));
+    });
   }
 
-  async unhideRange(range: Word.Range): Promise<void> {
+  async unhideRange(range: Word.Range): Promise<Word.Range> {
     return Word.run(async context => {
-      range.select();
+      const ooxml = range.getOoxml();
 
-      return context.sync().then(async () => {
-        return this.getSelectedData().then(ooxml => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(ooxml, 'application/xml');
+      return context.sync().then(() => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(ooxml.value, 'application/xml');
 
-          const el = doc.getElementsByTagName('w:vanish');
+        const el = doc.getElementsByTagName('w:vanish');
 
-          while (el.length > 0) {
-            const t = el.item(0);
-            t.parentNode.removeChild(t);
-          }
+        while (el.length > 0) {
+          const t = el.item(0);
+          t.parentNode.removeChild(t);
+        }
 
-          const ser = new XMLSerializer();
-          const xml = ser.serializeToString(doc);
+        const ser = new XMLSerializer();
+        const xml = ser.serializeToString(doc);
 
-          return Promise.resolve(xml);
-        }).then(xml => this.setSelectedData(xml));
+        return Promise.resolve(xml);
+      }).then(xml => {
+        const ret = range.insertOoxml(xml, Word.InsertLocation.replace);
+
+        return context.sync().then(() => Promise.resolve(ret));
       });
     });
   }
