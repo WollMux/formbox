@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { FormularEditorComponent } from '../../components/formular-editor/formular-editor.component';
 import { CommonModule } from '@angular/common';
+import { FormularEditorLabelComponent } from '../../components/formular-editor-label/formular-editor-label.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
     TreeModule
   ],
   declarations: [
-    FormularEditorComponent
+    FormularEditorComponent,
+    FormularEditorLabelComponent
   ],
   exports: [
     RouterModule
