@@ -42,9 +42,9 @@ export class FormularEditorComponent implements OnInit, OnDestroy {
         drop: (tree, node, $event, {from, to}) => {
           // Es muss zwischen den Fällen if) neues Control und else) Control verschieben unterschieden werden
           if (from.type) {
-            this.actions.add(from.type, to.parent.path, to.index);
+            this.actions.add(from.type, to.parent.data.id, to.index);
           } else {
-            this.actions.move(from.data, from.parent.path, from.index, to.parent.path, to.index);
+            this.actions.move(from.data, to.parent.data.id, to.index);
           }
         }
       }
@@ -81,12 +81,12 @@ export class FormularEditorComponent implements OnInit, OnDestroy {
     this.actions.hide(id);
   }
 
-  update(value: any, node: TreeNode): void {
-    this.actions.update(value, node.parent.path, node.index);
+  update(value: any): void {
+    this.actions.update(value);
   }
 
   remove(node: TreeNode): void {
-    this.actions.remove(node.data.id, node.parent.path, node.index, node.data.ccid);
+    this.actions.remove(node.data.id, node.data.ccid);
   }
 
   createForm(): void {
@@ -94,7 +94,7 @@ export class FormularEditorComponent implements OnInit, OnDestroy {
   }
 
   addTab(node: TreeNode): void {
-    this.actions.add('tab', node.path, node.children.length);
+    this.actions.add('tab', node.data.id, node.children.length);
     node.expand();
   }
 }

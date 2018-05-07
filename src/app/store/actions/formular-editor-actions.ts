@@ -12,10 +12,10 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class FormularEditorActions {
-  static UPDATE_CONTROL = actionCreator<{control: any, path: string[], key: number}>('UPDATE_CONTROL');
-  static REMOVE_CONTROL = actionCreator.async <{id: string, path: string[], key: number, ccid: number}, {}> ('REMOVE_CONTROL');
-  static ADD_CONTROL = actionCreator.async<{type: string, path: string[], key: number}, Control>('ADD_CONTROL');
-  static MOVE_CONTROL = actionCreator<{control: any, oldPath: string[], oldKey: number, newPath: string[], newKey: number}>('MOVE_CONTROL');
+  static UPDATE_CONTROL = actionCreator<{control: any}>('UPDATE_CONTROL');
+  static REMOVE_CONTROL = actionCreator.async <{id: string, ccid: number}, {}> ('REMOVE_CONTROL');
+  static ADD_CONTROL = actionCreator.async<{type: string, parentId: string, index: number}, Control>('ADD_CONTROL');
+  static MOVE_CONTROL = actionCreator<{control: any, newParentId: string, index: number}>('MOVE_CONTROL');
   static LOAD_FORM = actionCreator.async<any, Form>('LOAD_FORM');
   static SAVE_FORM = actionCreator.async<any, string>('SAVE_FORM');
   static CREATE_FORM = actionCreator.async<any, Form>('CREATE_FORM');
@@ -36,26 +36,26 @@ export class FormularEditorActions {
     return this.ngRedux.dispatch(action);
   }
 
-  update(control: any, path: string[], key: number): any {
-    const action = FormularEditorActions.UPDATE_CONTROL({control, path, key});
+  update(control: any): any {
+    const action = FormularEditorActions.UPDATE_CONTROL({control});
 
     return this.ngRedux.dispatch(action);
   }
 
-  remove(id: string, path: string[], key: number, ccid: number): any {
-    const action = FormularEditorActions.REMOVE_CONTROL.started({id, path, key, ccid});
+  remove(id: string, ccid: number): any {
+    const action = FormularEditorActions.REMOVE_CONTROL.started({id, ccid});
 
     return this.ngRedux.dispatch(action);
   }
 
-  add(type: string, path: string[], key: number): any {
-    const action = FormularEditorActions.ADD_CONTROL.started({type, path, key});
+  add(type: string, parentId: string, index: number): any {
+    const action = FormularEditorActions.ADD_CONTROL.started({type, parentId, index});
 
     return this.ngRedux.dispatch(action);
   }
 
-  move(control: any, oldPath: string[], oldKey: number, newPath: string[], newKey: number): any {
-    const action = FormularEditorActions.MOVE_CONTROL({control, oldPath, oldKey, newPath, newKey});
+  move(control: any, newParentId: string, index: number): any {
+    const action = FormularEditorActions.MOVE_CONTROL({control, newParentId, index});
 
     return this.ngRedux.dispatch(action);
   }
