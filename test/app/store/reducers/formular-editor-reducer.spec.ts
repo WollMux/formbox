@@ -60,22 +60,27 @@ describe('Formular Editor Reducer', () => {
     const action2 = FormularEditorActions.HIDE_CONTROL('id');
     state = reducer(state, action2);
     expect(state).toEqual(INITIAL_STATE);
+    // Doppelt aus isEdit entfernen geht nicht
+    state = reducer(state, action2);
+    expect(state).toEqual(INITIAL_STATE);
   });
 
   it('update form', () => {
     const form2 = new Form();
     form2.title = 'form 2';
-    const action = FormularEditorActions.UPDATE_CONTROL({control: form2, path: [], key: 0});
+    form2.id = form.id;
+    const action = FormularEditorActions.UPDATE_CONTROL({control: form2});
     expect(reducer(myState, action)).toEqual({
       isEdit: [],
       form: form2
     });
 
-    const resultHbox = new Hbox(hbox);
-    resultHbox.controls = [label3];
+    const newLabel1 = new Label();
+    newLabel1.id = label1.id;
+    newLabel1.title = 'new Label 1';
     const resultForm = new Form(form);
-    resultForm.controls[1] = resultHbox;
-    const action2 = FormularEditorActions.UPDATE_CONTROL({control: label3, path: ['myForm', 'hbox'], key: 0});
+    resultForm.controls = [newLabel1, hbox];
+    const action2 = FormularEditorActions.UPDATE_CONTROL({control: newLabel1});
     expect(reducer(myState, action2)).toEqual({
       isEdit: [],
       form: resultForm
@@ -85,7 +90,7 @@ describe('Formular Editor Reducer', () => {
   it('remove Control', () => {
     const resultForm = new Form(form);
     resultForm.controls = [hbox];
-    const action = FormularEditorActions.REMOVE_CONTROL.done({params: {id: 'l1', path: ['myForm'], key: 0, ccid: undefined}, result: {}});
+    const action = FormularEditorActions.REMOVE_CONTROL.done({params: {id: 'l1', ccid: undefined}, result: {}});
     expect(reducer(myState, action)).toEqual({
       isEdit: [],
       form: resultForm
@@ -95,7 +100,7 @@ describe('Formular Editor Reducer', () => {
   it('add Control', () => {
     const resultForm = new Form(form);
     resultForm.controls[2] = label3;
-    const action = FormularEditorActions.ADD_CONTROL.done({params: {type: 'label', path: ['myForm'], key: 2}, result: label3});
+    const action = FormularEditorActions.ADD_CONTROL.done({params: {type: 'label', parentId: form.id, index: 2}, result: label3});
     expect(reducer(myState, action)).toEqual({
       isEdit: [],
       form: resultForm
@@ -107,8 +112,7 @@ describe('Formular Editor Reducer', () => {
     resultHbox.controls = [label1, label2];
     const resultForm = new Form(form);
     resultForm.controls = [resultHbox];
-    const action = FormularEditorActions.MOVE_CONTROL(
-      {control: label1, oldPath: ['myForm'], oldKey: 0, newPath: ['myForm', 'hbox'], newKey: 0});
+    const action = FormularEditorActions.MOVE_CONTROL({control: label1, newParentId: hbox.id, index: 0});
     expect(reducer(myState, action)).toEqual({
       isEdit: [],
       form: resultForm

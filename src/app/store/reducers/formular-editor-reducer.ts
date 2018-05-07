@@ -7,10 +7,20 @@ import { Form } from '../../data/forms/form';
 import { Control } from '../../data/forms/control';
 import { Container } from '../../data/forms/container';
 
+/**
+ * Lädt ein neues Formular in den State.
+ * @param state Der aktuelle State.
+ * @param form Die neue Formularbeschreibung.
+ */
 const saveForm = (state: FormularEditorState, form: Form): FormularEditorState => {
   return tassign(state, {form: form});
 };
 
+/**
+ * Öffnet den Editor für ein Control
+ * @param state Der aktuelle State.
+ * @param id Die Id des zu bearbeitenden Controls
+ */
 const editControl = (state: FormularEditorState, id: string): FormularEditorState => {
   let isEdit = state.isEdit;
   if (state.isEdit.indexOf(id) < 0) {
@@ -23,6 +33,11 @@ const editControl = (state: FormularEditorState, id: string): FormularEditorStat
   return tassign(state, {isEdit: isEdit});
 };
 
+/**
+ * Schließt den Editor für ein Control.
+ * @param state Der aktuelle State.
+ * @param id Die Id des zu verbergenden Controls.
+ */
 const hideControl = (state: FormularEditorState, id: string): FormularEditorState => {
   let isEdit = state.isEdit;
   if (state.isEdit.indexOf(id) >= 0) {
@@ -32,59 +47,116 @@ const hideControl = (state: FormularEditorState, id: string): FormularEditorStat
   return tassign(state, {isEdit: isEdit});
 };
 
-const updateForm = (state: FormularEditorState, control: any, path: string[], key: number): FormularEditorState => {
+/**
+ * Ersetzt das Control mit der gleichen Id wie control.
+ * @param state Der aktuelle State.
+ * @param control Das geänderte Control mit der gleichen Id wie sein Vorgänger.
+ */
+const updateControl = (state: FormularEditorState, control: any): FormularEditorState => {
   let form = new Form(state.form);
-  if (path.length === 0) {
+  const info = findParentControl(form, control.id);
+  if (info.parent === undefined) {
     form = control;
   } else {
-    const parent = findParentControl(form, path);
-    parent.controls = replaceControlInArray(parent.controls, key, control);
+    info.parent.controls = replaceControlInArray(info.parent.controls, info.index, control);
   }
-
-  return tassign(state, {form: form});
-};
-
-const removeControl = (state: FormularEditorState, path: string[], key: number): FormularEditorState => {
-  const form = new Form(state.form);
-  const parent = findParentControl(form, path);
-  parent.controls = removeControlFromArray(parent.controls, key);
-
-  return tassign(state, {form: form});
-};
-
-const addControl = (state: FormularEditorState, control: any, path: string[], key: number): FormularEditorState => {
-  const form = new Form(state.form);
-  const parent = findParentControl(form, path);
-  parent.controls = addControlToArray(parent.controls, key, control);
-
-  return tassign(state, {form: form});
-};
-
-const moveControl = (state: FormularEditorState, control: any, oldPath: string[], oldKey: number,
-                     newPath: string[], newKey: number): FormularEditorState => {
-  const form = new Form(state.form);
-  const oldParent = findParentControl(form, oldPath);
-  oldParent.controls = removeControlFromArray(oldParent.controls, oldKey);
-
-  const newParent = findParentControl(form, newPath);
-  newParent.controls = addControlToArray(newParent.controls, newKey, control);
 
   return tassign(state, {form: form});
 };
 
 /**
- * Findet ausgehend von einer Basiskomponente den Parent eines Controls.
- * @param base Die Basiskomponente
- * @param path Beschreibt den Weg von der Basiskomponente zum Parent.
+ * Entfernt ein Control.
+ * @param state Der aktuelle State.
+ * @param id Die Id des zu entfernenden Controls.
  */
-const findParentControl = (base: any, path: string[]): any => {
-  // Der erste Eintrag im Array entspricht der Basiskomponente. Deswegen kann er verworfen werden.
-  path.shift();
-  for (const obj of path) {
-    base = base.controls.find(c => c.id === obj);
-  }
+const removeControl = (state: FormularEditorState, id: string): FormularEditorState => {
+  const form = new Form(state.form);
+  const info = findParentControl(form, id);
+  info.parent.controls = removeControlFromArray(info.parent.controls, info.index);
 
-  return base;
+  return tassign(state, {form: form});
+};
+
+/**
+ * Fügt ein neues Control hinzu.
+ * @param state Der aktuelle State.
+ * @param control Das neue Control.
+ * @param parentId Die Id des neuen Parent Controls.
+ * @param index Die Position an der das Control eingefügt wird.
+ */
+const addControl = (state: FormularEditorState, control: any, parentId, index: number): FormularEditorState => {
+  const form = new Form(state.form);
+  const parent = findControl(form, parentId);
+  parent.controls = addControlToArray(parent.controls, index, control);
+
+  return tassign(state, {form: form});
+};
+
+/**
+ * Verschiebt ein Control.
+ * @param state Der aktuelle State.
+ * @param control Das zu verschiebende Control.
+ * @param newParentId Die Id des neuen Parent Controls.
+ * @param index Die Position an der das Control eingefügt wird.
+ */
+const moveControl = (state: FormularEditorState, control: any, newParentId: string, index: number): FormularEditorState => {
+  const form = new Form(state.form);
+  const info = findParentControl(form, control.id);
+  info.parent.controls = removeControlFromArray(info.parent.controls, info.index);
+
+  const newParent = findControl(form, newParentId);
+  newParent.controls = addControlToArray(newParent.controls, index, control);
+
+  return tassign(state, {form: form});
+};
+
+/**
+ * Findet ausgehend von einer Basiskomponente ein Control.
+ * @param base Die Basiskomponente.
+ * @param id Die Id des Controls.
+ */
+const findControl = (base: any, id: string): any => {
+  if (base.id === id) {
+    return base;
+  } else if (base.controls) {
+    for (const control of base.controls) {
+      const found = findControl(control, id);
+      if (found) {
+        return found;
+      }
+    }
+
+    return undefined;
+  } else {
+    return undefined;
+  }
+};
+
+/**
+ * Findet ausgehend von einer Basiskomponente den Parent eines Controls.
+ * @param base Die Basiskomponente.
+ * @param id Die Id des Controls.
+ */
+const findParentControl = (base: any, id: string): {parent: any, index: number} => {
+  if (base.id === id) {
+    return {parent: undefined, index: -1};
+  } else if (base.controls) {
+    for (let i = 0; i < base.controls.length; i++) {
+      const control = base.controls[i];
+      if (control.id === id) {
+        return {parent: base, index: i};
+      } else {
+        const found = findParentControl(control, id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+
+    return undefined;
+  } else {
+    return undefined;
+  }
 };
 
 /**
@@ -132,12 +204,11 @@ const replaceControlInArray = (controls: Control[], index: number, control: Cont
 export const formularEditorReducer: Reducer<FormularEditorState> = reducerWithInitialState(INITIAL_STATE)
   .cases([FormularEditorActions.LOAD_FORM.done, FormularEditorActions.CREATE_FORM.done], (state, payload) =>
     saveForm(state, payload.result))
-  .case(FormularEditorActions.UPDATE_CONTROL, (state, payload) => updateForm(state, payload.control, payload.path, payload.key))
-  .case(FormularEditorActions.REMOVE_CONTROL.done, (state, payload) => removeControl(state, payload.params.path, payload.params.key))
+  .case(FormularEditorActions.UPDATE_CONTROL, (state, payload) => updateControl(state, payload.control))
+  .case(FormularEditorActions.REMOVE_CONTROL.done, (state, payload) => removeControl(state, payload.params.id))
   .case(FormularEditorActions.ADD_CONTROL.done, (state, payload) =>
-    addControl(state, payload.result, payload.params.path, payload.params.key))
-  .case(FormularEditorActions.MOVE_CONTROL, (state, payload) =>
-    moveControl(state, payload.control, payload.oldPath, payload.oldKey, payload.newPath, payload.newKey))
+    addControl(state, payload.result, payload.params.parentId, payload.params.index))
+  .case(FormularEditorActions.MOVE_CONTROL, (state, payload) => moveControl(state, payload.control, payload.newParentId, payload.index))
   .case(FormularEditorActions.EDIT_CONTROL, (state, payload) => editControl(state, payload))
   .case(FormularEditorActions.HIDE_CONTROL, (state, payload) => hideControl(state, payload))
   .build();

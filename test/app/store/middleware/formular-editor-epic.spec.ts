@@ -59,10 +59,10 @@ describe('Formular Editor epics', () => {
   })));
 
   it('start saving Form', async(inject([FormularEditorEpics], (epics: FormularEditorEpics) => {
-    const addAction = FormularEditorActions.ADD_CONTROL.done({params: {type: '', path: [], key: 0}, result: undefined });
-    const removeAction = FormularEditorActions.REMOVE_CONTROL.done({params: {id: '', path: [], key: 0, ccid: undefined}, result: {}});
-    const moveAction = FormularEditorActions.MOVE_CONTROL({control: undefined, oldPath: [], oldKey: 0, newPath: [], newKey: 0});
-    const updateAction = FormularEditorActions.UPDATE_CONTROL({control: undefined, path: [], key: 0});
+    const addAction = FormularEditorActions.ADD_CONTROL.done({params: {type: '', parentId: '', index: 0}, result: undefined });
+    const removeAction = FormularEditorActions.REMOVE_CONTROL.done({params: {id: '', ccid: undefined}, result: {}});
+    const moveAction = FormularEditorActions.MOVE_CONTROL({control: undefined, newParentId: '', index: 0});
+    const updateAction = FormularEditorActions.UPDATE_CONTROL({control: undefined});
     const p = epics.startSavingForm(ActionsObservable.of(addAction));
     const p2 = epics.startSavingForm(ActionsObservable.of(removeAction));
     const p3 = epics.startSavingForm(ActionsObservable.of(moveAction));
@@ -117,14 +117,14 @@ describe('Formular Editor epics', () => {
   it('creating Control', async(inject([FormularEditorEpics, FormularEditorService],
     (epics: FormularEditorEpics, service: FormularEditorService) => {
       const spy = spyOn(service, 'createFormControl').and.returnValue(Promise.resolve(label));
-      const action = FormularEditorActions.ADD_CONTROL.started({type: 'label', path: [], key: 0});
+      const action = FormularEditorActions.ADD_CONTROL.started({type: 'label', parentId: '', index: 0});
       const p = epics.creatingControl(ActionsObservable.of(action));
 
       p.subscribe(res => {
         expect(res).toEqual({
           type: 'ADD_CONTROL_DONE',
           payload: {
-            params: {type: 'label', path: [], key: 0},
+            params: {type: 'label', parentId: '', index: 0},
             result: label
           }
         });
@@ -132,14 +132,14 @@ describe('Formular Editor epics', () => {
   })));
 
   it('deleting Control', async(inject([FormularEditorEpics], (epics: FormularEditorEpics) => {
-      const action = FormularEditorActions.REMOVE_CONTROL.started({id: '', path: [], key: 0, ccid: 0});
+      const action = FormularEditorActions.REMOVE_CONTROL.started({id: '', ccid: 0});
       const p = epics.deletingControl(ActionsObservable.of(action));
 
       p.subscribe(res => {
         expect(res).toEqual({
           type: 'REMOVE_CONTROL_DONE',
           payload: {
-            params: {id: '', path: [], key: 0, ccid: 0},
+            params: {id: '', ccid: 0},
             result: {}
           }
         });
@@ -147,7 +147,7 @@ describe('Formular Editor epics', () => {
   })));
 
   it('editing Control', async(inject([FormularEditorEpics], (epics: FormularEditorEpics) => {
-      const addAction = FormularEditorActions.ADD_CONTROL.done({params: {type: '', path: [], key: 0}, result: label });
+      const addAction = FormularEditorActions.ADD_CONTROL.done({params: {type: '', parentId: '', index: 0}, result: label });
       const formAction = FormularEditorActions.CREATE_FORM.done({params: {}, result: form});
       const p = epics.editingControl(ActionsObservable.of(addAction));
       const p2 = epics.editingControl(ActionsObservable.of(formAction));
@@ -168,8 +168,8 @@ describe('Formular Editor epics', () => {
   })));
 
   it('hiding Control', async(inject([FormularEditorEpics], (epics: FormularEditorEpics) => {
-      const removeAction = FormularEditorActions.REMOVE_CONTROL.done({params: {id: 'myId', path: [], key: 0, ccid: undefined}, result: {}});
-      const updateAction = FormularEditorActions.UPDATE_CONTROL({control: label, path: [], key: 0});
+      const removeAction = FormularEditorActions.REMOVE_CONTROL.done({params: {id: 'myId', ccid: undefined}, result: {}});
+      const updateAction = FormularEditorActions.UPDATE_CONTROL({control: label});
       const p = epics.hidingControl(ActionsObservable.of(removeAction));
       const p2 = epics.hidingControl(ActionsObservable.of(updateAction));
 

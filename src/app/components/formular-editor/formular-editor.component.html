@@ -51,14 +51,14 @@
           <!-- Editoren -->
           <ng-container *ngIf="(isEdit | async)?.indexOf(node.data.id) >= 0">
             <div [ngSwitch]="node.data.constructor.name">
-              <app-formular-editor-label *ngSwitchCase="'Label'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-label>
-              <app-formular-editor-checkbox *ngSwitchCase="'Checkbox'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-checkbox>
-              <app-formular-editor-textfield *ngSwitchCase="'Textfield'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-textfield>
-              <app-formular-editor-tab *ngSwitchCase="'Tab'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-tab>
-              <app-formular-editor-button *ngSwitchCase="'Button'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-button>
+              <app-formular-editor-label *ngSwitchCase="'Label'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-label>
+              <app-formular-editor-checkbox *ngSwitchCase="'Checkbox'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-checkbox>
+              <app-formular-editor-textfield *ngSwitchCase="'Textfield'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-textfield>
+              <app-formular-editor-tab *ngSwitchCase="'Tab'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-tab>
+              <app-formular-editor-button *ngSwitchCase="'Button'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-button>
               <app-formular-editor-form *ngSwitchCase="'Form'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-form>
-              <app-formular-editor-textarea *ngSwitchCase="'Textarea'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-textarea>
-              <app-formular-editor-combobox *ngSwitchCase="'Combobox'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-combobox>
+              <app-formular-editor-textarea *ngSwitchCase="'Textarea'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-textarea>
+              <app-formular-editor-combobox *ngSwitchCase="'Combobox'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-combobox>
             </div>
           </ng-container>
         </ng-template>
