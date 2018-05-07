@@ -50,7 +50,7 @@ export class DocumentTreeviewComponent implements OnInit {
   }
 
   showThumb = (node: ITreeNode) => {
-    this.showDialog(node.data.name);
+    this.showDialog(node.data.id);
   }
 
   nodeClicked = (node: ITreeNode) => {
@@ -58,7 +58,7 @@ export class DocumentTreeviewComponent implements OnInit {
       return;
     }
 
-    this.templateActions.insertFragment(0, node.data.name);
+    this.templateActions.insertFragment(0, node.data.id);
   }
 
   getNodeIsExpandedClass = (node: ITreeNode): any => {
