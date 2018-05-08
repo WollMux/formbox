@@ -150,7 +150,7 @@ export class OfficeService {
 
       return context.sync().then(() => {
         if (value) {
-          control.insertText(value, 'Replace');
+          control.insertText(String(value), 'Replace');
         }
         control.delete(true);
 
