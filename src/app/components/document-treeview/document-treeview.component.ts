@@ -58,7 +58,7 @@ export class DocumentTreeviewComponent implements OnInit {
       return;
     }
 
-    this.templateActions.insertFragment(0, node.data.id);
+    this.templateActions.loadTemplate(node.data.id);
   }
 
   getNodeIsExpandedClass = (node: ITreeNode): any => {
