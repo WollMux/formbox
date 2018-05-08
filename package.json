@@ -44,6 +44,7 @@
     "dexie": "^2.0.2",
     "expressions-js": "^0.1.12",
     "font-awesome": "^4.7.0",
+    "hoek": "4.2.1",
     "ng-drag-drop": "^4.0.0",
     "ngx-bootstrap": "^2.0.2",
     "node-sass": "^4.8.1",
