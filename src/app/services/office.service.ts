@@ -26,6 +26,17 @@ export class OfficeService {
   }
 
   /**
+   * Gibt getrackte Office-Objekte wieder frei.
+   */
+  async untrack(o: any): Promise<{}> {
+    return Word.run(o, context => {
+      o.untrack();
+
+      return context.sync();
+    });
+  }
+
+  /**
    * Öffnet ein Dokument in MS Office.
    *
    * @param base64 Das Dokument als Base64-String
@@ -78,6 +89,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Kopiert den Inhalt des aktuellen Dokuments in ein neues temporäres
+   * Dokument.
+   * 
+   * @param target Dokument, das mit createDocument erzeugt wurde.
+   */
   async copyDocument(target: Word.DocumentCreated): Promise<void> {
     return Word.run(context => {
       const doc: Word.Document = context.document;
@@ -93,6 +110,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Fügt einen Seitenumbruch am Ende eines Dokuments ein.
+   * 
+   * @param target
+   */
   async insertPageBreak(target: Word.Document | Word.DocumentCreated): Promise<void> {
     return Word.run(context => {
       target.body.insertBreak(Word.BreakType.page, Word.InsertLocation.end);
@@ -207,15 +229,40 @@ export class OfficeService {
   }
 
   /**
+   * Eweitert eine Range auf den gesamten Absatz. Wenn keine Range übergeben 
+   * wird, wird die aktuelle Selektion verwendet.
+   * 
+   * @returns Range für den Absatz. Die Range wird automatisch getrackt, weil
+   * man sonst nichts damit anfangen kann. Wenn die Range nicht mehr benötigt 
+   * wird, muss sie mit untrack freigegeben werden. 
+   */
+  async expandRangeToParagraph(range?: Word.Range): Promise<Word.Range> {
+    return Word.run(context => {
+      const rng = (range) ? range : context.document.getSelection();
+      rng.paragraphs.load('items');
+
+      return context.sync().then(() => {
+        const p = rng.paragraphs.items[0];
+        const r = p.getRange(Word.RangeLocation.whole);
+        r.track();
+
+        return context.sync().then(() => r);
+      });
+    });
+  }
+
+  /**
    * Fügt ein neues ContentControl an der aktuellen Cursorpsoition ein.
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
    * Text herum angelegt.
    */
-  async insertContentControl(title: string, tag: string): Promise<number> {
-    return Word.run(context => {
+  async insertContentControl(title: string, tag: string, range?: Word.Range): Promise<number> {
+    return Word.run(range, context => {
       const doc = context.document;
-      const range = doc.getSelection();
-      const cc = range.insertContentControl();
+      const rng = (range) ? range : doc.getSelection();
+      const cc = rng.insertContentControl();
+      const randomColor = this.generateRandomHexColorString();
+
       cc.title = title;
       cc.tag = tag;
       context.load(cc, 'id');
@@ -254,6 +301,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Fügt Custom XML in das aktuelle Dokument ein.
+   * 
+   * @returns Die ID des neuen CustomXML-Objekts
+   */
   async addXml(xml: string): Promise<string> {
     return new Promise<string>(resolve => {
       Office.context.document.customXmlParts.addAsync(xml, result => {
@@ -262,6 +314,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt einen CustomXML-Objekt zurück.
+   * 
+   * @param id ID des CustomXML-Objekts.
+   */
   async getXmlById(id: string): Promise<string> {
     return new Promise<string>(resolve => {
       Office.context.document.customXmlParts.getByIdAsync(id, result => {
@@ -272,6 +329,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt ein oder mehrere CustomXML-Objekte zurück, die einen bestimmten
+   * Namespace verwenden. 
+   * 
+   * @param ns Namespace im XML-Dokument.
+   */
   async getXmlIdsByNamespace(ns: string): Promise<string[]> {
     return new Promise<string[]>(resolve => {
       Office.context.document.customXmlParts.getByNamespaceAsync(ns, result => {
@@ -284,6 +347,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Löscht ein CustomXML-Objekt.
+   * 
+   * @param id ID des CustomXML-Objekts.
+   */
   async deleteXmlById(id: string): Promise<void> {
     return new Promise<void>(resolve => {
       Office.context.document.customXmlParts.getByIdAsync(id, result => {
@@ -292,6 +360,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Löscht alle CustomXML-Objekte, die einen bestimmten
+   * Namespace verwenden. 
+   * 
+   * @param ns Namespace im XML-Dokument.
+   */
   async deleteXmlByNamespace(ns: string): Promise<void> {
     return new Promise<void>(async resolve => {
       await Office.context.document.customXmlParts.getByNamespaceAsync(ns, async result => {
@@ -317,6 +391,9 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt die Selektion im aktuellen Document als Range zurück. 
+   */
   async getSelection(): Promise<Word.Range> {
     return Word.run(context => {
       const sel = context.document.getSelection();
@@ -330,22 +407,9 @@ export class OfficeService {
     });
   }
 
-  async getSelectedData(): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      Office.context.document.getSelectedDataAsync(Office.CoercionType.Ooxml, (result: Office.AsyncResult) => {
-        resolve(result.value);
-      });
-    });
-  }
-
-  async setSelectedData(ooxml: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      Office.context.document.setSelectedDataAsync(ooxml, { coercionType: Office.CoercionType.Ooxml }, (result: Office.AsyncResult) => {
-        resolve();
-      });
-    });
-  }
-
+  /**
+   * Versteckt einen Range, indem der Text unsichtbar gesetzt wird.
+   */
   async hideRange(range: Word.Range): Promise<Word.Range> {
     return Word.run(range, context => {
       const ooxml = range.getOoxml();
@@ -381,6 +445,9 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Macht einen Range sichtbar, der mit hideRange versteckt wurde.
+   */
   async unhideRange(range: Word.Range): Promise<Word.Range> {
     return Word.run(range, context => {
       const ooxml = range.getOoxml();
@@ -408,6 +475,9 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Versteckt ein Content Control.
+   */
   async hideContentControl(cc: Word.ContentControl): Promise<void> {
     return Word.run(cc, context => {
       const range = cc.getRange(Word.RangeLocation.whole);
@@ -419,6 +489,9 @@ export class OfficeService {
       .then(() => Promise.resolve());
   }
 
+  /**
+   * Macht ein verstecktes Content Control wieder sichtbar. 
+   */
   async unhideContentControl(cc: Word.ContentControl): Promise<void> {
     return Word.run(cc, context => {
       const range = cc.getRange(Word.RangeLocation.whole);
@@ -470,5 +543,9 @@ export class OfficeService {
     }
 
     return doc;
+  }
+
+  private generateRandomHexColorString = (): string => {
+    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   }
 }

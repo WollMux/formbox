@@ -1,10 +1,12 @@
 export class Verfuegungspunkt {
+  id: string;
   ordinal: number;
   zuleitungszeilen: string[] = [];
 
   private _ueberschrift: string;
 
-  constructor(ordinal: number, ueberschrift: string) {
+  constructor(id: string, ordinal: number, ueberschrift: string) {
+    this.id = id;
     this.ordinal = ordinal;
     this.ueberschrift = ueberschrift;
   }

@@ -7,17 +7,17 @@ export class SachleitendeVerfuegung {
     return this._verfuegungspunkte.sort((a, b) => a.ordinal - b.ordinal);
   }
 
-  addVerfuegungspunkt(ordinal: number, ueberschrift: string): Verfuegungspunkt {
-    const v = new Verfuegungspunkt(ordinal, ueberschrift);
+  addVerfuegungspunkt(id: string, ordinal: number, ueberschrift: string): Verfuegungspunkt {
+    const v = new Verfuegungspunkt(id, ordinal, ueberschrift);
     this._verfuegungspunkte.push(v);
 
     return v;
   }
 
-  insertAfterVerfuegunspunkt(ordinal: number, ueberschrift: string): Verfuegungspunkt {
+  insertAfterVerfuegunspunkt(ordinal: number, id: string, ueberschrift: string): Verfuegungspunkt {
     this.renumberFrom(ordinal + 1);
 
-    return this.addVerfuegungspunkt(ordinal + 1, ueberschrift);
+    return this.addVerfuegungspunkt(id, ordinal + 1, ueberschrift);
   }
 
   deleteVerfuegungspunkt(ordinal: number): void {

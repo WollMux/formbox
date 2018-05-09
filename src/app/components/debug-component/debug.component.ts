@@ -63,4 +63,13 @@ export class DebugComponent implements OnInit {
       return this.office.unhideContentControl(cc);
     });
   }
+
+  onVP(): void {
+    this.office.expandRangeToParagraph().then(range => {
+
+      return this.office.insertContentControl('test', 'tag', range).then(() => {
+        return this.office.untrack(range);
+      });
+    });
+  }
 }
