@@ -41,8 +41,9 @@ span.icon-hightlight:hover {
     color: red;
 }
 
-.container {
-    background-color: #ffed9e
+.body {
+    background-color: #ffed9e;
+    margin-right: 15px;
 }
 
 .footer {
@@ -73,9 +74,7 @@ span.icon-hightlight:hover {
     color: #FCC700;
 }
 
-.nav-bar-container {
-    margin-top: 10px;
-    padding: 10px;
+.navbar-bottom {
     background-color: #FCC700;
 }
 
@@ -151,7 +150,6 @@ span.icon-hightlight:hover {
 }
 
 .nav-bar-container {
-    margin-top: 10px;
     padding: 10px;
     background-color: #FCC700;
 }
@@ -159,7 +157,6 @@ span.icon-hightlight:hover {
 .btn:hover {
     background-color: #fff;
 }
-
 
 /* overlay Tooltip example*/
 
