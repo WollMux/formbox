@@ -8,6 +8,7 @@ body {
 .btn-primary:visited {
     background-color: #FCC700;
     border-color: #ffed9e;
+    color: rgb(59, 59, 59);
 }
 
 .list-group {
@@ -75,13 +76,12 @@ span.icon-hightlight:hover {
 }
 
 .navbar-bottom {
-    background-color: #FCC700;
+    background-color: #fde57b;
 }
 
 .btn:hover {
     background-color: #fff;
 }
-
 
 /* overlay Tooltip example*/
 
