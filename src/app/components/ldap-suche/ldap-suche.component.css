@@ -5,6 +5,7 @@
 
 .panel-default {
 	background-color: #fde57b;
+	border-color: none;
 }
 
 .btn-primary {
