@@ -19,34 +19,34 @@ const init = (state: ExpressionEditorCommandsState, cmds: DocumentCommand[]): Ex
 const newCommand = (state: ExpressionEditorCommandsState, id: number, cmd: string, order: number): ExpressionEditorCommandsState => {
   const c = { id: id, text: cmd, order: order };
   const cmds = state.documentCommands.slice();
-  const n = cmds.push(c) - 1;
+  cmds.push(c);
 
   return tassign(state, {
-    selected_index: n,
-    selected: c,
     documentCommands: cmds
   });
 };
 
 /**
- * Löscht ein Dokumentenkommando. Die Selektion wir auf undefined gesetzt. 
+ * Löscht ein Dokumentenkommando. Die Selektion wird auf undefined gesetzt.
  */
-const deleteCommand = (state: ExpressionEditorCommandsState, index: number): ExpressionEditorCommandsState => {
+const deleteCommand = (state: ExpressionEditorCommandsState, id: number): ExpressionEditorCommandsState => {
   return tassign(state, {
-    selected_index: -1,
-    selected: undefined,
-    documentCommands: [
-      ...state.documentCommands.slice(0, index),
-      ...state.documentCommands.slice(index + 1)
-    ]
+    documentCommands: state.documentCommands.filter(cmd => cmd.id !== id)
   });
 };
 
 /**
  * Wählt das n-te Kommando aus der Liste der Dokumentenkommandos aus.
  */
-const selectCommand = (state: ExpressionEditorCommandsState, index: number): ExpressionEditorCommandsState => {
-  const selected = (index !== -1) ? state.documentCommands[index] : undefined;
+const selectCommand = (state: ExpressionEditorCommandsState, id: number): ExpressionEditorCommandsState => {
+  let index = state.documentCommands.findIndex(cmd => cmd.id === id);
+  if (index < 0 && state.selected) {
+    index = state.documentCommands.findIndex(cmd => cmd.id === state.selected.id);
+  }
+  let selected: DocumentCommand;
+  if (index >= 0) {
+    selected = state.documentCommands[index];
+  }
 
   return tassign(state,
     {
@@ -56,7 +56,7 @@ const selectCommand = (state: ExpressionEditorCommandsState, index: number): Exp
 };
 
 /**
- * Speichert Änderungen an einem Dokumentenkommando. 
+ * Speichert Änderungen an einem Dokumentenkommando.
  */
 const saveCommand = (state: ExpressionEditorCommandsState, index: number, cmd: DocumentCommand): ExpressionEditorCommandsState => {
   const ret = state.documentCommands.map((it, n) => {

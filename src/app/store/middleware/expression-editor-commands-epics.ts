@@ -6,6 +6,7 @@ import { Logger } from '@nsalaun/ng-logger';
 import { TemplateService } from '../../services/template.service';
 import { ExpressionEditorCommandsActions } from '../actions/expression-editor-commands-actions';
 import { FormBoxState } from '../states/formbox-state';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Epics für den ExpressionEditor.
@@ -66,14 +67,21 @@ export class ExpressionEditorCommandsEpics {
   deletingDocumentCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(ExpressionEditorCommandsActions.DELETE.started)
       .mergeMap(({ payload }, n: number) => {
-        const id = store.getState().expressionEditor.expressionEditorCommands.documentCommands[payload].id;
-
-        return this.templates.deleteDocumentCommand(id).then(() => {
+        return this.templates.deleteDocumentCommand(payload).then(() => {
           const act = ExpressionEditorCommandsActions.DELETE.done({ params: payload, result: payload });
 
           return act;
         }).catch(error => this.log.error(error));
       });
+  }
+
+  startSelectingCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(ExpressionEditorCommandsActions.CREATE.done, ExpressionEditorCommandsActions.DELETE.done)
+      .mergeMap(({ payload }, n: number) => {
+        const act = ExpressionEditorCommandsActions.SELECT.started(payload.result);
+
+        return Observable.of(act);
+    });
   }
 
   /**
@@ -82,13 +90,20 @@ export class ExpressionEditorCommandsEpics {
   selectCommand = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(ExpressionEditorCommandsActions.SELECT.started)
       .mergeMap(({ payload }, n: number) => {
-        const id = store.getState().expressionEditor.expressionEditorCommands.documentCommands[payload].id;
+        const index = store.getState().expressionEditor.expressionEditorCommands.
+          documentCommands.findIndex(cmd => cmd.id === payload);
 
-        return this.templates.selectContentControlById(id).then(() => {
+        if (index >= 0) {
+          return this.templates.selectContentControlById(payload).then(() => {
+            const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload });
+
+            return act;
+          }).catch(error => this.log.error(error));
+        } else {
           const act = ExpressionEditorCommandsActions.SELECT.done({ params: payload, result: payload });
 
-          return act;
-        }).catch(error => this.log.error(error));
+          return Observable.of(act);
+        }
       });
   }
 }
