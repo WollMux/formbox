@@ -19,18 +19,6 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let c of (documentCommands | async); let i=index" (click)="onSelectDocumentCommand(i, c.id)" [ngClass]="{'active': (selectedIndex | async) === i}" routerLink="/document-command-editor">
-                <div class="d-flex w-100 justify-content-between">
-                    <div class="list-label">= {{ c.text }}</div><span class="pull-right icon-hightlight" (click)="onDeleteDocumentCommand(i)"><fa [name]="'times'"></fa></span>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="row">
     <router-outlet name="document-command-editor-outlet"></router-outlet>
 </div>
 
