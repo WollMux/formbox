@@ -4,6 +4,8 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { XMLSerializer } from 'xmldom';
+// tslint:disable-next-line:no-require-imports
+import randomColor = require('randomcolor');
 
 /**
  * Service für die Interaktion mit MS Office.
@@ -55,6 +57,10 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt ein neues Dokument im Hintergrund. Muss mit showDocument sichtbar
+   * gemacht werden.
+   */
   async newDocument(): Promise<Word.DocumentCreated> {
     return Word.run(async context => {
       const doc = context.application.createDocument();
@@ -252,22 +258,63 @@ export class OfficeService {
   }
 
   /**
+   * Prüft ob eine Range in einem ContentControl ist.
+   * 
+   * @param range Wenn keine Range übergeben wird, wird die aktuelle Selektion verwendet
+   * 
+   * @returns id, title, tag des ContentControls oder undefined, wenn kein ContentControl gefunden wird.
+   */
+  async isInsideContentControl(range?: Word.Range): Promise<{ id: number, title: string, tag: string }> {
+    return Word.run(range, context => {
+      const rng = (range) ? range : context.document.getSelection();
+      const cc = rng.parentContentControlOrNullObject; // sollte eigentlich undefined zurückgeben, wenn kein CC da ist. Tut es aber nicht.
+
+      if (cc) {
+        cc.load('title, tag');
+
+        return context.sync().then(() => {
+          if (cc.title || cc.tag) {
+            return Promise.resolve({ id: cc.id, title: cc.title, tag: cc.tag });
+          } else {
+            return Promise.resolve(undefined);
+          }
+        });
+      } else {
+        return Promise.resolve(undefined);
+      }
+    });
+  }
+
+  /**
    * Fügt ein neues ContentControl an der aktuellen Cursorpsoition ein.
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
    * Text herum angelegt.
    */
-  async insertContentControl(title: string, tag: string, range?: Word.Range): Promise<number> {
+  async insertContentControl(title: string, tag: string, format?: string, range?: Word.Range): Promise<number> {
     return Word.run(range, context => {
       const doc = context.document;
       const rng = (range) ? range : doc.getSelection();
       const cc = rng.insertContentControl();
-      const randomColor = this.generateRandomHexColorString();
+      const color = randomColor();
 
       cc.title = title;
       cc.tag = tag;
+      cc.color = color;
+      cc.style = format;
+
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
+    });
+  }
+
+  async getContentControlText(id: number): Promise<string> {
+    return Word.run(context => {
+      const doc = this.getDocument(context);
+      const cc = doc.contentControls.getById(id);
+      cc.load('text');
+
+      return context.sync().then(() => cc.text);
     });
   }
 
@@ -287,6 +334,17 @@ export class OfficeService {
     });
   }
 
+  async replaceTextInContentControl(id: number, text: string): Promise<void> {
+    return Word.run(context => {
+      const doc = this.getDocument(context);
+      const cc = doc.contentControls.getById(id);
+
+      cc.insertText(text, Word.InsertLocation.replace);
+
+      return context.sync().then(() => Promise.resolve());
+    });
+  }
+
   /**
    * Löscht ein ContentControl. Der Text, den das Control umfaßt, bleibt
    * erhalten.
@@ -295,6 +353,7 @@ export class OfficeService {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
+      cc.style = 'Normal';
       cc.delete(true);
 
       return context.sync().then(() => Promise.resolve());

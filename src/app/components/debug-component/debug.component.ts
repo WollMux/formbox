@@ -8,7 +8,7 @@ import { OfficeService } from '../../services/office.service';
 @Component({
   selector: 'app-debug-component',
   templateUrl: './debug.component.html',
-  styleUrls: ['./debug.component.css']
+  styleUrls: [ './debug.component.css' ]
 })
 export class DebugComponent implements OnInit {
 
@@ -65,11 +65,12 @@ export class DebugComponent implements OnInit {
   }
 
   onVP(): void {
-    this.office.expandRangeToParagraph().then(range => {
-
-      return this.office.insertContentControl('test', 'tag', range).then(() => {
-        return this.office.untrack(range);
-      });
+    this.slv.toggleVerfuegungspunkt().then(vp => {
+      if (!vp.delete) {
+        return this.slv.getVerfuegungspunktText(vp.id).then(text => {
+          return this.slv.updateVerfuegungspunkt(vp.id, 'I.', text);
+        });
+      }
     });
   }
 }
