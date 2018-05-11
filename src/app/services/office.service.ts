@@ -173,19 +173,12 @@ export class OfficeService {
       const doc = context.document;
       const range = doc.getSelection();
       const cc = range.insertContentControl();
-      const randomColor = this.generateRandomHexColorString();
       cc.title = title;
       cc.tag = tag;
-      cc.color = randomColor;
-      cc.font.color = randomColor;
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
     });
-  }
-
-  generateRandomHexColorString(): string {
-    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   }
 
   /**
