@@ -41,6 +41,7 @@ export class RootEpic {
     this.expressEditorCommandsEpics.creatingDocumentCommand,
     this.expressEditorCommandsEpics.savingDocumentCommand,
     this.expressEditorCommandsEpics.deletingDocumentCommand,
+    this.expressEditorCommandsEpics.startSelectingCommand,
     this.expressEditorCommandsEpics.selectCommand,
     this.documentTreeViewEpics.getBarList,
     this.dialogEpics.displayDialog
