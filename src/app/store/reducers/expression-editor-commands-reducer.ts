@@ -35,7 +35,7 @@ const deleteCommand = (state: ExpressionEditorCommandsState, id: number): Expres
 };
 
 /**
- * Wählt das n-te Kommando aus der Liste der Dokumentenkommandos aus.
+ * Wählt das Kommando mit der Id id aus.
  */
 const selectCommand = (state: ExpressionEditorCommandsState, id: number): ExpressionEditorCommandsState => {
   let index = state.documentCommands.findIndex(cmd => cmd.id === id);
