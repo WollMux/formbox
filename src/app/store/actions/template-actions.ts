@@ -47,4 +47,10 @@ export class TemplateActions {
 
     return this.ngRedux.dispatch(action);
   }
+
+  performCommands(): Action<any> {
+    const action = TemplateActions.GET_NEXT_COMMAND({});
+
+    return this.ngRedux.dispatch(action);
+  }
 }
