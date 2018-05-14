@@ -13,8 +13,7 @@ const init = (state: ExpressionEditorCommandsState, cmds: DocumentCommand[]): Ex
 };
 
 /**
- * Legt ein neues Dokumentenkommando an und hängt es an die Liste der Kommandos
- * an. Das Kommando wird gleichzeitig selektiert.
+ * Legt ein neues Dokumentenkommando an und hängt es an die Liste der Kommandos an.
  */
 const newCommand = (state: ExpressionEditorCommandsState, id: number, cmd: string, order: number): ExpressionEditorCommandsState => {
   const c = { id: id, text: cmd, order: order };
@@ -27,7 +26,7 @@ const newCommand = (state: ExpressionEditorCommandsState, id: number, cmd: strin
 };
 
 /**
- * Löscht ein Dokumentenkommando. Die Selektion wird auf undefined gesetzt.
+ * Löscht ein Dokumentenkommando.
  */
 const deleteCommand = (state: ExpressionEditorCommandsState, id: number): ExpressionEditorCommandsState => {
   return tassign(state, {
