@@ -108,7 +108,7 @@ export class TemplateService {
   async getFileAsBase64(url: string): Promise<string> {
     this.log.debug(`TemplateService.getFileAsBase64(${url})`);
 
-    return this.http.get(`${this.formboxapi}/${url}`, { responseType: ResponseContentType.ArrayBuffer })
+    return this.http.get(`${url}`, { responseType: ResponseContentType.ArrayBuffer })
       .toPromise()
       .then(res => {
         return this.encode(res.arrayBuffer());
