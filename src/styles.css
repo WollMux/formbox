@@ -6,9 +6,8 @@ body {
 .btn-primary,
 .btn-primary:active,
 .btn-primary:visited {
-    background-color: #FCC700;
-    border-color: #ffed9e;
-    color: rgb(59, 59, 59);
+    background-color: rgb(13,51,255);
+    color: rgb(255, 255, 255);
 }
 
 .list-group {
@@ -33,9 +32,8 @@ body {
 }
 
 .btn-primary:hover {
-    color: #555;
-    background-color: #ffed9e;
-    border-color: #ffed9e;
+    background-color: rgb(69, 97, 255);
+    border-color: rgb(69, 97, 255);
 }
 
 span.icon-hightlight:hover {
@@ -77,10 +75,6 @@ span.icon-hightlight:hover {
 
 .navbar-bottom {
     background-color: #fde57b;
-}
-
-.btn:hover {
-    background-color: #fff;
 }
 
 /* overlay Tooltip example*/
@@ -152,10 +146,6 @@ span.icon-hightlight:hover {
 .nav-bar-container {
     padding: 10px;
     background-color: #FCC700;
-}
-
-.btn:hover {
-    background-color: #fff;
 }
 
 /* overlay Tooltip example*/
