@@ -48,6 +48,9 @@ export class TemplateActions {
     return this.ngRedux.dispatch(action);
   }
 
+  /**
+   * Für Test und Debugging Zwecke.
+   */
   performCommands(): Action<any> {
     const action = TemplateActions.GET_NEXT_COMMAND({});
 
