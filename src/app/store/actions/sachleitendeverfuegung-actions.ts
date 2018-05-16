@@ -10,13 +10,13 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class SachleitendeverfuegungActions {
-  // static ACTION = actionCreator<any>('ACTION');
+  static TOGGLE = actionCreator.async<any, { id: number, text?: string, delete: boolean }>('TOGGLE');
 
   constructor(private ngRedux: NgRedux<SachleitendeverfuegungState>) { }
 
-  // callAction(): Action<any> {
-  //   const action = SachleitendeverfuegungActions.ACTION({});
-  //
-  //   return this.ngRedux.dispatch(action);
-  // }
+  toggle(): Action<any> {
+    const action = SachleitendeverfuegungActions.TOGGLE.started({});
+
+    return this.ngRedux.dispatch(action);
+  }
 }

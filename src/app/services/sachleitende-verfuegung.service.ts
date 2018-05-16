@@ -47,37 +47,39 @@ export class SachleitendeVerfuegungService {
     return Promise.reject('Kein Document offen.');
   }
 
-  async toggleVerfuegungspunkt(): Promise<{ id: number, delete: boolean }> {
+  /**
+   * Erzeugt oder entfernt einen Verfügungspunkt an der aktuellen Cursorposition.
+   */
+  async toggleVerfuegungspunkt(): Promise<{ id: number, text?: string, delete: boolean }> {
     this.log.debug('SachleitendeVerfuegungService.toggleVerfuegungspunkt()');
 
     return this.office.isInsideContentControl().then(cc => {
       if (cc && cc.tag === 'SLV') {
         return this.removeVerfuegungspunkt(cc.id).then(id => ({ id: cc.id, delete: true }));
       } else {
-        return this.insertVerfuegungspunkt().then(id => ({ id: id, delete: false }));
+        return this.insertVerfuegungspunkt().then(vp => ({ id: vp.id, text: vp.text, delete: false }));
       }
     });
   }
 
-  async insertVerfuegungspunkt(): Promise<number> {
-    return this.office.expandRangeToParagraph().then(range => {
-      return this.office.insertContentControl('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE, range).then(id => {
-        this.office.untrack(range);
-
-        return id;
-      });
-    });
-  }
-
-  async removeVerfuegungspunkt(id: number): Promise<void> {
-    return this.office.deleteContentControl(id);
-  }
-
+  /**
+   * Gibt den Text der Überschrift eines Verfügungspunkts zurück.
+   * 
+   * @param id Id des Content Controls des Verfügungspunkts
+   */
   async getVerfuegungspunktText(id: number): Promise<string> {
     return this.office.getContentControlText(id);
   }
 
-  async updateVerfuegungspunkt(id: number, text: string, ordinal?: string): Promise<void> {
+  /**
+   * Ändert die Überschrift eines Verfüngungspunkts.
+   * 
+   * @param id Id des Content Controls des Verfügungspunkts
+   * @param text Text der überschrift ohne Römische Ziffer.
+   * @param ordinal Römische Ziffer, die vor den Text gschrieben wird. Wenn
+   *    keine Ziffer angegeben wird, wird nur der Text geschireben.
+   */
+  async updateVerfuegungspunktText(id: number, text: string, ordinal?: string): Promise<void> {
     let s;
     if (ordinal) {
       s = `${ordinal}\t${text}`;
@@ -86,5 +88,38 @@ export class SachleitendeVerfuegungService {
     }
 
     return this.office.replaceTextInContentControl(id, s);
+  }
+
+  async getVerfuegungspunkte(): Promise<number[]> {
+    return this.office.getAllContentControls().then(c => {
+      return Promise.resolve(c.filter(it => it.tag === 'SLV').map(it => it.id));
+    });
+  }
+
+  async getNextVerfuegungspunkt(id?: number): Promise<number> {
+    return this.office.getNextContentControls(id).then(c => {
+      const vp = c.find(it => it.tag === 'SLV');
+      if (vp) {
+        return Promise.resolve(vp.id);
+      } else {
+        return Promise.resolve(undefined);
+      }
+    });
+  }
+
+  private async insertVerfuegungspunkt(): Promise<{ id: number, text: string }> {
+    return this.office.expandRangeToParagraph().then(range => {
+      return this.office.insertContentControl('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE, range).then(id => {
+        this.office.untrack(range);
+
+        return this.office.getContentControlText(id).then(text => {
+          return { id: id, text: text };
+        });
+      });
+    });
+  }
+
+  private async removeVerfuegungspunkt(id: number): Promise<void> {
+    return this.office.deleteContentControl(id);
   }
 }

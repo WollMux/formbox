@@ -1,3 +1,5 @@
+import * as romanize from 'romanize';
+
 export class Verfuegungspunkt {
   id: string;
   ordinal: number;
@@ -25,5 +27,9 @@ export class Verfuegungspunkt {
 
   getNumberOfCopies(): number {
     return (this.zuleitungszeilen.length > 0) ? this.zuleitungszeilen.length : 1;
+  }
+
+  getRomanNumeral(): string {
+    return romanize(this.ordinal);
   }
 }

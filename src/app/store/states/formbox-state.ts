@@ -4,6 +4,7 @@ import { INITIAL_STATE as ldapInit, LDAPState } from './ldap-state';
 import { ExpressionEditorState } from './expression-editor-state';
 import { INITIAL_STATE as EEC_INITIAL_STATE } from './expression-editor-commands-state';
 import { FormularEditorState, INITIAL_STATE as FE_INITIAL_STATE } from './formular-editor-state';
+import { INITIAL_STATE as SLV_INITIAL_STATE, SachleitendeverfuegungState } from './sachleitendeverfuegung-state';
 
 /**
  * Globales Statusobjekt für FormBox.
@@ -15,6 +16,7 @@ export interface FormBoxState {
   ldap: LDAPState;
   expressionEditor: ExpressionEditorState;
   formularEditor: FormularEditorState;
+  slv: SachleitendeverfuegungState;
 }
 
 /**
@@ -29,5 +31,6 @@ export const INITIAL_STATE: FormBoxState = {
     expressionEditorCommands: EEC_INITIAL_STATE,
     expressionEditorOverrideFrags: { overrideFrags: [] }
   },
-  formularEditor: FE_INITIAL_STATE
+  formularEditor: FE_INITIAL_STATE,
+  slv: SLV_INITIAL_STATE
 };

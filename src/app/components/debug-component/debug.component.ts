@@ -8,7 +8,7 @@ import { OfficeService } from '../../services/office.service';
 @Component({
   selector: 'app-debug-component',
   templateUrl: './debug.component.html',
-  styleUrls: [ './debug.component.css' ]
+  styleUrls: ['./debug.component.css']
 })
 export class DebugComponent implements OnInit {
 
@@ -64,13 +64,17 @@ export class DebugComponent implements OnInit {
     });
   }
 
-  onVP(): void {
-    this.slv.toggleVerfuegungspunkt().then(vp => {
-      if (!vp.delete) {
-        return this.slv.getVerfuegungspunktText(vp.id).then(text => {
-          return this.slv.updateVerfuegungspunkt(vp.id, 'I.', text);
-        });
-      }
+  async onVP(): Promise<void> {
+    this.slv.getNextVerfuegungspunkt().then(id => {
+      console.log(id);
+      this.slv.getNextVerfuegungspunkt(id).then(id2 => console.log(id2));
     });
+    //    this.slv.toggleVerfuegungspunkt().then(vp => {
+    //      if (!vp.delete) {
+    //        return this.slv.getVerfuegungspunktText(vp.id).then(text => {
+    //          return this.slv.updateVerfuegungspunktText(vp.id, 'I.', text);
+    //        });
+    //      }
+    //    });
   }
 }

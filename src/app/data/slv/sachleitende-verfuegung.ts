@@ -3,6 +3,16 @@ import { Verfuegungspunkt } from './verfuegungspunkt';
 export class SachleitendeVerfuegung {
   private _verfuegungspunkte: Verfuegungspunkt[] = [];
 
+  constructor(vp?: Verfuegungspunkt[]) {
+    if (vp) {
+      this._verfuegungspunkte = vp.slice();
+    }
+  }
+
+  clone(): SachleitendeVerfuegung {
+    return new SachleitendeVerfuegung(this._verfuegungspunkte);
+  }
+
   get verfuegungspunkte(): Verfuegungspunkt[] {
     return this._verfuegungspunkte.sort((a, b) => a.ordinal - b.ordinal);
   }
