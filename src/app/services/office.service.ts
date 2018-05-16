@@ -4,8 +4,7 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { XMLSerializer } from 'xmldom';
-// tslint:disable-next-line:no-require-imports
-import randomColor = require('randomcolor');
+import randomColor from 'randomcolor';
 
 /**
  * Service für die Interaktion mit MS Office.
@@ -361,6 +360,52 @@ export class OfficeService {
   }
 
   /**
+   * Gibt eine Liste aller ContentControls im aktiven Dokument zurück.
+   */
+  async getAllContentControls(): Promise<{ id: number, title: string, tag: string }[]> {
+    return Word.run(context => {
+      const doc = this.getDocument(context);
+      const controls = doc.contentControls;
+      doc.context.load(controls, 'id, title, tag');
+      controls.load('items/id, items/title, items/tag');
+
+      return doc.context.sync().then(() => {
+        return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag }));
+      });
+    });
+  }
+
+  async getNextContentControls(id?: number): Promise<{ id: number, title: string, tag: string }[]> {
+    return Word.run(context => {
+      const doc = this.getDocument(context);
+      if (!id) {
+        const controls = doc.body.contentControls;
+        controls.load('items');
+
+        return context.sync().then(() => Promise.resolve(controls.items.map(cc => {
+          return { id: cc.id, title: cc.title, tag: cc.tag };
+        })));
+      }
+
+      const ccStart: Word.ContentControl = doc.contentControls.getByIdOrNullObject(id);
+
+      if (ccStart) {
+        let rng: Word.Range = ccStart.getRange(Word.RangeLocation.after);
+        const end = doc.body.getRange(Word.RangeLocation.end);
+        rng = rng.expandTo(end);
+        const controls = rng.contentControls;
+        controls.load('items');
+
+        return context.sync().then(() => Promise.resolve(controls.items.map(cc => {
+          return { id: cc.id, title: cc.title, tag: cc.tag };
+        })));
+      } else {
+        Promise.reject(`ContentControl mit id ${id} existiert nicht.`);
+      }
+    });
+  }
+
+  /**
    * Fügt Custom XML in das aktuelle Dokument ein.
    * 
    * @returns Die ID des neuen CustomXML-Objekts
@@ -573,22 +618,6 @@ export class OfficeService {
         cc.title = '';
 
         return doc.context.sync().then(() => Promise.resolve());
-      });
-    });
-  }
-
-  /**
-   * Gibt eine Liste aller ContentControls im aktiven Dokument zurück.
-   */
-  private getAllContentControls = async (): Promise<{ id: number, title: string, tag: string }[]> => {
-    return Word.run(context => {
-      const doc = this.getDocument(context);
-      const controls = doc.contentControls;
-      doc.context.load(controls, 'id, title, tag');
-      controls.load('items/id, items/title, items/tag');
-
-      return doc.context.sync().then(() => {
-        return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag }));
       });
     });
   }

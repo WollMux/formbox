@@ -14,16 +14,23 @@ import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/forkJoin';
 
 import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung-actions';
+import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
 
 @Injectable()
 export class SachleitendeverfuegungEpics {
   constructor(
     private log: Logger,
+    private slv: SachleitendeVerfuegungService
   ) { }
 
-  // doingSomething = (action: ActionsObservable<any>) => {
-  //   return action.ofType(SachleitendeverfuegungActions.ACTION)
-  //     .mergeMap(({ payload }, n: number) => {
-  //     });
-  // }
+  toggling = (action: ActionsObservable<any>) => {
+    return action.ofType(SachleitendeverfuegungActions.TOGGLE.started)
+      .mergeMap(({ payload }, n: number) => {
+        return this.slv.toggleVerfuegungspunkt().then(vp => {
+          const act = SachleitendeverfuegungActions.TOGGLE.done({ params: {}, result: vp });
+
+          return act;
+        });
+      });
+  }
 }

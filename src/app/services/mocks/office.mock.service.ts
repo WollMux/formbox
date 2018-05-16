@@ -230,4 +230,16 @@ export class OfficeMockService {
   async unhideRange(range: Word.Range): Promise<void> {
     return Promise.resolve();
   }
+
+  async isInsideContentControl(range?: Word.Range): Promise<{ id: number, title: string, tag: string }> {
+    return Promise.resolve(undefined);
+  }
+
+  async untrack(o: any): Promise<{}> {
+    return Promise.resolve({});
+  }
+
+  async expandRangeToParagraph(range?: Word.Range): Promise<Word.Range> {
+    return Promise.resolve(undefined);
+  }
 }

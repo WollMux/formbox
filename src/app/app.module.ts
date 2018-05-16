@@ -61,6 +61,7 @@ import { FormularEditorActions } from './store/actions/formular-editor-actions';
 import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
 import { FormularEditorService } from './services/formular-editor.service';
 import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegung.service';
+import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverfuegung-epics';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegun
     FormularEditorActions,
     FormularEditorEpics,
     FormularEditorService,
-    SachleitendeVerfuegungService
+    SachleitendeVerfuegungService,
+    SachleitendeverfuegungEpics
   ],
   bootstrap: [AppComponent]
 })

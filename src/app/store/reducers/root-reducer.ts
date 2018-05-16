@@ -8,6 +8,7 @@ import { expressionEditorReducer } from './expression-editor-reducer';
 import { documentTreeViewReducer } from './document-treeview-reducer';
 import { dialogReducer } from './dialog-reducer';
 import { formularEditorReducer } from './formular-editor-reducer';
+import { sachleitendeverfuegungReducer } from './sachleitendeverfuegung-reducer';
 
 /**
  * Erzeugt aus mehreren Reducern einen Root-Reducer, der beim Start der
@@ -22,5 +23,6 @@ export const rootReducer: Reducer<FormBoxState> =
     expressionEditor: expressionEditorReducer,
     documentTree: documentTreeViewReducer,
     dialog: dialogReducer,
-    formularEditor: formularEditorReducer
+    formularEditor: formularEditorReducer,
+    slv: sachleitendeverfuegungReducer
   });

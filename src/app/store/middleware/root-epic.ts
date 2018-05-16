@@ -8,6 +8,7 @@ import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epic
 import { DocumentTreeViewEpics } from './document-treeview-epics';
 import { DialogEpics } from './dialog-epics';
 import { FormularEditorEpics } from './formular-editor-epics';
+import { SachleitendeverfuegungEpics } from './sachleitendeverfuegung-epics';
 
 @Injectable()
 export class RootEpic {
@@ -19,7 +20,8 @@ export class RootEpic {
     private expressEditorCommandsEpics: ExpressionEditorCommandsEpics,
     private documentTreeViewEpics: DocumentTreeViewEpics,
     private dialogEpics: DialogEpics,
-    private formularEpics: FormularEditorEpics
+    private formularEpics: FormularEditorEpics,
+    private slvEpics: SachleitendeverfuegungEpics
   ) { }
 
   epics = () => combineEpics(
@@ -54,6 +56,7 @@ export class RootEpic {
     this.formularEpics.creatingControl,
     this.formularEpics.deletingControl,
     this.formularEpics.editingControl,
-    this.formularEpics.hidingControl
+    this.formularEpics.hidingControl,
+    this.slvEpics.toggling
   )
 }
