@@ -6,8 +6,8 @@ import { Logger } from '@nsalaun/ng-logger';
  */
 export abstract class FormularEditorBase<T> {
   @Input() control: T;
-  @Output() update = new EventEmitter();
-  @Output() close = new EventEmitter();
+  @Output() update: EventEmitter<T> = new EventEmitter();
+  @Output() close: EventEmitter<void> = new EventEmitter();
   newControl: T;
 
   constructor(

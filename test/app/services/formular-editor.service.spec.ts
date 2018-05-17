@@ -20,7 +20,7 @@ describe('FormularEditorService', () => {
 
   it('deleteControl', async(inject([FormularEditorService], async (service: FormularEditorService) => {
     const spy = spyOn(service['office'], 'deleteContentControl');
-    await service.deleteControl();
+    await service.deleteControl(undefined);
     expect(spy).not.toHaveBeenCalled();
 
     await service.deleteControl(1);

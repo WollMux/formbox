@@ -22,15 +22,16 @@ const saveForm = (state: FormularEditorState, form: Form): FormularEditorState =
  * @param id Die Id des zu bearbeitenden Controls
  */
 const editControl = (state: FormularEditorState, id: string): FormularEditorState => {
-  let isEdit = state.isEdit;
   if (state.isEdit.indexOf(id) < 0) {
-    isEdit = [
+    const isEdit = [
       ...state.isEdit,
       id
     ];
+
+    return tassign(state, {isEdit: isEdit});
   }
 
-  return tassign(state, {isEdit: isEdit});
+  return state;
 };
 
 /**
@@ -39,12 +40,13 @@ const editControl = (state: FormularEditorState, id: string): FormularEditorStat
  * @param id Die Id des zu verbergenden Controls.
  */
 const hideControl = (state: FormularEditorState, id: string): FormularEditorState => {
-  let isEdit = state.isEdit;
   if (state.isEdit.indexOf(id) >= 0) {
-    isEdit = isEdit.filter(s => s !== id);
+    const isEdit = state.isEdit.filter(s => s !== id);
+
+    return tassign(state, {isEdit: isEdit});
   }
 
-  return tassign(state, {isEdit: isEdit});
+  return state;
 };
 
 /**
