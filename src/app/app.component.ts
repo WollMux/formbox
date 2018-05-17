@@ -53,8 +53,9 @@ export class AppComponent implements OnInit {
         this.absenderlisteActions.loadAbsenderState();
       });
     } else {
-      await this.storage.reset();
-      this.absenderlisteActions.loadAbsenderState();
+      this.storage.reset().then(() => {
+        this.absenderlisteActions.loadAbsenderState();
+      });
     }
 
     this.templateStatus.subscribe(status => {

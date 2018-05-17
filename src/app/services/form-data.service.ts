@@ -34,9 +34,9 @@ export class FormDataService {
   async read(): Promise<Form> {
     const ids = await this.office.getXmlIdsByNamespace(FormDataService.namespace);
     if (ids.length > 0) {
-      const xml = await this.office.getXmlById(ids.pop());
-
-      return this.parse(xml);
+      return this.office.getXmlById(ids.pop()).then(xml => {
+        return this.parse(xml);
+      });
     } else {
       return Promise.reject('No FormData found.');
     }

@@ -136,12 +136,7 @@ export class FormularEditorEpics {
   hidingControl = (action: ActionsObservable<any>) => {
     return action.ofType(FormularEditorActions.UPDATE_CONTROL, FormularEditorActions.REMOVE_CONTROL.done)
       .mergeMap(({payload}, n) => {
-        let id;
-        if (payload.control) {
-          id = payload.control.id;
-        } else {
-          id = payload.params.id;
-        }
+        const id = payload.control ? payload.control.id : payload.params.id;
         const act = FormularEditorActions.HIDE_CONTROL(id);
 
         return Observable.of(act);

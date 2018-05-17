@@ -21,6 +21,20 @@ import { FormControl } from '../data/forms/form-control';
 @Injectable()
 export class FormularEditorService {
 
+  private types: Map<string, {prototype: any, cc: boolean}> = new Map([
+    ['label', {prototype: new Label(), cc: false}],
+    ['button', {prototype: Button.prototype, cc: false}],
+    ['checkbox', {prototype: Checkbox.prototype, cc: true}],
+    ['visibility', {prototype: Checkbox.prototype, cc: false}],
+    ['tabs', {prototype: Tabs.prototype, cc: false}],
+    ['tab', {prototype: Tab.prototype, cc: false}],
+    ['textarea', {prototype: Textarea.prototype, cc: true}],
+    ['textfield', {prototype: Textfield.prototype, cc: true}],
+    ['hbox', {prototype: Hbox.prototype, cc: false}],
+    ['combobox', {prototype: Combobox.prototype, cc: true}],
+    ['separator', {prototype: Separator.prototype, cc: false}]
+  ]);
+
   constructor(
     private office: OfficeService,
     private log: Logger
@@ -28,9 +42,9 @@ export class FormularEditorService {
 
   /**
    * Löscht falls notwendig ein ContentControl in Word.
-   * @param id Die Id des ContentControls, wenn hier keine angegeben wird, dann wird auch nichts gelöscht.
+   * @param id Die Id des ContentControls, wenn id undefined oder 0 ist wird das ContentControl nicht gelöscht.
    */
-  async deleteControl(id?: number): Promise<void> {
+  async deleteControl(id: number): Promise<void> {
     if (id) {
       return this.office.deleteContentControl(id);
     } else {
@@ -54,55 +68,22 @@ export class FormularEditorService {
    * @param type Der Type des Controls, z.B. textfeld, label oder button.
    */
   async createFormControl(type: string): Promise<Control> {
-    let control: Control;
-    switch (type) {
-      case 'label':
-        control = new Label();
-        break;
-      case 'button':
-        control = new Button();
-        break;
-      case 'checkbox':
-        control = new Checkbox();
-        (control as FormControl).ccid = await this.createControl();
-        break;
-      case 'visibility':
-        control = new Checkbox();
-        (control as FormControl).ccid = undefined;
-        break;
-      case 'tabs':
-        control = new Tabs();
-        break;
-      case 'tab':
-        control = new Tab();
-        break;
-      case 'textarea':
-        control = new Textarea();
-        (control as FormControl).ccid = await this.createControl();
-        break;
-      case 'textfield':
-        control = new Textfield();
-        (control as FormControl).ccid = await this.createControl();
-        break;
-      case 'hbox':
-        control = new Hbox();
-        break;
-      case 'combobox':
-        control = new Combobox();
-        (control as FormControl).ccid = await this.createControl();
-        break;
-      case 'separator':
-        control = new Separator();
-        break;
-      default:
-        this.log.error('Invalid Formtype');
-        break;
-    }
-    if (control) {
+    const desc = this.types.get(type);
+    if (desc) {
+      const control = desc.prototype.constructor();
       control.id = Math.random().toString().slice(2);
+      if (desc.cc) {
+        return this.createControl().then(ccid => {
+          (control as FormControl).ccid = ccid;
+
+          return Promise.resolve(control);
+        });
+      }
+
+      return Promise.resolve(control);
     }
 
-    return Promise.resolve(control);
+    return Promise.resolve(undefined);
   }
 
   /**
