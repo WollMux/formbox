@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+import * as romanize from 'romanize';
 
 import { OfficeService } from './office.service';
+import { SachleitendeVerfuegung } from '../data/slv/sachleitende-verfuegung';
 
 @Injectable()
 export class SachleitendeVerfuegungService {
@@ -50,14 +52,14 @@ export class SachleitendeVerfuegungService {
   /**
    * Erzeugt oder entfernt einen Verfügungspunkt an der aktuellen Cursorposition.
    */
-  async toggleVerfuegungspunkt(): Promise<{ id: number, text?: string, delete: boolean }> {
+  async toggleVerfuegungspunkt(): Promise<{ id: number, idNext?: number, text: string, delete: boolean }> {
     this.log.debug('SachleitendeVerfuegungService.toggleVerfuegungspunkt()');
 
     return this.office.isInsideContentControl().then(cc => {
       if (cc && cc.tag === 'SLV') {
-        return this.removeVerfuegungspunkt(cc.id).then(id => ({ id: cc.id, delete: true }));
+        return this.removeVerfuegungspunkt(cc.id).then(id => ({ id: cc.id, text: cc.text, delete: true }));
       } else {
-        return this.insertVerfuegungspunkt().then(vp => ({ id: vp.id, text: vp.text, delete: false }));
+        return this.insertVerfuegungspunkt().then(vp => ({ id: vp.id, idNext: vp.idNext, text: vp.text, delete: false }));
       }
     });
   }
@@ -82,7 +84,7 @@ export class SachleitendeVerfuegungService {
   async updateVerfuegungspunktText(id: number, text: string, ordinal?: string): Promise<void> {
     let s;
     if (ordinal) {
-      s = `${ordinal}\t${text}`;
+      s = `${ordinal}.\t${text}`;
     } else {
       s = text;
     }
@@ -107,13 +109,28 @@ export class SachleitendeVerfuegungService {
     });
   }
 
-  private async insertVerfuegungspunkt(): Promise<{ id: number, text: string }> {
+  async renumber(slv: SachleitendeVerfuegung): Promise<void> {
+    const p = [];
+
+    for (const vp of slv.verfuegungspunkte) {
+      p.push(new Promise(() => {
+        const numeral = romanize(vp.ordinal);
+        this.updateVerfuegungspunktText(vp.id, vp.ueberschrift, numeral);
+      }));
+    }
+
+    return Promise.all(p).then(() => Promise.resolve());
+  }
+
+  private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number }> {
     return this.office.expandRangeToParagraph().then(range => {
       return this.office.insertContentControl('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE, range).then(id => {
         this.office.untrack(range);
 
         return this.office.getContentControlText(id).then(text => {
           return { id: id, text: text };
+        }).then(vp => {
+          return this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext }));
         });
       });
     });

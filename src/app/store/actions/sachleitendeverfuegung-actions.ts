@@ -10,12 +10,16 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class SachleitendeverfuegungActions {
-  static TOGGLE = actionCreator.async<any, { id: number, text?: string, delete: boolean }>('TOGGLE');
+  static TOGGLE = actionCreator<any>('TOGGLE');
+  static INSERT_VERFUEGUNGSPUNKT =
+  actionCreator<{ id: number, idNext?: number, text: string, delete: boolean }>('INSERT_VERFUEGUNGSPUNKT');
+  static DELETE_VERFUEGUNGSPUNKT = actionCreator<{ id: number, text: string }>('DELETER_VERFUEGUNGSPUNKT');
+  static RENUMBER = actionCreator.async<any, any>('RENUMBER');
 
   constructor(private ngRedux: NgRedux<SachleitendeverfuegungState>) { }
 
   toggle(): Action<any> {
-    const action = SachleitendeverfuegungActions.TOGGLE.started({});
+    const action = SachleitendeverfuegungActions.TOGGLE({});
 
     return this.ngRedux.dispatch(action);
   }

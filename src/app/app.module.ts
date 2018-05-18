@@ -62,6 +62,7 @@ import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
 import { FormularEditorService } from './services/formular-editor.service';
 import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegung.service';
 import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverfuegung-epics';
+import { SachleitendeverfuegungActions } from './store/actions/sachleitendeverfuegung-actions';
 
 @NgModule({
   declarations: [
@@ -121,9 +122,10 @@ import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverf
     FormularEditorEpics,
     FormularEditorService,
     SachleitendeVerfuegungService,
+    SachleitendeverfuegungActions,
     SachleitendeverfuegungEpics
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule {

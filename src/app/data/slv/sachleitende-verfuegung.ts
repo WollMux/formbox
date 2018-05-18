@@ -17,42 +17,45 @@ export class SachleitendeVerfuegung {
     return this._verfuegungspunkte.sort((a, b) => a.ordinal - b.ordinal);
   }
 
-  addVerfuegungspunkt(id: string, ordinal: number, ueberschrift: string): Verfuegungspunkt {
-    const v = new Verfuegungspunkt(id, ordinal, ueberschrift);
-    this._verfuegungspunkte.push(v);
-
-    return v;
+  addVerfuegungspunkt(id: number, ueberschrift: string): Verfuegungspunkt {
+    return this.insertBeforeVerfuegunspunkt(id, undefined, ueberschrift);
   }
 
-  insertAfterVerfuegunspunkt(ordinal: number, id: string, ueberschrift: string): Verfuegungspunkt {
-    this.renumberFrom(ordinal + 1);
+  insertBeforeVerfuegunspunkt(id: number, idNext: number, ueberschrift: string): Verfuegungspunkt {
+    const vp = new Verfuegungspunkt(id, ueberschrift);
 
-    return this.addVerfuegungspunkt(id, ordinal + 1, ueberschrift);
+    if (idNext) {
+      const n = this._verfuegungspunkte.findIndex(v => v.id === idNext);
+      if (n > 0) {
+        this._verfuegungspunkte.splice(n - 1, 0, vp);
+      } else {
+        this._verfuegungspunkte.unshift(vp);
+      }
+    } else {
+      this._verfuegungspunkte.push(vp);
+    }
+
+    this.renumber();
+
+    return vp;
   }
 
-  deleteVerfuegungspunkt(ordinal: number): void {
-    const n = this._verfuegungspunkte.findIndex(v => v.ordinal === ordinal);
+  deleteVerfuegungspunkt(id: number): void {
+    const n = this._verfuegungspunkte.findIndex(v => v.id === id);
     if (n > -1) {
       this._verfuegungspunkte.splice(n, 1);
-      this.renumberFrom(ordinal + 1, false);
+      this.renumber();
     }
   }
 
-  getVerfuegungspunkt(ordinal: number): Verfuegungspunkt {
-    return this._verfuegungspunkte.find(vp => vp.ordinal === ordinal);
+  getVerfuegungspunkt(id: number): Verfuegungspunkt {
+    return this._verfuegungspunkte.find(vp => vp.id === id);
   }
 
-  getNextOrdinal(): number {
-    const vp = this._verfuegungspunkte.reduce((p, v) => (p.ordinal > v.ordinal) ? p : v);
-
-    return (vp) ? vp.ordinal + 1 : 1;
-  }
-
-  private renumberFrom(ordinal: number, increase = true): void {
+  private renumber(): void {
+    let ordinal = 1;
     this._verfuegungspunkte.forEach(v => {
-      if (v.ordinal >= ordinal) {
-        v.ordinal += (increase) ? 1 : -1;
-      }
+      v.ordinal = ordinal++;
     });
   }
 }
