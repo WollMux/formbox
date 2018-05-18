@@ -1,15 +1,14 @@
 import * as romanize from 'romanize';
 
 export class Verfuegungspunkt {
-  id: string;
+  id: number;
   ordinal: number;
   zuleitungszeilen: string[] = [];
 
   private _ueberschrift: string;
 
-  constructor(id: string, ordinal: number, ueberschrift: string) {
+  constructor(id: number, ueberschrift: string) {
     this.id = id;
-    this.ordinal = ordinal;
     this.ueberschrift = ueberschrift;
   }
 

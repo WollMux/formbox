@@ -4,7 +4,8 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { XMLSerializer } from 'xmldom';
-import randomColor from 'randomcolor';
+// tslint:disable-next-line:no-require-imports
+const randomColor = require('randomcolor');
 
 /**
  * Service für die Interaktion mit MS Office.
@@ -247,7 +248,7 @@ export class OfficeService {
       rng.paragraphs.load('items');
 
       return context.sync().then(() => {
-        const p = rng.paragraphs.items[0];
+        const p = rng.paragraphs.items[ 0 ];
         const r = p.getRange(Word.RangeLocation.whole);
         r.track();
 
@@ -263,17 +264,17 @@ export class OfficeService {
    * 
    * @returns id, title, tag des ContentControls oder undefined, wenn kein ContentControl gefunden wird.
    */
-  async isInsideContentControl(range?: Word.Range): Promise<{ id: number, title: string, tag: string }> {
+  async isInsideContentControl(range?: Word.Range): Promise<{ id: number, title: string, tag: string, text: string }> {
     return Word.run(range, context => {
       const rng = (range) ? range : context.document.getSelection();
       const cc = rng.parentContentControlOrNullObject; // sollte eigentlich undefined zurückgeben, wenn kein CC da ist. Tut es aber nicht.
 
       if (cc) {
-        cc.load('title, tag');
+        cc.load('title, tag, text');
 
         return context.sync().then(() => {
           if (cc.title || cc.tag) {
-            return Promise.resolve({ id: cc.id, title: cc.title, tag: cc.tag });
+            return Promise.resolve({ id: cc.id, title: cc.title, tag: cc.tag, text: cc.text });
           } else {
             return Promise.resolve(undefined);
           }
@@ -299,7 +300,7 @@ export class OfficeService {
       cc.title = title;
       cc.tag = tag;
       cc.color = color;
-      cc.style = format;
+      // cc.style = format;
 
       context.load(cc, 'id');
 

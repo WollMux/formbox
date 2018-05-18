@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TemplateActions } from '../../store/actions/template-actions';
 import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
 import { OfficeService } from '../../services/office.service';
+import { SachleitendeverfuegungActions } from '../../store/actions/sachleitendeverfuegung-actions';
 
 @Component({
   selector: 'app-debug-component',
@@ -17,7 +18,7 @@ export class DebugComponent implements OnInit {
     private router: Router,
     private templateActions: TemplateActions,
     private office: OfficeService,
-    private slv: SachleitendeVerfuegungService
+    private slv: SachleitendeverfuegungActions
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -29,13 +30,13 @@ export class DebugComponent implements OnInit {
   }
 
   onSLV(): void {
-    this.slv.newDocument().then(() => {
-      return this.slv.copyCurrentDocument(true);
-    }).then(() => {
-      return this.slv.copyCurrentDocument();
-    }).then(() => {
-      this.slv.showDocument();
-    });
+    //    this.slv.newDocument().then(() => {
+    //      return this.slv.copyCurrentDocument(true);
+    //    }).then(() => {
+    //      return this.slv.copyCurrentDocument();
+    //    }).then(() => {
+    //      this.slv.showDocument();
+    // });
   }
 
   onHide(): void {
@@ -65,16 +66,6 @@ export class DebugComponent implements OnInit {
   }
 
   async onVP(): Promise<void> {
-    this.slv.getNextVerfuegungspunkt().then(id => {
-      console.log(id);
-      this.slv.getNextVerfuegungspunkt(id).then(id2 => console.log(id2));
-    });
-    //    this.slv.toggleVerfuegungspunkt().then(vp => {
-    //      if (!vp.delete) {
-    //        return this.slv.getVerfuegungspunktText(vp.id).then(text => {
-    //          return this.slv.updateVerfuegungspunktText(vp.id, 'I.', text);
-    //        });
-    //      }
-    //    });
+    this.slv.toggle();
   }
 }

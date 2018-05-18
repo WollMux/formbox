@@ -5,6 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
@@ -12,9 +13,11 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/empty';
 
 import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung-actions';
 import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
+import { FormBoxState } from '../states/formbox-state';
 
 @Injectable()
 export class SachleitendeverfuegungEpics {
@@ -24,10 +27,38 @@ export class SachleitendeverfuegungEpics {
   ) { }
 
   toggling = (action: ActionsObservable<any>) => {
-    return action.ofType(SachleitendeverfuegungActions.TOGGLE.started)
+    return action.ofType(SachleitendeverfuegungActions.TOGGLE)
+      .switchMap(({ payload }, n: number) => {
+        return Observable.from(this.slv.toggleVerfuegungspunkt())
+          .switchMap(vp => {
+            let act;
+            if (vp.delete) {
+              act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT({ id: vp.id, text: vp.text });
+            } else {
+              act = SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT(vp);
+            }
+
+            const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
+
+            return Observable.concat(Observable.of(act), Observable.of(act2));
+          });
+      });
+  }
+
+  deleting = (action: ActionsObservable<any>) => {
+    return action.ofType(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT)
       .mergeMap(({ payload }, n: number) => {
-        return this.slv.toggleVerfuegungspunkt().then(vp => {
-          const act = SachleitendeverfuegungActions.TOGGLE.done({ params: {}, result: vp });
+        return this.slv.updateVerfuegungspunktText(payload.id, payload.text).then(() => {
+          return Observable.empty();
+        });
+      });
+  }
+
+  renumbering = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(SachleitendeverfuegungActions.RENUMBER.started)
+      .mergeMap((value: any, n: number) => {
+        return this.slv.renumber(store.getState().slv.slv).then(() => {
+          const act = SachleitendeverfuegungActions.RENUMBER.done({ params: {}, result: {} });
 
           return act;
         });
