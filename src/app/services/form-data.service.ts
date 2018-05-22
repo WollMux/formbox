@@ -32,21 +32,22 @@ export class FormDataService {
    * Liest CustomXML aus dem aktuellen Dokument.
    */
   async read(): Promise<Form> {
-    const ids = await this.office.getXmlIdsByNamespace(FormDataService.namespace);
-    if (ids.length > 0) {
-      return this.office.getXmlById(ids.pop()).then(xml => {
-        return this.parse(xml);
-      });
-    } else {
-      return Promise.reject('No FormData found.');
-    }
+    return this.office.getXmlIdsByNamespace(FormDataService.namespace).then(ids => {
+      if (ids.length > 0) {
+        return this.office.getXmlById(ids.pop()).then(xml => {
+          return this.parse(xml);
+        });
+      } else {
+        return Promise.reject('No FormData found.');
+      }
+    });
   }
 
   /**
    * Löscht CustomXML aus dem aktuellen Dokument.
    */
   async clear(): Promise<void> {
-    this.office.deleteXmlByNamespace(FormDataService.namespace);
+    return this.office.deleteXmlByNamespace(FormDataService.namespace);
   }
 
   /**

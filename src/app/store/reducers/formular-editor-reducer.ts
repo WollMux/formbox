@@ -13,7 +13,12 @@ import { Container } from '../../data/forms/container';
  * @param form Die neue Formularbeschreibung.
  */
 const saveForm = (state: FormularEditorState, form: Form): FormularEditorState => {
-  return tassign(state, {form: form});
+  if (state.form === undefined) {
+    return tassign(state, {form: form});
+  } else {
+    // Form kopieren, um sicher zu gehen, dass es ein neues Objekt ist.
+    return tassign(state, {form: new Form(form)});
+  }
 };
 
 /**
