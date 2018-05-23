@@ -55,12 +55,30 @@ export class SachleitendeVerfuegungService {
   async toggleVerfuegungspunkt(): Promise<{ id: number, idNext?: number, text: string, delete: boolean }> {
     this.log.debug('SachleitendeVerfuegungService.toggleVerfuegungspunkt()');
 
-    return this.office.isInsideContentControl().then(cc => {
+    return this.findCurrentVerfuegungspunkt().then(cc => {
       if (cc && cc.tag === 'SLV') {
-        return this.removeVerfuegungspunkt(cc.id).then(id => ({ id: cc.id, text: cc.text, delete: true }));
+        return Promise.resolve({ id: cc.id, text: cc.text, delete: true });
       } else {
         return this.insertVerfuegungspunkt().then(vp => ({ id: vp.id, idNext: vp.idNext, text: vp.text, delete: false }));
       }
+    });
+  }
+
+  /**
+   * Sucht nach einem ContentControl mit dem Tag 'SLV' im Absatz, in dem der
+   * Cursor steht.
+   */
+  async findCurrentVerfuegungspunkt(): Promise<{ id: number, title: string, tag: string, text: string }> {
+    this.log.debug('SachleitendeVerfuegungService.findCurrentVerfuegungspunkt()');
+
+    return this.office.expandRangeToParagraph().then(range => {
+      return Promise.resolve(range);
+    }).then(range => {
+      return this.office.getContentControlsInRange(range).then(cc => {
+        this.office.untrack(range);
+
+        return Promise.resolve(cc.find(it => it.tag === 'SLV'));
+      });
     });
   }
 
@@ -122,6 +140,10 @@ export class SachleitendeVerfuegungService {
     return Promise.all(p).then(() => Promise.resolve());
   }
 
+  async removeVerfuegungspunkt(id: number): Promise<void> {
+    return this.office.deleteContentControl(id);
+  }
+
   private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number }> {
     return this.office.expandRangeToParagraph().then(range => {
       return this.office.insertContentControl('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE, range).then(id => {
@@ -134,9 +156,5 @@ export class SachleitendeVerfuegungService {
         });
       });
     });
-  }
-
-  private async removeVerfuegungspunkt(id: number): Promise<void> {
-    return this.office.deleteContentControl(id);
   }
 }

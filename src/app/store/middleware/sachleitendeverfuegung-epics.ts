@@ -33,24 +33,34 @@ export class SachleitendeverfuegungEpics {
           .switchMap(vp => {
             let act;
             if (vp.delete) {
-              act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT({ id: vp.id, text: vp.text });
+              act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.started(vp.id);
+
+              return Observable.of(act);
             } else {
               act = SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT(vp);
+              const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
+
+              return Observable.concat(Observable.of(act), Observable.of(act2));
             }
-
-            const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
-
-            return Observable.concat(Observable.of(act), Observable.of(act2));
           });
       });
   }
 
-  deleting = (action: ActionsObservable<any>) => {
-    return action.ofType(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT)
-      .mergeMap(({ payload }, n: number) => {
-        return this.slv.updateVerfuegungspunktText(payload.id, payload.text).then(() => {
-          return Observable.empty();
-        });
+  deleting = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.started)
+      .switchMap(({ payload }, n: number) => {
+        const vp = store.getState().slv.slv.getVerfuegungspunkt(payload);
+
+        return Observable.from(this.slv.updateVerfuegungspunktText(vp.id, vp.ueberschrift)).
+          switchMap(() => {
+            return Observable.from(this.slv.removeVerfuegungspunkt(vp.id))
+              .switchMap(() => {
+                const act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.done({ params: vp.id, result: vp.id });
+                const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
+
+                return Observable.concat(Observable.of(act), Observable.of(act2));
+              });
+          });
       });
   }
 

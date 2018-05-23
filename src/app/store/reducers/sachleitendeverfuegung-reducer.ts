@@ -16,8 +16,7 @@ const insertVerfuegungspunkt =
   };
 
 const deleteVerfuegungspunkt =
-  (state: SachleitendeverfuegungState, id: number)
-    : SachleitendeverfuegungState => {
+  (state: SachleitendeverfuegungState, id: number): SachleitendeverfuegungState => {
     state.slv.deleteVerfuegungspunkt(id);
     const newState = tassign(state, { slv: new SachleitendeVerfuegung(state.slv.verfuegungspunkte) });
 
@@ -26,5 +25,5 @@ const deleteVerfuegungspunkt =
 
 export const sachleitendeverfuegungReducer: Reducer<SachleitendeverfuegungState> = reducerWithInitialState(INITIAL_STATE)
   .case(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT, (state, payload) => insertVerfuegungspunkt(state, payload))
-  .case(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT, (state, payload) => deleteVerfuegungspunkt(state, payload.id))
+  .case(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.done, (state, payload) => deleteVerfuegungspunkt(state, payload.result))
   .build();

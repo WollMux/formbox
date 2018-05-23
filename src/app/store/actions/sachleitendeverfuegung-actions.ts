@@ -13,7 +13,7 @@ export class SachleitendeverfuegungActions {
   static TOGGLE = actionCreator<any>('TOGGLE');
   static INSERT_VERFUEGUNGSPUNKT =
   actionCreator<{ id: number, idNext?: number, text: string, delete: boolean }>('INSERT_VERFUEGUNGSPUNKT');
-  static DELETE_VERFUEGUNGSPUNKT = actionCreator<{ id: number, text: string }>('DELETER_VERFUEGUNGSPUNKT');
+  static DELETE_VERFUEGUNGSPUNKT = actionCreator.async<number, number>('DELETE_VERFUEGUNGSPUNKT');
   static RENUMBER = actionCreator.async<any, any>('RENUMBER');
 
   constructor(private ngRedux: NgRedux<SachleitendeverfuegungState>) { }
