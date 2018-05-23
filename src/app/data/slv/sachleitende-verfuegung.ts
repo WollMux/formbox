@@ -27,7 +27,7 @@ export class SachleitendeVerfuegung {
     if (idNext) {
       const n = this._verfuegungspunkte.findIndex(v => v.id === idNext);
       if (n > 0) {
-        this._verfuegungspunkte.splice(n - 1, 0, vp);
+        this._verfuegungspunkte.splice(n, 0, vp);
       } else {
         this._verfuegungspunkte.unshift(vp);
       }

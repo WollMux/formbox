@@ -240,7 +240,7 @@ export class OfficeService {
    * 
    * @returns Range für den Absatz. Die Range wird automatisch getrackt, weil
    * man sonst nichts damit anfangen kann. Wenn die Range nicht mehr benötigt 
-   * wird, muss sie mit untrack freigegeben werden. 
+   * wird, muss sie mit {@link untrack} freigegeben werden. 
    */
   async expandRangeToParagraph(range?: Word.Range): Promise<Word.Range> {
     return Word.run(context => {
@@ -248,7 +248,7 @@ export class OfficeService {
       rng.paragraphs.load('items');
 
       return context.sync().then(() => {
-        const p = rng.paragraphs.items[ 0 ];
+        const p = rng.paragraphs.items[0];
         const r = p.getRange(Word.RangeLocation.whole);
         r.track();
 
@@ -282,6 +282,24 @@ export class OfficeService {
       } else {
         return Promise.resolve(undefined);
       }
+    });
+  }
+
+  /**
+   * Gibt alle ContentControls in einem Range zurück.
+   * 
+   * @param range Wenn kein Range angegeben wird, wird die aktuelle Selektion
+   *  verwendet.
+   */
+  async getContentControlsInRange(range?: Word.Range): Promise<{ id: number, title: string, tag: string, text: string }[]> {
+    return Word.run(range, context => {
+      const rng = (range) ? range : context.document.getSelection();
+      const cc = rng.contentControls;
+      cc.load('items');
+
+      return context.sync().then(() => {
+        return Promise.resolve(cc.items.map(it => ({ id: it.id, title: it.title, tag: it.tag, text: it.text })));
+      });
     });
   }
 
