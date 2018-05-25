@@ -17,17 +17,19 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                sh 'npm run test-jenkins || error=true'
+                sh 'npm run test-jenkins'
                 sh 'npm run webdriver-update -- --standalone false --chrome false'
-                sh '''
+                sh '''#!/bin/bash
                 CHECK="init"
                 while [ -n "$CHECK" ]; do
                   PORT=$(shuf -i 50000-51000 -n 1)
-                  CHECK=$(netstat -a | grep $PORT)
+                  CHECK=$(netstat -a)
+                  if [[ $CHECK != *"$PORT"* ]]; then
+                    CHECK=""
+                  fi
                 done
+                npm run e2e -- --port $PORT
                 '''
-                sh 'npm run e2e -- --port $PORT'
-                sh 'if [ $error ]; then exit -1; fi'
             }
             post {
                 always {
