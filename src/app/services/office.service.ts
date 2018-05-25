@@ -4,6 +4,8 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { XMLSerializer } from 'xmldom';
+import * as uniqid from 'uniqid';
+
 // tslint:disable-next-line:no-require-imports
 const randomColor = require('randomcolor');
 
@@ -248,7 +250,7 @@ export class OfficeService {
       rng.paragraphs.load('items');
 
       return context.sync().then(() => {
-        const p = rng.paragraphs.items[0];
+        const p = rng.paragraphs.items[ 0 ];
         const r = p.getRange(Word.RangeLocation.whole);
         r.track();
 
@@ -308,7 +310,7 @@ export class OfficeService {
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
    * Text herum angelegt.
    */
-  async insertContentControl(title: string, tag: string, format?: string, range?: Word.Range): Promise<number> {
+  async insertContentControl(title: string, tag: string, style?: string, range?: Word.Range): Promise<number> {
     return Word.run(range, context => {
       const doc = context.document;
       const rng = (range) ? range : doc.getSelection();
@@ -318,11 +320,20 @@ export class OfficeService {
       cc.title = title;
       cc.tag = tag;
       cc.color = color;
-      // cc.style = format;
-
+      // cc.style = style;
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
+    });
+  }
+
+  async insertContentControlAroundParagraph(title: string, tag: string, style?: string): Promise<number> {
+    return this.expandRangeToParagraph().then(range => {
+      return this.insertContentControl(title, tag, style, range).then(id => {
+        this.untrack(range);
+
+        return Promise.resolve(id);
+      });
     });
   }
 
@@ -356,7 +367,6 @@ export class OfficeService {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
-
       cc.insertText(text, Word.InsertLocation.replace);
 
       return context.sync().then(() => Promise.resolve());
@@ -424,6 +434,86 @@ export class OfficeService {
     });
   }
 
+  async bindToContentControl(id: number, prefix: string): Promise<string> {
+    return Word.run(context => {
+      const cc = context.document.contentControls.getByIdOrNullObject(id);
+      if (cc) {
+        cc.title = `${prefix}${uniqid()}`;
+
+        return context.sync(cc.title);
+      } else {
+        return Promise.reject('ContentControl existiert nicht.');
+      }
+    }).then(title => this.addBindingFromNamedItem(title));
+  }
+
+  async addBindingFromNamedItem(name: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text, (result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const bind: Office.Binding = result.value;
+          resolve(bind.id);
+        } else {
+          reject(result.error.message);
+        }
+      });
+    });
+  }
+
+  async deleteBinding(id: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      Office.context.document.bindings.releaseByIdAsync(id, (result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          resolve();
+        } else {
+          reject(result.error.message);
+        }
+      });
+    });
+  }
+
+  async addEventHandlerToBinding(id: string, callback: (text: string) => void): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      Office.context.document.bindings.getByIdAsync(id, (result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const bind: Office.Binding = result.value;
+          bind.addHandlerAsync(Office.EventType.BindingDataChanged,
+            args => {
+              this.getDataFromBinding(bind).then(text => callback(text));
+            },
+            (result2: Office.AsyncResult) => {
+              if (result2.status === Office.AsyncResultStatus.Succeeded) {
+                resolve();
+              } else {
+                reject('Erstellung des EventHandlers für Binding fehlgeschlagen.');
+              }
+            });
+        } else {
+          reject('Binding existiert nicht.');
+        }
+      });
+    });
+  }
+
+  async removeEventHandlersFromBinding(id: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      Office.context.document.bindings.getByIdAsync(id, (result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const bind: Office.Binding = result.value;
+          bind.removeHandlerAsync(Office.EventType.BindingDataChanged, (result2: Office.AsyncResult) => {
+            if (result2.status === Office.AsyncResultStatus.Succeeded) {
+              resolve();
+            } else {
+              reject('Entfernen der EventHandler für Binding fehlgeschlagen.');
+            }
+          });
+        } else {
+          reject('Binding existiert nicht.');
+        }
+      });
+    });
+  }
+
   /**
    * Fügt Custom XML in das aktuelle Dokument ein.
    * 
@@ -431,7 +521,7 @@ export class OfficeService {
    */
   async addXml(xml: string): Promise<string> {
     return new Promise<string>(resolve => {
-      Office.context.document.customXmlParts.addAsync(xml, result => {
+      Office.context.document.customXmlParts.addAsync(xml, (result: Office.AsyncResult) => {
         resolve(result.value.id);
       });
     });
@@ -444,7 +534,7 @@ export class OfficeService {
    */
   async getXmlById(id: string): Promise<string> {
     return new Promise<string>(resolve => {
-      Office.context.document.customXmlParts.getByIdAsync(id, result => {
+      Office.context.document.customXmlParts.getByIdAsync(id, (result: Office.AsyncResult) => {
         result.value.getXmlAsync({}, e => {
           resolve(e.value);
         });
@@ -654,5 +744,17 @@ export class OfficeService {
 
   private generateRandomHexColorString = (): string => {
     return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  }
+
+  private getDataFromBinding = (bind: Office.Binding): Promise<any> => {
+    return new Promise<void>((resolve, reject) => {
+      bind.getDataAsync((result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          resolve(result.value);
+        } else {
+          reject('Binding existiert nicht.');
+        }
+      });
+    });
   }
 }

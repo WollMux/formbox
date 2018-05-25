@@ -46,6 +46,16 @@ export class SachleitendeverfuegungEpics {
       });
   }
 
+  inserting = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT)
+      .mergeMap(({ payload }, n: number) => {
+        const vp = store.getState().slv.slv.getVerfuegungspunkt(payload.id);
+        vp.controlText = this.slv.createObservableFromVerfuegungspunkt(vp);
+
+        return Observable.empty<never>();
+      });
+  }
+
   deleting = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.started)
       .switchMap(({ payload }, n: number) => {
@@ -53,7 +63,7 @@ export class SachleitendeverfuegungEpics {
 
         return Observable.from(this.slv.updateVerfuegungspunktText(vp.id, vp.ueberschrift)).
           switchMap(() => {
-            return Observable.from(this.slv.removeVerfuegungspunkt(vp.id))
+            return Observable.from(this.slv.removeVerfuegungspunkt(vp.id, vp.binding))
               .switchMap(() => {
                 const act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.done({ params: vp.id, result: vp.id });
                 const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
