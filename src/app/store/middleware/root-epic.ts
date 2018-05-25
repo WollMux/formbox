@@ -59,6 +59,7 @@ export class RootEpic {
     this.formularEpics.hidingControl,
     this.slvEpics.toggling,
     this.slvEpics.renumbering,
+    this.slvEpics.inserting,
     this.slvEpics.deleting
   )
 }

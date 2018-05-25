@@ -17,12 +17,12 @@ export class SachleitendeVerfuegung {
     return this._verfuegungspunkte.sort((a, b) => a.ordinal - b.ordinal);
   }
 
-  addVerfuegungspunkt(id: number, ueberschrift: string): Verfuegungspunkt {
-    return this.insertBeforeVerfuegunspunkt(id, undefined, ueberschrift);
+  addVerfuegungspunkt(id: number, ueberschrift: string, binding: string): Verfuegungspunkt {
+    return this.insertBeforeVerfuegunspunkt(id, undefined, ueberschrift, binding);
   }
 
-  insertBeforeVerfuegunspunkt(id: number, idNext: number, ueberschrift: string): Verfuegungspunkt {
-    const vp = new Verfuegungspunkt(id, ueberschrift);
+  insertBeforeVerfuegunspunkt(id: number, idNext: number, ueberschrift: string, binding: string): Verfuegungspunkt {
+    const vp = new Verfuegungspunkt(id, ueberschrift, binding);
 
     if (idNext) {
       const n = this._verfuegungspunkte.findIndex(v => v.id === idNext);

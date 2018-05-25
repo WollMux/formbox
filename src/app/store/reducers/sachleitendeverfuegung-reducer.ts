@@ -7,9 +7,9 @@ import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung
 import { SachleitendeVerfuegung } from '../../data/slv/sachleitende-verfuegung';
 
 const insertVerfuegungspunkt =
-  (state: SachleitendeverfuegungState, vp: { id: number, idNext?: number, text?: string, delete: boolean })
+  (state: SachleitendeverfuegungState, vp: { id: number, idNext?: number, text?: string, binding?: string, delete: boolean })
     : SachleitendeverfuegungState => {
-    state.slv.insertBeforeVerfuegunspunkt(vp.id, vp.idNext, vp.text);
+    state.slv.insertBeforeVerfuegunspunkt(vp.id, vp.idNext, vp.text, vp.binding);
     const newState = tassign(state, { slv: new SachleitendeVerfuegung(state.slv.verfuegungspunkte) });
 
     return newState;

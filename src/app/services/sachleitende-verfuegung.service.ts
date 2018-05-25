@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+import { Observable } from 'rxjs/Observable';
 import * as romanize from 'romanize';
 
 import { OfficeService } from './office.service';
 import { SachleitendeVerfuegung } from '../data/slv/sachleitende-verfuegung';
+import { Verfuegungspunkt } from '../data/slv/verfuegungspunkt';
 
 @Injectable()
 export class SachleitendeVerfuegungService {
@@ -52,14 +54,15 @@ export class SachleitendeVerfuegungService {
   /**
    * Erzeugt oder entfernt einen Verfügungspunkt an der aktuellen Cursorposition.
    */
-  async toggleVerfuegungspunkt(): Promise<{ id: number, idNext?: number, text: string, delete: boolean }> {
+  async toggleVerfuegungspunkt(): Promise<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean }> {
     this.log.debug('SachleitendeVerfuegungService.toggleVerfuegungspunkt()');
 
     return this.findCurrentVerfuegungspunkt().then(cc => {
       if (cc && cc.tag === 'SLV') {
         return Promise.resolve({ id: cc.id, text: cc.text, delete: true });
       } else {
-        return this.insertVerfuegungspunkt().then(vp => ({ id: vp.id, idNext: vp.idNext, text: vp.text, delete: false }));
+        return this.insertVerfuegungspunkt().then(vp =>
+          ({ id: vp.id, idNext: vp.idNext, text: vp.text, binding: vp.binding, delete: false }));
       }
     });
   }
@@ -140,21 +143,29 @@ export class SachleitendeVerfuegungService {
     return Promise.all(p).then(() => Promise.resolve());
   }
 
-  async removeVerfuegungspunkt(id: number): Promise<void> {
-    return this.office.deleteContentControl(id);
+  async removeVerfuegungspunkt(id: number, binding: string): Promise<void> {
+    return this.office.deleteBinding(binding).then(() => {
+      return this.office.deleteContentControl(id);
+    });
   }
 
-  private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number }> {
-    return this.office.expandRangeToParagraph().then(range => {
-      return this.office.insertContentControl('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE, range).then(id => {
-        this.office.untrack(range);
+  createObservableFromVerfuegungspunkt(vp: Verfuegungspunkt): Observable<string> {
+    return Observable.create(ob => {
+      const cb = (text: string) => {
+        ob.next(text);
+      };
 
-        return this.office.getContentControlText(id).then(text => {
-          return { id: id, text: text };
-        }).then(vp => {
-          return this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext }));
-        });
-      });
+      this.office.addEventHandlerToBinding(vp.binding, cb);
+
+      return (() => this.office.removeEventHandlersFromBinding(vp.binding));
+    });
+  }
+
+  private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number, binding: string }> {
+    return this.office.insertContentControlAroundParagraph('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE).then(id => {
+      return this.office.bindToContentControl(id, 'SLV').then(bid => ({ id: id, binding: bid }))
+        .then(vp => this.office.getContentControlText(id).then(text => ({ id: id, binding: vp.binding, text: text })))
+        .then(vp => this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext, binding: vp.binding })));
     });
   }
 }
