@@ -11,7 +11,13 @@ exports.config = {
   ],
   capabilities: {
     'browserName': 'firefox',
-    'marionette': true
+    'marionette': true,
+    'firefoxOptions': {
+      args: [ '--headless' ]
+    },
+    'moz:firefoxOptions': {
+      args: [ '--headless' ]
+    }
   },
   directConnect: true,
   framework: 'jasmine',

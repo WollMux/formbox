@@ -17,19 +17,17 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-                    sh 'npm run test-jenkins || error=true'
-                    sh 'npm run webdriver-update -- --standalone false --chrome false'
-                    sh '''
-                    CHECK="init"
-                    while [ -n "$CHECK" ]; do
-                      PORT=$(shuf -i 50000-51000 -n 1)
-                      CHECK=$(netstat -ap | grep $PORT)
-                    done
-                    npm run e2e -- --port $PORT
-                    '''
-                    sh 'if [ $error ]; then exit -1; fi'
-                }
+                sh 'npm run test-jenkins || error=true'
+                sh 'npm run webdriver-update -- --standalone false --chrome false'
+                sh '''
+                CHECK="init"
+                while [ -n "$CHECK" ]; do
+                  PORT=$(shuf -i 50000-51000 -n 1)
+                  CHECK=$(netstat -a | grep $PORT)
+                done
+                '''
+                sh 'npm run e2e -- --port $PORT'
+                sh 'if [ $error ]; then exit -1; fi'
             }
             post {
                 always {
