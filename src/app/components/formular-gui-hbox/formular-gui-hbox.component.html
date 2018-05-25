@@ -1,0 +1,7 @@
+<ul class="flex-container hbox">
+  <div *ngFor="let control of control.controls" [ngSwitch]="control.constructor.name">
+    <li class="flex-item">
+      <app-formular-gui-control-template [control]="control"></app-formular-gui-control-template>
+    </li>
+  </div>
+</ul>

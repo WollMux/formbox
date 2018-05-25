@@ -24,12 +24,12 @@ export const appRoutes: Routes = [
       { path: 'override-frag-editor', component: ExpressionOverrideFragComponent }
     ]
   },
-<<<<<<< HEAD
   {
     path: 'formular-editor',
     loadChildren: 'app/modules/formular-editor/formular-editor.module#FormularEditorModule'
+  },
+  {
+    path: 'formular-gui',
+    loadChildren: 'app/modules/formular-gui/formular-gui.module#FormularGuiModule'
   }
-=======
-  { path: 'formular-gui', component: FormularGuiComponent }
->>>>>>> Formular-GUI.
 ];

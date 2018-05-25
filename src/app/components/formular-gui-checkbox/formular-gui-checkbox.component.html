@@ -1,0 +1,2 @@
+<label for="control.id">{{ control.title }}</label>
+<input type="checkbox" [id]="control.id" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.id)">

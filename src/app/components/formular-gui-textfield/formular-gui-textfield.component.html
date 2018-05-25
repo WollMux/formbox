@@ -1,0 +1,2 @@
+<label for="control.id">{{ control.title }}</label>
+<input [id]="control.id" [type]="control.type" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.id)">

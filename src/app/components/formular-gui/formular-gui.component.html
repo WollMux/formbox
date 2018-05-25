@@ -1,5 +1,9 @@
 <div class="container">
-  <form [formGroup]="form">
-    <app-formular-gui-form [controls]="form.controls"></app-formular-gui-form>
+  <form [formGroup]="form | async">
+    <div *ngFor="let control of (form | async).controls" class="control-margin" [ngSwitch]="control.constructor.name">
+      <div class="row">
+        <app-formular-gui-control-template [control]="control"></app-formular-gui-control-template>
+      </div>
+    </div>
   </form>
 </div>
