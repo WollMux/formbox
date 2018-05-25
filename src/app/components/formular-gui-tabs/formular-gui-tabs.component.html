@@ -1,0 +1,9 @@
+<tabset [pills]="true">
+  <div *ngFor="let tab of control.controls">
+    <tab [title]="tab.title">
+      <div *ngFor="let control of tab.controls" class="row">
+        <app-formular-gui-control-template [control]="control"></app-formular-gui-control-template>
+      </div>
+    </tab>
+  </div>
+</tabset>
