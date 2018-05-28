@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Label } from '../../data/forms/label';
+import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+
+import { Label } from '../../data/forms/label';
 import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 
 @Component({

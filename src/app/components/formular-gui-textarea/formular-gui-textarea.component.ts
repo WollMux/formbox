@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Textarea } from '../../data/forms/textarea';
+import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+
+import { Textarea } from '../../data/forms/textarea';
 import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 
 @Component({

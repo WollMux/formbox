@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
-import { Separator } from '../../data/forms/separator';
+import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+
+import { Separator } from '../../data/forms/separator';
+import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 
 @Component({
   selector: 'app-formular-gui-seperator',

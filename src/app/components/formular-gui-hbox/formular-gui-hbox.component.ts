@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
+
 import { Hbox } from '../../data/forms/hbox';
 import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
-import { Logger } from '@nsalaun/ng-logger';
-import { Control } from '../../data/forms/control';
 
 @Component({
   selector: 'app-formular-gui-hbox',

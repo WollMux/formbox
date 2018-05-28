@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
+
 import { Combobox } from '../../data/forms/combobox';
 import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
-import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   selector: 'app-formular-gui-combobox',
