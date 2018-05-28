@@ -11,6 +11,7 @@ import { FormularGuiComboboxComponent } from '../../components/formular-gui-comb
 import { FormularGuiLabelComponent } from '../../components/formular-gui-label/formular-gui-label.component';
 import { FormularGuiSeperatorComponent } from '../../components/formular-gui-seperator/formular-gui-seperator.component';
 import { FormularGuiTabsComponent } from '../../components/formular-gui-tabs/formular-gui-tabs.component';
+// tslint:disable-next-line:max-line-length
 import { FormularGuiControlTemplateComponent } from '../../components/formular-gui-control-template/formular-gui-control-template.component';
 import { FormularGuiHboxComponent } from '../../components/formular-gui-hbox/formular-gui-hbox.component';
 
