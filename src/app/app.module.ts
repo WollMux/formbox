@@ -60,7 +60,6 @@ import { BarService } from './services/bar.service';
 import { FormularEditorActions } from './store/actions/formular-editor-actions';
 import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
 import { FormularEditorService } from './services/formular-editor.service';
-import { TabsModule } from 'ngx-tabs';
 
 @NgModule({
   declarations: [
@@ -87,8 +86,7 @@ import { TabsModule } from 'ngx-tabs';
     NgReduxModule,
     FormsModule,
     Angular2FontawesomeModule,
-    TreeModule,
-    TabsModule
+    TreeModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
