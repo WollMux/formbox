@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormularGuiComponent } from '../../components/formular-gui/formular-gui.component';
@@ -14,6 +14,7 @@ import { FormularGuiTabsComponent } from '../../components/formular-gui-tabs/for
 // tslint:disable-next-line:max-line-length
 import { FormularGuiControlTemplateComponent } from '../../components/formular-gui-control-template/formular-gui-control-template.component';
 import { FormularGuiHboxComponent } from '../../components/formular-gui-hbox/formular-gui-hbox.component';
+import { TabsModule } from 'ngx-tabs';
 
 const routes: Routes = [
   {
@@ -26,7 +27,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    FormsModule
+    FormsModule,
+    TabsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     FormularGuiComponent,
