@@ -8,6 +8,6 @@ import { Level } from '@nsalaun/ng-logger';
 export const environment = {
   test: false,
   production: false,
-  formboxapi: 'https://kvm-javabuild.tvc.muenchen.de/formbox-standard-api',
+  formboxapi: 'https://localhost:4201',
   loglevel: Level.LOG
 };
