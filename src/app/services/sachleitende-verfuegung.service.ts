@@ -6,6 +6,7 @@ import * as romanize from 'romanize';
 import { OfficeService } from './office.service';
 import { SachleitendeVerfuegung } from '../data/slv/sachleitende-verfuegung';
 import { Verfuegungspunkt } from '../data/slv/verfuegungspunkt';
+import { SachleitendeverfuegungActions } from '../store/actions/sachleitendeverfuegung-actions';
 
 @Injectable()
 export class SachleitendeVerfuegungService {
@@ -13,7 +14,20 @@ export class SachleitendeVerfuegungService {
 
   private document = undefined;
 
-  constructor(private log: Logger, private office: OfficeService) { /* Leer */ }
+  constructor(
+    private log: Logger,
+    private office: OfficeService
+  ) { /* Leer */ }
+
+  /**
+   * Gibt eine Liste der ContentControls zurück, die als Verfügungspunkte
+   * markiert sind. 
+   */
+  async getVerfuegungspunkteInDocument(): Promise<{ id: number, text: string }[]> {
+    return this.office.getAllContentControls().then(cc => {
+      return cc.filter(it => it.tag === 'SLV').map(it => ({ id: it.id, text: it.text }));
+    });
+  }
 
   async newDocument(): Promise<void> {
     this.log.debug('SachleitendeVerfuegungService.newDocument()');
@@ -113,6 +127,12 @@ export class SachleitendeVerfuegungService {
     return this.office.replaceTextInContentControl(id, s);
   }
 
+  splitVerfuegungspunkText(text: string): string {
+    const s = text.split('\t');
+
+    return s.pop();
+  }
+
   async getVerfuegungspunkte(): Promise<number[]> {
     return this.office.getAllContentControls().then(c => {
       return Promise.resolve(c.filter(it => it.tag === 'SLV').map(it => it.id));
@@ -161,9 +181,13 @@ export class SachleitendeVerfuegungService {
     });
   }
 
+  async bindVerfuegungspunkt(id: number): Promise<string> {
+    return this.office.bindToContentControl(id, 'SLV');
+  }
+
   private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number, binding: string }> {
     return this.office.insertContentControlAroundParagraph('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE).then(id => {
-      return this.office.bindToContentControl(id, 'SLV').then(bid => ({ id: id, binding: bid }))
+      return this.bindVerfuegungspunkt(id).then(bid => ({ id: id, binding: bid }))
         .then(vp => this.office.getContentControlText(id).then(text => ({ id: id, binding: vp.binding, text: text })))
         .then(vp => this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext, binding: vp.binding })));
     });

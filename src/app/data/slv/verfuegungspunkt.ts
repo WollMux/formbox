@@ -37,7 +37,6 @@ export class Verfuegungspunkt {
     this._controlText = value;
     if (value) {
       this._controlTextObserver = value.subscribe(text => {
-        debugger
         const s = text.split('\t');
         this.ueberschrift = s.pop();
       });

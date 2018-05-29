@@ -9,6 +9,7 @@ import { DocumentTreeViewEpics } from './document-treeview-epics';
 import { DialogEpics } from './dialog-epics';
 import { FormularEditorEpics } from './formular-editor-epics';
 import { SachleitendeverfuegungEpics } from './sachleitendeverfuegung-epics';
+import { InitEpics } from './init-epics';
 
 @Injectable()
 export class RootEpic {
@@ -21,7 +22,8 @@ export class RootEpic {
     private documentTreeViewEpics: DocumentTreeViewEpics,
     private dialogEpics: DialogEpics,
     private formularEpics: FormularEditorEpics,
-    private slvEpics: SachleitendeverfuegungEpics
+    private slvEpics: SachleitendeverfuegungEpics,
+    private initEpics: InitEpics
   ) { }
 
   epics = () => combineEpics(
@@ -60,6 +62,7 @@ export class RootEpic {
     this.slvEpics.toggling,
     this.slvEpics.renumbering,
     this.slvEpics.inserting,
-    this.slvEpics.deleting
+    this.slvEpics.deleting,
+    this.initEpics.initialisingSLV
   )
 }
