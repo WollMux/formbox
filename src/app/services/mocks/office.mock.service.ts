@@ -204,7 +204,7 @@ export class OfficeMockService {
   }
 
   async getXmlIdsByNamespace(ns: string): Promise<string[]> {
-    return Promise.resolve([ this.xml ]);
+    return Promise.resolve([this.xml]);
   }
 
   async deleteXmlById(id: string): Promise<void> {
@@ -235,11 +235,31 @@ export class OfficeMockService {
     return Promise.resolve(undefined);
   }
 
+  async getContentControlsInRange(range?: Word.Range): Promise<{ id: number, title: string, tag: string, text: string }[]> {
+    return Promise.resolve([]);
+  }
+
   async untrack(o: any): Promise<{}> {
     return Promise.resolve({});
   }
 
   async expandRangeToParagraph(range?: Word.Range): Promise<Word.Range> {
     return Promise.resolve(undefined);
+  }
+
+  async insertContentControlAroundParagraph(title: string, tag: string, style?: string): Promise<number> {
+    return Promise.resolve(1);
+  }
+
+  async getContentControlText(id: number): Promise<string> {
+    return Promise.resolve('');
+  }
+
+  async bindToContentControl(id: number, prefix: string): Promise<string> {
+    return Promise.resolve('bind123');
+  }
+
+  async getNextContentControls(id?: number): Promise<{ id: number, title: string, tag: string }[]> {
+    return Promise.resolve([]);
   }
 }
