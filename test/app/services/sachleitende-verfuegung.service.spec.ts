@@ -31,8 +31,8 @@ describe('SachleitendeVerfuegungService', () => {
 
   it('toggleVerfuegungspunkt - an', async(inject([SachleitendeVerfuegungService],
     (service: SachleitendeVerfuegungService) => {
-      spyOn(office, 'isInsideContentControl').and.returnValue(Promise.resolve(undefined));
-      const spy = spyOn(office, 'insertContentControl').and.returnValue(Promise.resolve(1));
+      spyOn(office, 'getContentControlsInRange').and.returnValue(Promise.resolve([]));
+      const spy = spyOn(office, 'insertContentControlAroundParagraph').and.returnValue(Promise.resolve(1));
 
       service.toggleVerfuegungspunkt().then(ret => {
         expect(spy).toHaveBeenCalled();
@@ -43,11 +43,11 @@ describe('SachleitendeVerfuegungService', () => {
 
   it('toggleVerfuegungspunkt - aus', async(inject([SachleitendeVerfuegungService],
     (service: SachleitendeVerfuegungService) => {
-      spyOn(office, 'isInsideContentControl').and.returnValue(Promise.resolve({ id: 1, title: 'Test', tag: 'SLV' }));
-      const spy = spyOn(office, 'deleteContentControl').and.returnValue(Promise.resolve());
+      spyOn(office, 'getContentControlsInRange').and.returnValue(Promise.resolve([{ id: 1, title: 'Test', tag: 'SLV', text: 'Test' }]));
 
       service.toggleVerfuegungspunkt().then(ret => {
-        expect(spy).toHaveBeenCalled();
+        expect(ret.id).toEqual(1);
+        expect(ret.delete).toBeTruthy();
       });
     })));
 });

@@ -120,8 +120,6 @@ export class OfficeService {
 
   /**
    * Fügt einen Seitenumbruch am Ende eines Dokuments ein.
-   * 
-   * @param target
    */
   async insertPageBreak(target: Word.Document | Word.DocumentCreated): Promise<void> {
     return Word.run(context => {

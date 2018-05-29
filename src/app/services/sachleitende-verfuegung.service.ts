@@ -105,6 +105,8 @@ export class SachleitendeVerfuegungService {
    * @param id Id des Content Controls des Verfügungspunkts
    */
   async getVerfuegungspunktText(id: number): Promise<string> {
+    this.log.debug('SachleitendeVerfuegungService.getVerfuegungspunktText()');
+
     return this.office.getContentControlText(id);
   }
 
@@ -117,6 +119,7 @@ export class SachleitendeVerfuegungService {
    *    keine Ziffer angegeben wird, wird nur der Text geschireben.
    */
   async updateVerfuegungspunktText(id: number, text: string, ordinal?: string): Promise<void> {
+
     let s;
     if (ordinal) {
       s = `${ordinal}.\t${text}`;
@@ -140,6 +143,8 @@ export class SachleitendeVerfuegungService {
   }
 
   async getNextVerfuegungspunkt(id?: number): Promise<number> {
+    this.log.debug('SachleitendeVerfuegungService.getNextVerfuegungspunkt()');
+
     return this.office.getNextContentControls(id).then(c => {
       const vp = c.find(it => it.tag === 'SLV');
       if (vp) {
@@ -182,10 +187,14 @@ export class SachleitendeVerfuegungService {
   }
 
   async bindVerfuegungspunkt(id: number): Promise<string> {
+    this.log.debug('SachleitendeVerfuegungService.bindVerfuegungspunkt()');
+
     return this.office.bindToContentControl(id, 'SLV');
   }
 
   private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number, binding: string }> {
+    this.log.debug('SachleitendeVerfuegungService.insertVerfuegungspunkt()');
+
     return this.office.insertContentControlAroundParagraph('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE).then(id => {
       return this.bindVerfuegungspunkt(id).then(bid => ({ id: id, binding: bid }))
         .then(vp => this.office.getContentControlText(id).then(text => ({ id: id, binding: vp.binding, text: text })))
