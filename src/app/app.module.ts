@@ -63,6 +63,8 @@ import { FormularEditorService } from './services/formular-editor.service';
 import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegung.service';
 import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverfuegung-epics';
 import { SachleitendeverfuegungActions } from './store/actions/sachleitendeverfuegung-actions';
+import { InitActions } from './store/actions/init-actions';
+import { InitEpics } from './store/middleware/init-epics';
 
 @NgModule({
   declarations: [
@@ -123,16 +125,20 @@ import { SachleitendeverfuegungActions } from './store/actions/sachleitendeverfu
     FormularEditorService,
     SachleitendeVerfuegungService,
     SachleitendeverfuegungActions,
-    SachleitendeverfuegungEpics
+    SachleitendeverfuegungEpics,
+    InitActions,
+    InitEpics
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 // tslint:disable-next-line:no-unnecessary-class
 export class AppModule {
   constructor(
     private ngRedux: NgRedux<FormBoxState>,
     private devTools: DevToolsExtension,
-    private rootEpic: RootEpic) {
+    private rootEpic: RootEpic,
+    private init: InitActions
+  ) {
     const middleware = [
       createEpicMiddleware(this.rootEpic.epics())
     ];
@@ -141,5 +147,7 @@ export class AppModule {
     } else {
       ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
     }
+
+    this.init.initSLV();
   }
 }

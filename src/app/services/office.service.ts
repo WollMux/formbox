@@ -250,7 +250,7 @@ export class OfficeService {
       rng.paragraphs.load('items');
 
       return context.sync().then(() => {
-        const p = rng.paragraphs.items[ 0 ];
+        const p = rng.paragraphs.items[0];
         const r = p.getRange(Word.RangeLocation.whole);
         r.track();
 
@@ -391,15 +391,15 @@ export class OfficeService {
   /**
    * Gibt eine Liste aller ContentControls im aktiven Dokument zurück.
    */
-  async getAllContentControls(): Promise<{ id: number, title: string, tag: string }[]> {
+  async getAllContentControls(): Promise<{ id: number, title: string, tag: string, text: string }[]> {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const controls = doc.contentControls;
       doc.context.load(controls, 'id, title, tag');
-      controls.load('items/id, items/title, items/tag');
+      controls.load('items/id, items/title, items/tag, items/text');
 
       return doc.context.sync().then(() => {
-        return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag }));
+        return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag, text: it.text }));
       });
     });
   }
