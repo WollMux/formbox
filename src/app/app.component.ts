@@ -68,24 +68,4 @@ export class AppComponent implements OnInit {
 
     this.formularEditorActions.load();
   }
-
-  onInsertDocument(): void {
-    this.actions.loadTemplate('Externer_Briefkopf');
-  }
-
-  onSLV(): void {
-    this.slv.newDocument().then(() => {
-      return this.slv.copyCurrentDocument(true);
-    }).then(() => {
-      return this.slv.copyCurrentDocument();
-    }).then(() => {
-      this.slv.showDocument();
-    });
-  }
-
-  onHide(): void {
-    this.office.getSelection().then(sel => {
-      this.office.hideRange(sel).then(() => sel.untrack());
-    });
-  }
 }
