@@ -6,6 +6,7 @@ export class SachleitendeVerfuegung {
   constructor(vp?: Verfuegungspunkt[]) {
     if (vp) {
       this._verfuegungspunkte = vp.slice();
+      this.renumber();
     }
   }
 

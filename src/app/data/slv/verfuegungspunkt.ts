@@ -23,7 +23,7 @@ export class Verfuegungspunkt {
   }
 
   set ueberschrift(value: string) {
-    this._ueberschrift = value.replace(/\s/g, ' '); // Ersetzt Whitespace durch ein einzelnes Leerzeichen.
+    this._ueberschrift = value.replace(/\s+/g, ' '); // Ersetzt Whitespace durch ein einzelnes Leerzeichen.
   }
 
   get controlText(): Observable<string> {
