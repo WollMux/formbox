@@ -130,18 +130,28 @@ export class SachleitendeVerfuegungService {
     return this.office.replaceTextInContentControl(id, s);
   }
 
+  /**
+   * Gibt die Überschrift eines Verfügunspunktes ohne die römische Ziffer zurück. 
+   */
   splitVerfuegungspunkText(text: string): string {
     const s = text.split('\t');
 
     return s.pop();
   }
 
+  /**
+   * Liefert eine Liste der Ids aller Verfügungspunkte zurück.
+   */
   async getVerfuegungspunkte(): Promise<number[]> {
     return this.office.getAllContentControls().then(c => {
       return Promise.resolve(c.filter(it => it.tag === 'SLV').map(it => it.id));
     });
   }
 
+  /**
+   * Gibt die ID des nächsten Verfügungspunktes zurück. Wenn keine ID übergeben wird,
+   * wird von der aktuellen Cursorposition aus gesucht. 
+   */
   async getNextVerfuegungspunkt(id?: number): Promise<number> {
     this.log.debug('SachleitendeVerfuegungService.getNextVerfuegungspunkt()');
 
@@ -155,6 +165,10 @@ export class SachleitendeVerfuegungService {
     });
   }
 
+  /**
+   * Nummeriert die Verfügungspunkte neu durch und schriebt römische Ziffern
+   * an den Beginn der Überschrift. 
+   */
   async renumber(slv: SachleitendeVerfuegung): Promise<void> {
     const p = [];
 
@@ -168,12 +182,40 @@ export class SachleitendeVerfuegungService {
     return Promise.all(p).then(() => Promise.resolve());
   }
 
+  /**
+   * Löscht einen Verfügungspunkt aus dem Dokument und entfernt das Databinding. 
+   */
   async removeVerfuegungspunkt(id: number, binding: string): Promise<void> {
     return this.office.deleteBinding(binding).then(() => {
       return this.office.deleteContentControl(id);
     });
   }
 
+  /**
+   * Vesteckt einen Verfügungspunkt einschließlich des Texts bis zum nächsten
+   * Vertfügungspunkt. 
+   */
+  async hideVerfuegungspunkt(id: number): Promise<void> {
+    this.getNextVerfuegungspunkt(id).then(idNext => {
+      return this.office.getRangeBetweenContentControls(id, idNext);
+    }).then(rng => {
+      this.office.hideRange(rng).then(() => this.office.untrack(rng));
+    });
+  }
+
+  async unhideVerfuegungspunkt(id: number): Promise<void> {
+    this.getNextVerfuegungspunkt(id).then(idNext => {
+      return this.office.getRangeBetweenContentControls(id, idNext);
+    }).then(rng => {
+      this.office.unhideRange(rng).then(() => this.office.untrack(rng));
+    });
+  }
+
+  /**
+   * Erzeugt das Databinding zwischen Verfügungspunkten und ContentControls.
+   * Die Überschriften der Verfuegungspunkte werden automagisch upgedatet, wenn
+   * der User den Text in den ContentControls anpasst. 
+   */
   createObservableFromVerfuegungspunkt(vp: Verfuegungspunkt): Observable<string> {
     return Observable.create(ob => {
       const cb = (text: string) => {
@@ -186,6 +228,9 @@ export class SachleitendeVerfuegungService {
     });
   }
 
+  /**
+   * Erzeugt ein Databinding-Objekt für ein ContentControl. 
+   */
   async bindVerfuegungspunkt(id: number): Promise<string> {
     this.log.debug('SachleitendeVerfuegungService.bindVerfuegungspunkt()');
 

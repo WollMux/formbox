@@ -432,6 +432,24 @@ export class OfficeService {
     });
   }
 
+  async getRangeBetweenContentControls(id: number, idNext: number): Promise<Word.Range> {
+    return Word.run(context => {
+      const doc = this.getDocument(context);
+      const cc1 = doc.contentControls.getByIdOrNullObject(id);
+      const cc2 = doc.contentControls.getByIdOrNullObject(idNext);
+
+      const rng1 = cc1.getRange(Word.RangeLocation.start);
+      const rng2 = cc2.getRange(Word.RangeLocation.start);
+
+      const rng = rng1.expandToOrNullObject(rng2);
+      rng.track();
+
+      return context.sync().then(() => {
+        return Promise.resolve(rng);
+      });
+    });
+  }
+
   async bindToContentControl(id: number, prefix: string): Promise<string> {
     return Word.run(context => {
       const cc = context.document.contentControls.getByIdOrNullObject(id);
@@ -621,7 +639,7 @@ export class OfficeService {
   /**
    * Versteckt einen Range, indem der Text unsichtbar gesetzt wird.
    */
-  async hideRange(range: Word.Range): Promise<Word.Range> {
+  async hideRange(range: Word.Range): Promise<void> {
     return Word.run(range, context => {
       const ooxml = range.getOoxml();
 
@@ -649,9 +667,9 @@ export class OfficeService {
 
         return Promise.resolve(xml);
       }).then(xml => {
-        const ret = range.insertOoxml(xml, Word.InsertLocation.replace);
+        range.insertOoxml(xml, Word.InsertLocation.replace);
 
-        return context.sync().then(() => Promise.resolve(ret));
+        return context.sync().then(() => Promise.resolve());
       });
     });
   }
@@ -659,7 +677,7 @@ export class OfficeService {
   /**
    * Macht einen Range sichtbar, der mit hideRange versteckt wurde.
    */
-  async unhideRange(range: Word.Range): Promise<Word.Range> {
+  async unhideRange(range: Word.Range): Promise<void> {
     return Word.run(range, context => {
       const ooxml = range.getOoxml();
 
@@ -679,9 +697,9 @@ export class OfficeService {
 
         return Promise.resolve(xml);
       }).then(xml => {
-        const ret = range.insertOoxml(xml, Word.InsertLocation.replace);
+        range.insertOoxml(xml, Word.InsertLocation.replace);
 
-        return context.sync().then(() => Promise.resolve(ret));
+        return context.sync().then(() => Promise.resolve());
       });
     });
   }
