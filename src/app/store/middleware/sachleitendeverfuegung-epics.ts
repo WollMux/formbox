@@ -37,7 +37,7 @@ export class SachleitendeverfuegungEpics {
 
               return Observable.of(act);
             } else {
-              act = SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT(vp);
+              act = SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.started(vp);
               const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
 
               return Observable.concat(Observable.of(act), Observable.of(act2));
@@ -47,12 +47,15 @@ export class SachleitendeverfuegungEpics {
   }
 
   inserting = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT)
+    return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.started)
       .mergeMap(({ payload }, n: number) => {
         const vp = store.getState().slv.slv.getVerfuegungspunkt(payload.id);
-        vp.controlText = this.slv.createObservableFromVerfuegungspunkt(vp);
+        const binding = this.slv.createObservableFromVerfuegungspunkt(vp);
 
-        return Observable.empty<never>();
+        const act = SachleitendeverfuegungActions
+          .INSERT_VERFUEGUNGSPUNKT.done({ params: payload, result: { id: vp.id, binding: binding } });
+
+        return Observable.of(act);
       });
   }
 

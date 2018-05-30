@@ -740,10 +740,6 @@ export class OfficeService {
     return doc;
   }
 
-  private generateRandomHexColorString = (): string => {
-    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-  }
-
   private getDataFromBinding = (bind: Office.Binding): Promise<any> => {
     return new Promise<void>((resolve, reject) => {
       bind.getDataAsync((result: Office.AsyncResult) => {
