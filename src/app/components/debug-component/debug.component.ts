@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { Router } from '@angular/router';
+import { select } from '@angular-redux/store/lib/src';
+import { Observable } from 'rxjs/Observable';
+
 import { TemplateActions } from '../../store/actions/template-actions';
 import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
 import { OfficeService } from '../../services/office.service';
 import { SachleitendeverfuegungActions } from '../../store/actions/sachleitendeverfuegung-actions';
+import { SachleitendeVerfuegung } from '../../data/slv/sachleitende-verfuegung';
 
 @Component({
   selector: 'app-debug-component',
@@ -12,13 +16,15 @@ import { SachleitendeverfuegungActions } from '../../store/actions/sachleitendev
   styleUrls: ['./debug.component.css']
 })
 export class DebugComponent implements OnInit {
+  @select(['slv', 'slv']) sachleitendeVerfuegung: Observable<SachleitendeVerfuegung>;
 
   constructor(
     private log: Logger,
     private router: Router,
     private templateActions: TemplateActions,
     private office: OfficeService,
-    private slv: SachleitendeverfuegungActions
+    private slv: SachleitendeVerfuegungService,
+    private slvActions: SachleitendeverfuegungActions
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -40,32 +46,16 @@ export class DebugComponent implements OnInit {
   }
 
   onHide(): void {
-    //    this.office.getSelection().then(sel => {
-    //      this.office.hideRange(sel).then(() => sel.untrack());
-    //    });
-    Word.run(context => {
-      const cc = context.document.contentControls.getFirstOrNullObject();
-
-      return context.sync(cc);
-    }).then(cc => {
-      return this.office.hideContentControl(cc);
+    this.sachleitendeVerfuegung.subscribe(it => {
+      debugger;
+      this.slv.hideVerfuegungspunkt(it.verfuegungspunkte[0].id);
     });
   }
 
   onUnhide(): void {
-    //    this.office.getSelection().then(sel => {
-    //      this.office.hideRange(sel).then(() => sel.untrack());
-    //    });
-    Word.run(context => {
-      const cc = context.document.contentControls.getFirstOrNullObject();
-
-      return context.sync(cc);
-    }).then(cc => {
-      return this.office.unhideContentControl(cc);
-    });
   }
 
   async onVP(): Promise<void> {
-    this.slv.toggle();
+    this.slvActions.toggle();
   }
 }
