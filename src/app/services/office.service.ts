@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { XMLSerializer } from 'xmldom';
 import * as uniqid from 'uniqid';
+import * as wgxpath from 'wicked-good-xpath';
 
 // tslint:disable-next-line:no-require-imports
 const randomColor = require('randomcolor');
@@ -16,7 +17,9 @@ const randomColor = require('randomcolor');
 export class OfficeService {
   private document: Word.DocumentCreated;
 
-  constructor(private log: Logger) { }
+  constructor(private log: Logger) {
+    wgxpath.install();
+  }
 
   /**
    * Öffnet einen OfficeJs-Dialog.
@@ -248,7 +251,7 @@ export class OfficeService {
       rng.paragraphs.load('items');
 
       return context.sync().then(() => {
-        const p = rng.paragraphs.items[0];
+        const p = rng.paragraphs.items[ 0 ];
         const r = p.getRange(Word.RangeLocation.whole);
         r.track();
 
@@ -438,8 +441,8 @@ export class OfficeService {
       const cc1 = doc.contentControls.getByIdOrNullObject(id);
       const cc2 = doc.contentControls.getByIdOrNullObject(idNext);
 
-      const rng1 = cc1.getRange(Word.RangeLocation.start);
-      const rng2 = cc2.getRange(Word.RangeLocation.start);
+      const rng1 = cc1.getRange(Word.RangeLocation.before);
+      const rng2 = cc2.getRange(Word.RangeLocation.before);
 
       const rng = rng1.expandToOrNullObject(rng2);
       rng.track();
@@ -649,9 +652,10 @@ export class OfficeService {
 
         const el = doc.getElementsByTagName('w:t');
 
+        const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
+
         for (let i = 0; i < el.length; i++) {
           const t = el.item(i);
-          const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
           let rpr = t.previousSibling;
 
           if (!rpr) {
@@ -659,7 +663,7 @@ export class OfficeService {
             t.parentNode.insertBefore(rpr, t);
           }
 
-          rpr.appendChild(vanish);
+          rpr.appendChild(vanish.cloneNode(true));
         }
 
         const ser = new XMLSerializer();
@@ -672,6 +676,65 @@ export class OfficeService {
         return context.sync().then(() => Promise.resolve());
       });
     });
+  }
+
+  async hideRange2(range: Word.Range): Promise<void> {
+    return Word.run(range, context => {
+      const ooxml = range.getOoxml();
+
+      return context.sync().then(() => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(ooxml.value, 'application/xml');
+        const body = doc.getElementsByTagName('w:body').item(0);
+        const children = Array.from(body.childNodes).filter(it => [ 'w:sdt', 'w:p', 'w:tbl' ].indexOf(it.nodeName) !== -1);
+
+        children.map(it => {
+          switch (it.nodeName) {
+            case 'w:sdt': {
+              this.hideSdt(it);
+              break;
+            }
+            case 'w:p': {
+              break;
+            }
+            case 'w:tbl': {
+              break;
+            }
+            default: break;
+          }
+        });
+
+        const ser = new XMLSerializer();
+        const xml = ser.serializeToString(doc);
+
+        return Promise.resolve(xml);
+      }).then(xml => {
+        debugger
+        range.insertOoxml(xml, Word.InsertLocation.replace);
+
+        return context.sync().then(() => Promise.resolve());
+      });
+    });
+  }
+
+  hideSdt = (node: Node) => {
+    const doc = node.ownerDocument;
+    const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
+
+    let res = doc.evaluate('./w:sdtPr', node, doc.createNSResolver(node), XPathResult.FIRST_ORDERED_NODE_TYPE, undefined);
+    const sdtPtr = res.singleNodeValue;
+    res = doc.evaluate('./w:rPr', sdtPtr, doc.createNSResolver(sdtPtr), XPathResult.FIRST_ORDERED_NODE_TYPE, undefined);
+    let rPr = res.singleNodeValue;
+    if (!rPr) {
+      rPr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
+      sdtPtr.insertBefore(rPr, sdtPtr.firstChild);
+    }
+
+    rPr.appendChild(vanish);
+  }
+
+  hideP = (node: Node) => {
+
   }
 
   /**
