@@ -40,9 +40,17 @@ describe('ExpressionsService', () => {
   })));
 
   it('evaluate overrideFrag', async(inject([ExpressionsService], (service: ExpressionsService) => {
-    const spy = spyOn(service.ctx, 'overrideFrag').and.callThrough();
-    const ret = service.eval('overrideFrag({oldFrag: \'Adresse_Angaben\', newFrag: \'Empfaengerfeld\'})', 0);
+    const ret = service.eval('overrideFrag([{oldFrag: \'Adresse_Angaben\', newFrag: \'Empfaengerfeld\'}])', 0);
 
-    ret.then(() => expect(spy).toHaveBeenCalledWith({ oldFrag: 'Adresse_Angaben', newFrag: 'Empfaengerfeld' }));
+    ret.then(() => expect(service.ctx.overrideFrags).toEqual([{ oldFrag: 'Adresse_Angaben', newFrag: 'Empfaengerfeld' }]));
+  })));
+
+  it('evaluate insertFrag with empty override', async(inject([ExpressionsService], (service: ExpressionsService) => {
+    const spy = spyOn<any>(service.ctx, 'getOverrideFrag').and.callThrough();
+    service.eval('overrideFrag([{oldFrag: \'test\', newFrag: \'\'}])', 0).then(() => {
+      const ret = service.eval('insertFrag(\'test\')', 1);
+
+      ret.then(() => expect(spy.calls.first().returnValue).toEqual(''));
+    });
   })));
 });
