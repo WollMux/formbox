@@ -4,10 +4,15 @@
       <div class="list-group-item flex-column align-items-start" *ngFor="let f of (overrideFrags | async); let i=index; trackBy:trackByFn">
         <div class="d-flex w-100 justify-content-between">
           <span class="list-label">
-            <input [value] = "f.oldFrag" (focusout)="onUpdateOldFrag(i, $event.target.value)" list="fragments" />
-            <input [value] = "f.newFrag" (focusout)="onUpdateNewFrag(i, $event.target.value)" list="fragments" />
+            <input [value] = "f.oldFrag" (focusout)="onUpdateOldFrag(i, $event.target.value)" list="oldFragments" />
+            <input [value] = "f.newFrag" (focusout)="onUpdateNewFrag(i, $event.target.value)" list="newFragments" />
             
-            <datalist id="fragments">
+            <datalist id="newFragments">
+              <option *ngFor="let frag of (fragments | async)" [value]="frag"></option>
+              <option value=" ">ersetze durch nichts</option>
+            </datalist>
+
+            <datalist id="oldFragments">
               <option *ngFor="let frag of (fragments | async)" [value]="frag"></option>
             </datalist>
           </span>

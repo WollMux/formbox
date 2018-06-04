@@ -87,11 +87,15 @@ class Context {
   constructor(private templates: TemplateService) { /*Empty */ }
 
   insertFrag(name: string): Promise<void> {
-    const of = this.getOverrideFrag(name) || name;
+    const of = this.getOverrideFrag(name);
 
-    return this.templates.getFragmentUrl(of).then(url => {
-      return this.templates.insertFragment(this.id, url.url);
-    });
+    if (of.trim() === '') {
+      return this.templates.deleteDocumentCommand(this.id);
+    } else {
+      return this.templates.getFragmentUrl(of).then(url => {
+        return this.templates.insertFragment(this.id, url.url);
+      });
+    }
   }
 
   overrideFrag(overrides: { oldFrag: string, newFrag: string }[]): Promise<void> {
@@ -110,6 +114,6 @@ class Context {
       return of.newFrag;
     }
 
-    return undefined;
+    return fragId;
   }
 }
