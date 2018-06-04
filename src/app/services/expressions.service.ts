@@ -101,7 +101,7 @@ class Context {
   overrideFrag(overrides: { oldFrag: string, newFrag: string }[]): Promise<void> {
     this.overrideFrags.push(...overrides);
 
-    return Promise.resolve();
+    return this.templates.deleteDocumentCommand(this.id);
   }
 
   date = (): Date => {
