@@ -166,7 +166,7 @@ export class TemplateService {
   async selectContentControlById(contentControlId: number): Promise<void> {
     this.log.debug(`TemplateService.selectContentControlById(${contentControlId})`);
 
-    await this.office.selectContentControlById(contentControlId);
+    return this.office.selectContentControlById(contentControlId);
   }
 
   /**
