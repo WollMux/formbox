@@ -8,6 +8,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/ignoreElements';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
@@ -44,6 +46,13 @@ export class SachleitendeverfuegungEpics {
             }
           });
       });
+  }
+
+  printing = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.started)
+      .do(() => {
+        this.slv.print(store.getState().slv.slv);
+      }).ignoreElements();
   }
 
   inserting = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {

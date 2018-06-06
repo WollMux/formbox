@@ -240,6 +240,18 @@ export class SachleitendeVerfuegungService {
     return this.office.bindToContentControl(id, 'SLV');
   }
 
+  async print(slv: SachleitendeVerfuegung): Promise<void> {
+    this.newDocument().then(() => {
+      for (const vp in slv.verfuegungspunkte) {
+
+      }
+
+      return Promise.resolve();
+    }).then(() => {
+      this.showDocument();
+    });
+  }
+
   private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number, binding: string }> {
     this.log.debug('SachleitendeVerfuegungService.insertVerfuegungspunkt()');
 
