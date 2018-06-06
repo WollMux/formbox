@@ -13,6 +13,7 @@ const actionCreator = actionCreatorFactory();
 @Injectable()
 export class SachleitendeverfuegungActions {
   static TOGGLE = actionCreator<any>('TOGGLE');
+  static PRINT = actionCreator<any>('PRINT');
   static INSERT_VERFUEGUNGSPUNKT = actionCreator
     .async<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean }, { id: number, binding?: Observable<string> }>
     ('INSERT_VERFUEGUNGSPUNKT');
@@ -23,6 +24,12 @@ export class SachleitendeverfuegungActions {
 
   toggle(): Action<any> {
     const action = SachleitendeverfuegungActions.TOGGLE({});
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  print(): Action<any> {
+    const action = SachleitendeverfuegungActions.PRINT({});
 
     return this.ngRedux.dispatch(action);
   }
