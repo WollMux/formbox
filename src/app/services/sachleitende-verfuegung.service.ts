@@ -199,7 +199,7 @@ export class SachleitendeVerfuegungService {
     this.getNextVerfuegungspunkt(id).then(idNext => {
       return this.office.getRangeBetweenContentControls(id, idNext);
     }).then(rng => {
-      this.office.hideRange2(rng).then(() => this.office.untrack(rng));
+      this.office.hideRange(rng).then(() => this.office.untrack(rng));
     });
   }
 

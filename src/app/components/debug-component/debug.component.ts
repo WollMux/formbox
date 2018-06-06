@@ -13,10 +13,10 @@ import { SachleitendeVerfuegung } from '../../data/slv/sachleitende-verfuegung';
 @Component({
   selector: 'app-debug-component',
   templateUrl: './debug.component.html',
-  styleUrls: [ './debug.component.css' ]
+  styleUrls: ['./debug.component.css']
 })
 export class DebugComponent implements OnInit {
-  @select([ 'slv', 'slv' ]) sachleitendeVerfuegung: Observable<SachleitendeVerfuegung>;
+  @select(['slv', 'slv']) sachleitendeVerfuegung: Observable<SachleitendeVerfuegung>;
 
   constructor(
     private log: Logger,
@@ -47,12 +47,14 @@ export class DebugComponent implements OnInit {
 
   onHide(): void {
     this.sachleitendeVerfuegung.subscribe(it => {
-      debugger
-      this.slv.hideVerfuegungspunkt(it.verfuegungspunkte[ 0 ].id);
+      this.slv.hideVerfuegungspunkt(it.verfuegungspunkte[0].id);
     });
   }
 
   onUnhide(): void {
+    this.sachleitendeVerfuegung.subscribe(it => {
+      this.slv.unhideVerfuegungspunkt(it.verfuegungspunkte[0].id);
+    });
   }
 
   async onVP(): Promise<void> {
