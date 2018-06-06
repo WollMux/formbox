@@ -251,7 +251,7 @@ export class OfficeService {
       rng.paragraphs.load('items');
 
       return context.sync().then(() => {
-        const p = rng.paragraphs.items[ 0 ];
+        const p = rng.paragraphs.items[0];
         const r = p.getRange(Word.RangeLocation.whole);
         r.track();
 
@@ -639,9 +639,6 @@ export class OfficeService {
     });
   }
 
-  /**
-   * Versteckt einen Range, indem der Text unsichtbar gesetzt wird.
-   */
   async hideRange(range: Word.Range): Promise<void> {
     return Word.run(range, context => {
       const ooxml = range.getOoxml();
@@ -649,44 +646,8 @@ export class OfficeService {
       return context.sync().then(() => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(ooxml.value, 'application/xml');
-
-        const el = doc.getElementsByTagName('w:t');
-
-        const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
-
-        for (let i = 0; i < el.length; i++) {
-          const t = el.item(i);
-          let rpr = t.previousSibling;
-
-          if (!rpr) {
-            rpr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
-            t.parentNode.insertBefore(rpr, t);
-          }
-
-          rpr.appendChild(vanish.cloneNode(true));
-        }
-
-        const ser = new XMLSerializer();
-        const xml = ser.serializeToString(doc);
-
-        return Promise.resolve(xml);
-      }).then(xml => {
-        range.insertOoxml(xml, Word.InsertLocation.replace);
-
-        return context.sync().then(() => Promise.resolve());
-      });
-    });
-  }
-
-  async hideRange2(range: Word.Range): Promise<void> {
-    return Word.run(range, context => {
-      const ooxml = range.getOoxml();
-
-      return context.sync().then(() => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(ooxml.value, 'application/xml');
         const body = doc.getElementsByTagName('w:body').item(0);
-        const children = Array.from(body.childNodes).filter(it => [ 'w:sdt', 'w:p', 'w:tbl' ].indexOf(it.nodeName) !== -1);
+        const children = Array.from(body.childNodes).filter(it => ['w:sdt', 'w:p', 'w:tbl'].indexOf(it.nodeName) !== -1);
 
         children.map(it => {
           switch (it.nodeName) {
@@ -695,9 +656,11 @@ export class OfficeService {
               break;
             }
             case 'w:p': {
+              this.hideP(it);
               break;
             }
             case 'w:tbl': {
+              this.hideTbl(it);
               break;
             }
             default: break;
@@ -709,32 +672,11 @@ export class OfficeService {
 
         return Promise.resolve(xml);
       }).then(xml => {
-        debugger
         range.insertOoxml(xml, Word.InsertLocation.replace);
 
         return context.sync().then(() => Promise.resolve());
       });
     });
-  }
-
-  hideSdt = (node: Node) => {
-    const doc = node.ownerDocument;
-    const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
-
-    let res = doc.evaluate('./w:sdtPr', node, doc.createNSResolver(node), XPathResult.FIRST_ORDERED_NODE_TYPE, undefined);
-    const sdtPtr = res.singleNodeValue;
-    res = doc.evaluate('./w:rPr', sdtPtr, doc.createNSResolver(sdtPtr), XPathResult.FIRST_ORDERED_NODE_TYPE, undefined);
-    let rPr = res.singleNodeValue;
-    if (!rPr) {
-      rPr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
-      sdtPtr.insertBefore(rPr, sdtPtr.firstChild);
-    }
-
-    rPr.appendChild(vanish);
-  }
-
-  hideP = (node: Node) => {
-
   }
 
   /**
@@ -831,5 +773,103 @@ export class OfficeService {
         }
       });
     });
+  }
+
+  private hideSdt = (node: Node) => {
+    const doc = node.ownerDocument;
+
+    let res = this.findNode('./w:sdtPr', XPathResult.FIRST_ORDERED_NODE_TYPE, node);
+    const sdtPtr = res.singleNodeValue;
+    this.hideRPr(sdtPtr);
+
+    res = this.findNode('./w:sdtContent/w:p', XPathResult.ORDERED_NODE_ITERATOR_TYPE, node);
+    let n = res.iterateNext();
+    while (n) {
+      this.hideP(n);
+      n = res.iterateNext();
+    }
+
+    res = this.findNode('./w:sdtContent/w:r', XPathResult.ORDERED_NODE_ITERATOR_TYPE, node);
+    let r = res.iterateNext();
+    while (r) {
+      this.hideRPr(r);
+      r = res.iterateNext();
+    }
+  }
+
+  private hideP = (node: Node) => {
+    const doc = node.ownerDocument;
+
+    let res = this.findNode('./w:pPr', XPathResult.FIRST_ORDERED_NODE_TYPE, node);
+    const pPr = res.singleNodeValue;
+    if (pPr) {
+      this.hideRPr(pPr);
+    }
+
+    res = this.findNode('./w:r', XPathResult.ORDERED_NODE_ITERATOR_TYPE, node);
+    let r = res.iterateNext();
+    while (r) {
+      this.hideRPr(r);
+      r = res.iterateNext();
+    }
+
+    res = this.findNode('./w:sdt', XPathResult.ORDERED_NODE_ITERATOR_TYPE, node);
+    let sdt = res.iterateNext();
+    while (sdt) {
+      this.hideSdt(sdt);
+      sdt = res.iterateNext();
+    }
+  }
+
+  private hideRPr = (node: Node) => {
+    const doc = node.ownerDocument;
+    const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
+
+    const res = this.findNode('./w:rPr[not(w:vanish)]', XPathResult.FIRST_ORDERED_NODE_TYPE, node);
+    let rPr = res.singleNodeValue;
+    if (!rPr) {
+      rPr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:rPr');
+      node.insertBefore(rPr, node.firstChild);
+    }
+    rPr.appendChild(vanish);
+  }
+
+  private hideTbl = (node: Node) => {
+    const doc = node.ownerDocument;
+
+    let res = this.findNode('./w:tr', XPathResult.ORDERED_NODE_ITERATOR_TYPE, node);
+    let tr = res.iterateNext();
+    while (tr) {
+      this.hideTr(tr);
+      tr = res.iterateNext();
+    }
+
+    res = this.findNode('.//*/w:p', XPathResult.ORDERED_NODE_ITERATOR_TYPE, node);
+    let p = res.iterateNext();
+    while (p) {
+      this.hideP(p);
+      p = res.iterateNext();
+    }
+  }
+
+  private hideTr = (node: Node) => {
+    const doc = node.ownerDocument;
+
+    const res = this.findNode('./w:trPr[not(w:hidden)]', XPathResult.FIRST_ORDERED_NODE_TYPE, node);
+    let trPr = res.singleNodeValue;
+
+    if (!trPr) {
+      trPr = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:trPr');
+      node.insertBefore(trPr, node.firstChild);
+    }
+
+    const hidden = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:hidden');
+    trPr.appendChild(hidden);
+  }
+
+  private findNode = (xpath: string, type: number, scope: Node) => {
+    const doc = scope.ownerDocument;
+
+    return doc.evaluate(xpath, scope, doc.createNSResolver(scope), type, undefined);
   }
 }
