@@ -49,9 +49,9 @@ export class SachleitendeverfuegungEpics {
   }
 
   printing = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.started)
+    return action.ofType(SachleitendeverfuegungActions.PRINT)
       .do(() => {
-        this.slv.print(store.getState().slv.slv);
+        this.slv.print(store.getState().slv.slv, []);
       }).ignoreElements();
   }
 

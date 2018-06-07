@@ -35,11 +35,11 @@ export class OfficeService {
   /**
    * Gibt getrackte Office-Objekte wieder frei.
    */
-  async untrack(o: any): Promise<{}> {
+  async untrack(o: any): Promise<void> {
     return Word.run(o, context => {
       o.untrack();
 
-      return context.sync();
+      return context.sync().then(() => Promise.resolve());
     });
   }
 
@@ -69,6 +69,7 @@ export class OfficeService {
   async newDocument(): Promise<Word.DocumentCreated> {
     return Word.run(async context => {
       const doc = context.application.createDocument();
+      context.trackedObjects.add(doc);
       context.load(doc);
 
       return context.sync().then(() => {
@@ -84,7 +85,7 @@ export class OfficeService {
    * Funktion mehr. Nachdem das Dokument angezeigt wird, kann das aktuelle
    * Addon keine Änderungen daran mehr vornehmen.
    */
-  async showDocument(document?: Word.DocumentCreated): Promise<void> {
+  async showDocument(document?: Word.DocumentCreated): Promise<Word.DocumentCreated> {
     return Word.run(context => {
       let doc = document;
       if (!doc) {
@@ -95,13 +96,13 @@ export class OfficeService {
       if (doc) {
         doc.open();
 
-        return doc.context.sync().then(() => Promise.resolve());
+        return doc.context.sync().then(() => Promise.resolve(document));
       }
     });
   }
 
   /**
-   * Kopiert den Inhalt des aktuellen Dokuments in ein neues temporäres
+   * Kopiert den Inhalt des aktuellen Dokuments in ein temporäres
    * Dokument.
    *
    * @param target Dokument, das mit createDocument erzeugt wurde.
@@ -116,7 +117,7 @@ export class OfficeService {
       return context.sync().then(() => {
         target.body.insertOoxml(ooxml.value, Word.InsertLocation.end);
 
-        return context.sync().then(() => Promise.resolve());
+        return target.context.sync().then(() => Promise.resolve());
       });
     });
   }
@@ -474,10 +475,15 @@ export class OfficeService {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc1 = doc.contentControls.getByIdOrNullObject(id);
-      const cc2 = doc.contentControls.getByIdOrNullObject(idNext);
-
       const rng1 = cc1.getRange(Word.RangeLocation.before);
-      const rng2 = cc2.getRange(Word.RangeLocation.before);
+
+      let rng2;
+      if (idNext) {
+        const cc2 = doc.contentControls.getByIdOrNullObject(idNext);
+        rng2 = cc2.getRange(Word.RangeLocation.before);
+      } else {
+        rng2 = doc.body.getRange(Word.RangeLocation.end);
+      }
 
       const rng = rng1.expandToOrNullObject(rng2);
       rng.track();

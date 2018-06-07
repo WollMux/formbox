@@ -36,13 +36,9 @@ export class DebugComponent implements OnInit {
   }
 
   onSLV(): void {
-    //    this.slv.newDocument().then(() => {
-    //      return this.slv.copyCurrentDocument(true);
-    //    }).then(() => {
-    //      return this.slv.copyCurrentDocument();
-    //    }).then(() => {
-    //      this.slv.showDocument();
-    // });
+    this.sachleitendeVerfuegung.subscribe(it => {
+      this.slv.print(it, [3, 2, 1]);
+    });
   }
 
   onHide(): void {
