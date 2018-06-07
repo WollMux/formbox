@@ -12,8 +12,6 @@ import { SachleitendeverfuegungActions } from '../store/actions/sachleitendeverf
 export class SachleitendeVerfuegungService {
   private static readonly FORMATVORLAGE = 'FormboxVerfuegungspunkt';
 
-  private document = undefined;
-
   constructor(
     private log: Logger,
     private office: OfficeService
@@ -27,42 +25,6 @@ export class SachleitendeVerfuegungService {
     return this.office.getAllContentControls().then(cc => {
       return cc.filter(it => it.tag === 'SLV').map(it => ({ id: it.id, text: it.text }));
     });
-  }
-
-  async newDocument(): Promise<void> {
-    this.log.debug('SachleitendeVerfuegungService.newDocument()');
-
-    if (this.document) {
-      return Promise.reject('Es ist bereits ein Dokument in Bearbeitung.');
-    }
-
-    return this.office.newDocument().then(doc => {
-      this.document = doc;
-
-      return Promise.resolve();
-    });
-  }
-
-  async copyCurrentDocument(pageBreak = false): Promise<void> {
-    this.log.debug('SachleitendeVerfuegungService.copyCurrentDocument()');
-
-    return this.office.copyDocument(this.document).then(() => {
-      if (pageBreak) {
-        return this.office.insertPageBreak(this.document);
-      }
-
-      return Promise.resolve();
-    });
-  }
-
-  async showDocument(): Promise<void> {
-    this.log.debug('SachleitendeVerfuegungService.showDocument()');
-
-    if (this.document) {
-      return this.office.showDocument(this.document).then(() => this.document = undefined);
-    }
-
-    return Promise.reject('Kein Document offen.');
   }
 
   /**
@@ -196,10 +158,10 @@ export class SachleitendeVerfuegungService {
    * Vertfügungspunkt. 
    */
   async hideVerfuegungspunkt(id: number): Promise<void> {
-    this.getNextVerfuegungspunkt(id).then(idNext => {
+    return this.getNextVerfuegungspunkt(id).then(idNext => {
       return this.office.getRangeBetweenContentControls(id, idNext);
     }).then(rng => {
-      this.office.hideRange(rng).then(() => this.office.untrack(rng));
+      return this.office.hideRange(rng).then(() => this.office.untrack(rng));
     });
   }
 
@@ -207,10 +169,10 @@ export class SachleitendeVerfuegungService {
    * Macht einen versteckten Verfügungspunkt wieder sichtbar. 
    */
   async unhideVerfuegungspunkt(id: number): Promise<void> {
-    this.getNextVerfuegungspunkt(id).then(idNext => {
+    return this.getNextVerfuegungspunkt(id).then(idNext => {
       return this.office.getRangeBetweenContentControls(id, idNext);
     }).then(rng => {
-      this.office.unhideRange(rng).then(() => this.office.untrack(rng));
+      return this.office.unhideRange(rng).then(() => this.office.untrack(rng));
     });
   }
 
@@ -240,15 +202,22 @@ export class SachleitendeVerfuegungService {
     return this.office.bindToContentControl(id, 'SLV');
   }
 
-  async print(slv: SachleitendeVerfuegung): Promise<void> {
-    this.newDocument().then(() => {
-      for (const vp in slv.verfuegungspunkte) {
-
+  async print(slv: SachleitendeVerfuegung, copies: number[]): Promise<void> {
+    this.newDocument().then(async doc => {
+      let index = 0;
+      for (const vp of slv.verfuegungspunkte) {
+        const hidden = slv.verfuegungspunkte.filter(it => it.ordinal > vp.ordinal);
+        await Promise.all(hidden.map(it => this.hideVerfuegungspunkt(it.id))).then(() => {
+          return this.copyCurrentDocument(doc, (index < slv.verfuegungspunkte.length - 1), copies[index]);
+        }).then(() => {
+          return Promise.all(hidden.map(it => this.unhideVerfuegungspunkt(it.id)));
+        });
+        index++;
       }
 
-      return Promise.resolve();
-    }).then(() => {
-      this.showDocument();
+      return Promise.resolve(doc);
+    }).then(doc => {
+      this.showDocument(doc);
     });
   }
 
@@ -261,4 +230,35 @@ export class SachleitendeVerfuegungService {
         .then(vp => this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext, binding: vp.binding })));
     });
   }
+
+  private async newDocument(): Promise<Word.DocumentCreated> {
+    this.log.debug('SachleitendeVerfuegungService.newDocument()');
+
+    return this.office.newDocument().then(doc => {
+      return Promise.resolve(doc);
+    });
+  }
+
+  private async copyCurrentDocument(target: Word.DocumentCreated, pageBreak = false, times = 1): Promise<void> {
+    this.log.debug('SachleitendeVerfuegungService.copyCurrentDocument()');
+
+    return Promise.resolve().then(async () => {
+      for (let i = 0; i < times; i++) {
+        await this.office.copyDocument(target).then(() => {
+          if (pageBreak) {
+            return this.office.insertPageBreak(target);
+          }
+        });
+      }
+
+      return Promise.resolve();
+    });
+  }
+
+  private async showDocument(doc: Word.DocumentCreated): Promise<void> {
+    this.log.debug('SachleitendeVerfuegungService.showDocument()');
+
+    return this.office.showDocument(doc).then(() => this.office.untrack(doc));
+  }
+
 }
