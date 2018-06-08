@@ -348,6 +348,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Setzt anhand einer bestehenden Bindung den Text des Content-Controls.
+   *
+   * @param text Zu setzender Text Content-Control.
+   * @param ccid ID des Content-Controls
+   */
   async setData(text: string, ccid: string): Promise<any> {
     return Office.context.document.bindings.getByIdAsync(ccid, (result: Office.AsyncResult) => {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
