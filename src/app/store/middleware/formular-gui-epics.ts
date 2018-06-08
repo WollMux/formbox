@@ -30,10 +30,10 @@ export class FormularGuiEpics {
       });
   }
 
-  updateValues = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+  updateFormGuiValues = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(FormularGuiActions.INIT_BINDINGS.done)
       .mergeMap((payload, n) => {
-        return this.formGuiService.updateValues(store.getState().formularEditor.form).then((form: Form) => {
+        return this.formGuiService.updateFormGuiValues(store.getState().formularEditor.form).then((form: Form) => {
           const act = FormularGuiActions.FILL_VALUES.done({ params: {}, result: form });
 
           return act;

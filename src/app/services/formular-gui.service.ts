@@ -36,7 +36,7 @@ export class FormularGuiService {
         });
     }
 
-    async updateValues(form: Form): Promise<Form> {
+    async updateFormGuiValues(form: Form): Promise<Form> {
         form.controls.forEach(control => {
             if (control instanceof FormControl) {
                 return this.office.getContentControlText(control.ccid).then(cc => {
