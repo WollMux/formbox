@@ -206,12 +206,14 @@ export class SachleitendeVerfuegungService {
     this.newDocument().then(async doc => {
       let index = 0;
       for (const vp of slv.verfuegungspunkte) {
-        const hidden = slv.verfuegungspunkte.filter(it => it.ordinal > vp.ordinal);
-        await Promise.all(hidden.map(it => this.hideVerfuegungspunkt(it.id))).then(() => {
-          return this.copyCurrentDocument(doc, (index < slv.verfuegungspunkte.length - 1), copies[index]);
-        }).then(() => {
-          return Promise.all(hidden.map(it => this.unhideVerfuegungspunkt(it.id)));
-        });
+        if (copies[index] > 0) {
+          const hidden = slv.verfuegungspunkte.filter(it => it.ordinal > vp.ordinal);
+          await Promise.all(hidden.map(it => this.hideVerfuegungspunkt(it.id))).then(() => {
+            return this.copyCurrentDocument(doc, true, (index === 0), copies[index]);
+          }).then(() => {
+            return Promise.all(hidden.map(it => this.unhideVerfuegungspunkt(it.id)));
+          });
+        }
         index++;
       }
 
@@ -239,16 +241,15 @@ export class SachleitendeVerfuegungService {
     });
   }
 
-  private async copyCurrentDocument(target: Word.DocumentCreated, pageBreak = false, times = 1): Promise<void> {
+  private async copyCurrentDocument(target: Word.DocumentCreated, pageBreak = false, skipFirstBreak = false, times = 1): Promise<void> {
     this.log.debug('SachleitendeVerfuegungService.copyCurrentDocument()');
 
     return Promise.resolve().then(async () => {
       for (let i = 0; i < times; i++) {
-        await this.office.copyDocument(target).then(() => {
-          if (pageBreak) {
-            return this.office.insertPageBreak(target);
-          }
-        });
+        if (pageBreak && !(skipFirstBreak && i === 0)) {
+          await this.office.insertPageBreak(target);
+        }
+        await this.office.copyDocument(target);
       }
 
       return Promise.resolve();

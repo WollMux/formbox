@@ -37,8 +37,19 @@ const deleteVerfuegungspunkt =
     return newState;
   };
 
+const updateUeberschrift =
+  (state: SachleitendeverfuegungState, id: number, ueberschrift: string): SachleitendeverfuegungState => {
+    const slv = new SachleitendeVerfuegung(state.slv.verfuegungspunkte);
+    const vp = slv.getVerfuegungspunkt(id);
+    vp.ueberschrift = ueberschrift;
+    const newState = tassign(state, { slv: slv });
+
+    return newState;
+  };
+
 export const sachleitendeverfuegungReducer: Reducer<SachleitendeverfuegungState> = reducerWithInitialState(INITIAL_STATE)
   .case(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.started, (state, payload) => insertVerfuegungspunkt(state, payload))
   .case(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.done, (state, payload) => insertVerfuegungspunktDone(state, payload.result))
   .case(SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.done, (state, payload) => deleteVerfuegungspunkt(state, payload.result))
+  .case(SachleitendeverfuegungActions.UPDATE_UEBERSCHRIFT, (state, payload) => updateUeberschrift(state, payload.id, payload.ueberschrift))
   .build();
