@@ -10,6 +10,7 @@ import { DialogEpics } from './dialog-epics';
 import { FormularEditorEpics } from './formular-editor-epics';
 import { SachleitendeverfuegungEpics } from './sachleitendeverfuegung-epics';
 import { InitEpics } from './init-epics';
+import { FormularGuiEpics } from './formular-gui-epics';
 
 @Injectable()
 export class RootEpic {
@@ -23,7 +24,8 @@ export class RootEpic {
     private dialogEpics: DialogEpics,
     private formularEpics: FormularEditorEpics,
     private slvEpics: SachleitendeverfuegungEpics,
-    private initEpics: InitEpics
+    private initEpics: InitEpics,
+    private formularGuiEpics: FormularGuiEpics
   ) { }
 
   epics = () => combineEpics(
@@ -63,6 +65,9 @@ export class RootEpic {
     this.slvEpics.renumbering,
     this.slvEpics.inserting,
     this.slvEpics.deleting,
-    this.initEpics.initialisingSLV
+    this.initEpics.initialisingSLV,
+    this.formularGuiEpics.initBindings,
+    this.formularGuiEpics.updateValues,
+    this.formularGuiEpics.updateCCText
   )
 }

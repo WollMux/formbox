@@ -65,6 +65,9 @@ import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverf
 import { SachleitendeverfuegungActions } from './store/actions/sachleitendeverfuegung-actions';
 import { InitActions } from './store/actions/init-actions';
 import { InitEpics } from './store/middleware/init-epics';
+import { FormularGuiService } from './services/formular-gui.service';
+import { FormularGuiEpics } from './store/middleware/formular-gui-epics';
+import { FormularGuiActions } from './store/actions/formular-gui-actions';
 
 @NgModule({
   declarations: [
@@ -123,6 +126,9 @@ import { InitEpics } from './store/middleware/init-epics';
     FormularEditorActions,
     FormularEditorEpics,
     FormularEditorService,
+    FormularGuiActions,
+    FormularGuiEpics,
+    FormularGuiService,
     SachleitendeVerfuegungService,
     SachleitendeverfuegungActions,
     SachleitendeverfuegungEpics,
