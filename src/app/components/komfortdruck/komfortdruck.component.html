@@ -1,0 +1,9 @@
+<div class="row" *ngFor="let v of (slv | async).verfuegungspunkte; let i=index">
+  <div class="col-xs-1">{{ v.getRomanNumeral() }}.</div><div class="col-xs-6">{{ v.ueberschrift }}</div>
+  <div class="col-xs-2"><input type="number" class="form-control" [value]="copies[i]" (input)="copies[i] = $event.target.value" /></div>
+</div>
+<div class="row">
+  <div class="col-xs-2">
+    <button type="button" class="btn btn-primary" (click)="print()">Drucken</button>
+  </div>
+</div>
