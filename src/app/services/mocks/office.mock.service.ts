@@ -171,6 +171,10 @@ export class OfficeMockService {
     return Promise.resolve(this.cmds.pop());
   }
 
+  async getRangeBetweenContentControls(id: number, idNext: number): Promise<Word.Range> {
+    return Promise.reject('Not implemented.');
+  }
+
   async insertContentControl(title: string, tag: string): Promise<number> {
     this.log.debug('OfficeMockService.insertContentControl');
 

@@ -203,6 +203,9 @@ export class SachleitendeVerfuegungService {
     });
   }
 
+  /**
+   * Macht einen versteckten Verfügungspunkt wieder sichtbar. 
+   */
   async unhideVerfuegungspunkt(id: number): Promise<void> {
     this.getNextVerfuegungspunkt(id).then(idNext => {
       return this.office.getRangeBetweenContentControls(id, idNext);

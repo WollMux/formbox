@@ -639,6 +639,9 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Versteckt einen Range, indem der Textstyle auf unsichtbar gesetzt wird.
+   */
   async hideRange(range: Word.Range): Promise<void> {
     return Word.run(range, context => {
       const ooxml = range.getOoxml();
@@ -775,6 +778,10 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Vertsteckt ein Content Control.
+   * http://www.datypic.com/sc/ooxml/e-w_sdt-1.html
+   */
   private hideSdt = (node: Node) => {
     const doc = node.ownerDocument;
 
@@ -797,6 +804,10 @@ export class OfficeService {
     }
   }
 
+  /**
+   * Versteckt einen Paragraphen.
+   * http://officeopenxml.com/WPparagraph.php 
+   */
   private hideP = (node: Node) => {
     const doc = node.ownerDocument;
 
@@ -821,6 +832,10 @@ export class OfficeService {
     }
   }
 
+  /**
+   * Run Properties für Text. Hier wird das w:vanish-Tag eingefügt.
+   * http://officeopenxml.com/WPtext.php
+   */
   private hideRPr = (node: Node) => {
     const doc = node.ownerDocument;
     const vanish = doc.createElementNS('http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'w:vanish');
@@ -834,6 +849,10 @@ export class OfficeService {
     rPr.appendChild(vanish);
   }
 
+  /**
+   * Versteckt eine Tabelle.
+   * http://officeopenxml.com/WPtable.php
+   */
   private hideTbl = (node: Node) => {
     const doc = node.ownerDocument;
 
@@ -852,6 +871,10 @@ export class OfficeService {
     }
   }
 
+  /**
+   * Versteckt eine Tabellenzeile.
+   * http://officeopenxml.com/WPtableRow.php
+   */
   private hideTr = (node: Node) => {
     const doc = node.ownerDocument;
 
