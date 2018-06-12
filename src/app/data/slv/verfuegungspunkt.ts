@@ -26,21 +26,17 @@ export class Verfuegungspunkt {
     this._ueberschrift = value.replace(/\s+/g, ' '); // Ersetzt Whitespace durch ein einzelnes Leerzeichen.
   }
 
+  /**
+   * Das Property wird zur Überwachung des Texts im Quelldokuments verwendet.
+   * Ändert der Anwender des Text im Dokument, muss die Überschrift entsprechend
+   * angepaßt werden.
+   */
   get controlText(): Observable<string> {
     return this._controlText;
   }
 
   set controlText(value: Observable<string>) {
-    if (this._controlText) {
-      this._controlTextObserver.unsubscribe();
-    }
     this._controlText = value;
-    if (value) {
-      this._controlTextObserver = value.subscribe(text => {
-        const s = text.split('\t');
-        this.ueberschrift = s.pop();
-      });
-    }
   }
 
   addZuleitungszeile(zuleitung: string): void {
