@@ -16,7 +16,7 @@ export class FormularGuiComponent implements OnInit {
   @select(['formularEditor', 'form']) form: Observable<Form>;
 
   ngOnInit(): void {
-    this.formularGuiActions.initBindings();
+    this.formularGuiActions.fillValues();
   }
 
   constructor(private formularGuiActions: FormularGuiActions) { }

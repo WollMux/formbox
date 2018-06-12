@@ -17,40 +17,23 @@ export class FormularGuiService {
         private log: Logger
     ) { }
 
-    async initBindings(form: Form): Promise<void> {
-        return form.controls.forEach(cc => {
-            if (cc instanceof FormControl) {
-                const formControl = cc as FormControl;
-                this.office.getBindingById(formControl.ccid.toString()).then((res: Office.AsyncResult) => {
-                    if (res.status === Office.AsyncResultStatus.Failed) {
-                        return this.office.addBindingFromNamedItem(formControl.id, formControl.ccid.toString()).then(bindingId => {
-                            return this.office.addEventHandlerToBinding(bindingId, text => {
-                                // Binding CC -> FormGui
-                            }).then(result => {
-                                return result;
-                            });
-                        });
-                    }
-                });
-            }
-        });
-    }
-
     async updateFormGuiValues(form: Form): Promise<Form> {
         form.controls.forEach(control => {
             if (control instanceof FormControl) {
-                return this.office.getContentControlText(control.ccid).then(cc => {
-                    control.value = cc;
+                return this.office.getAllContentControls().then(cc => {
+                    return cc.filter(it => it.tag === 'formgui').map(it => {
+                        if (it.id === control.ccid) {
+                            control.value = it.text;
+                        }
+                    });
                 });
-            }
+            };
         });
 
         return form;
     }
 
     async updateCCText(text: string, ccid: number): Promise<void> {
-        return this.office.setData(text, ccid.toString()).then(res => {
-            return res;
-        });
+        return this.office.replaceTextInContentControl(ccid, text);
     }
 }

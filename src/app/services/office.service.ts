@@ -311,7 +311,8 @@ export class OfficeService {
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
    * Text herum angelegt.
    */
-  async insertContentControl(title: string, tag: string, style?: string, range?: Word.Range): Promise<number> {
+  async insertContentControl(title: string, tag: string, style?: string, range?: Word.Range,
+    cannotEdit?: boolean, cannotDelete?: boolean): Promise<number> {
     return Word.run(range, context => {
       const doc = context.document;
       const rng = (range) ? range : doc.getSelection();
@@ -321,6 +322,8 @@ export class OfficeService {
       cc.title = title;
       cc.tag = tag;
       cc.color = color;
+      cc.cannotEdit = cannotEdit;
+      cc.cannotDelete = cannotDelete;
       // cc.style = style;
       context.load(cc, 'id');
 
@@ -384,9 +387,23 @@ export class OfficeService {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
-      cc.insertText(text, Word.InsertLocation.replace);
+      cc.load('cannotEdit');
 
-      return context.sync().then(() => Promise.resolve());
+      return context.sync().then(() => {
+        if (cc.cannotEdit) {
+          cc.cannotEdit = false;
+          cc.insertText(text, Word.InsertLocation.replace);
+          cc.cannotEdit = true;
+          context.sync();
+
+          return Promise.resolve();
+        }
+
+        cc.insertText(text, Word.InsertLocation.replace);
+        return Promise.resolve();
+      }).catch(error => {
+        this.log.error(error);
+      });
     });
   }
 
