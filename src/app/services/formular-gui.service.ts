@@ -27,7 +27,7 @@ export class FormularGuiService {
                         }
                     });
                 });
-            };
+            }
         });
 
         return form;

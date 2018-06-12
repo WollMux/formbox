@@ -311,7 +311,8 @@ export class OfficeService {
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
    * Text herum angelegt.
    */
-  async insertContentControl(title: string, tag: string, style?: string, range?: Word.Range,
+  async insertContentControl(
+    title: string, tag: string, style?: string, range?: Word.Range,
     cannotEdit?: boolean, cannotDelete?: boolean): Promise<number> {
     return Word.run(range, context => {
       const doc = context.document;
@@ -400,6 +401,7 @@ export class OfficeService {
         }
 
         cc.insertText(text, Word.InsertLocation.replace);
+
         return Promise.resolve();
       }).catch(error => {
         this.log.error(error);
