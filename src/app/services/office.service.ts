@@ -441,6 +441,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt eine Liste aller  Content Controls zurück, die nach einem bestimmten
+   * Content Control definiert sind. Wird keine Id angegeben, werden alle
+   * Content Controls zurückgegeben.
+   * 
+   * @param id Id des Content Controls von dem aus gesucht werden soll.
+   */
   async getNextContentControls(id?: number): Promise<{ id: number, title: string, tag: string }[]> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -471,6 +478,10 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt die Range zwischen zwei Content Controls zurück, beginnend 
+   * vor dem ersten Content Control. 
+   */
   async getRangeBetweenContentControls(id: number, idNext: number): Promise<Word.Range> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -494,6 +505,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt ein Databinding für ein Content Control. Der Titel des Content 
+   * Controls wird auf eine zufällige Id geändert.
+   * 
+   * @param id Id des Content Controls.
+   * @param prefix Präfix, der dem Titel vorangestellt wird.
+   */
   async bindToContentControl(id: number, prefix: string): Promise<string> {
     return Word.run(context => {
       const cc = context.document.contentControls.getByIdOrNullObject(id);
@@ -507,20 +525,11 @@ export class OfficeService {
     }).then(title => this.addBindingFromNamedItem(title));
   }
 
-  async addBindingFromNamedItem(name: string, bindingId?: string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text,
-        { id: bindingId }, (result: Office.AsyncResult) => {
-          if (result.status === Office.AsyncResultStatus.Succeeded) {
-            const bind: Office.Binding = result.value;
-            resolve(bind.id);
-          } else {
-            reject(result.error.message);
-          }
-        });
-    });
-  }
-
+  /**
+   * Löscht ein bestehendes Databinding eines Content Controls.
+   * 
+   * @param id Id des Bindings.
+   */
   async deleteBinding(id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Office.context.document.bindings.releaseByIdAsync(id, (result: Office.AsyncResult) => {
@@ -533,6 +542,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt einen EventHandler für ein bestehendes Binding eines Content
+   * Controls.
+   * 
+   * @param id Id des Bindings
+   * @param callback Callbackfunktion für BindingDataChanged
+   */
   async addEventHandlerToBinding(id: string, callback: (text: string) => void): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Office.context.document.bindings.getByIdAsync(id, (result: Office.AsyncResult) => {
@@ -556,6 +572,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Lösche alle EventHandler eines Bindings
+   * 
+   * @param id Id des Bindings.
+   */
   async removeEventHandlersFromBinding(id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Office.context.document.bindings.getByIdAsync(id, (result: Office.AsyncResult) => {
@@ -944,5 +965,18 @@ export class OfficeService {
     const doc = scope.ownerDocument;
 
     return doc.evaluate(xpath, scope, doc.createNSResolver(scope), type, undefined);
+  }
+
+  private addBindingFromNamedItem = async (name: string): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text, (result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const bind: Office.Binding = result.value;
+          resolve(bind.id);
+        } else {
+          reject(result.error.message);
+        }
+      });
+    });
   }
 }

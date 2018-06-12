@@ -13,7 +13,7 @@
     "build-jenkins": "ng build && ng lint --format json > lint.json",
     "test": "ng test",
     "test-jenkins": "ng test --config karma-jenkins.conf.js --code-coverage --progress false",
-    "lint": "ng lint",
+    "lint": "ng lint --t verbose",
     "e2e": "ng e2e --progress false",
     "nooffice": "ng serve --host 0.0.0.0 --ssl 1 --disable-host-check --sourcemaps=true --environment=test",
     "sonar": "sonarqube-scanner-node",

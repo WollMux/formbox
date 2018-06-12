@@ -3,6 +3,8 @@ import { Logger } from '@nsalaun/ng-logger';
 import { Observable } from 'rxjs/Observable';
 import * as romanize from 'romanize';
 
+import 'rxjs/add/operator/shareReplay';
+
 import { OfficeService } from './office.service';
 import { SachleitendeVerfuegung } from '../data/slv/sachleitende-verfuegung';
 import { Verfuegungspunkt } from '../data/slv/verfuegungspunkt';
@@ -182,7 +184,7 @@ export class SachleitendeVerfuegungService {
    * der User den Text in den ContentControls anpasst. 
    */
   createObservableFromVerfuegungspunkt(vp: Verfuegungspunkt): Observable<string> {
-    return Observable.create(ob => {
+    const ret = Observable.create(ob => {
       const cb = (text: string) => {
         ob.next(text);
       };
@@ -190,7 +192,14 @@ export class SachleitendeVerfuegungService {
       this.office.addEventHandlerToBinding(vp.binding, cb);
 
       return (() => this.office.removeEventHandlersFromBinding(vp.binding));
-    });
+    }).shareReplay(1);
+
+    // Das subscriben ist nötig, damit der EventHandler sofort erzeugt wird.
+    // shareReplay sorgt dafür, dass der letzte Wert für zukünftige Subscriber
+    // gecacht wird.
+    ret.subscribe();
+
+    return ret;
   }
 
   /**
@@ -202,6 +211,13 @@ export class SachleitendeVerfuegungService {
     return this.office.bindToContentControl(id, 'SLV');
   }
 
+  /**
+   * Erzeugt ein Druckdokument mit allen Ausfertigungen einer Sachleitenden 
+   * Verfügung. Die Ausfertigungen werden aneinandergehängt.
+   * 
+   * @param slv Sachleitende Verfügung
+   * @param Anzahl der Kopien pro Verfügungspunkt
+   */
   async print(slv: SachleitendeVerfuegung, copies: number[]): Promise<void> {
     this.newDocument().then(async doc => {
       let index = 0;

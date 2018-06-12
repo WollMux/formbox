@@ -268,4 +268,16 @@ export class OfficeMockService {
   async getNextContentControls(id?: number): Promise<{ id: number, title: string, tag: string }[]> {
     return Promise.resolve([]);
   }
+
+  async deleteBinding(id: string): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async addEventHandlerToBinding(id: string, callback: (text: string) => void): Promise<void> {
+    return Promise.resolve();
+  }
+
+  async removeEventHandlersFromBinding(id: string): Promise<void> {
+    return Promise.resolve();
+  }
 }
