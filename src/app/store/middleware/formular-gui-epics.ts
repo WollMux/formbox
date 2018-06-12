@@ -15,23 +15,8 @@ export class FormularGuiEpics {
     private formGuiService: FormularGuiService
   ) { }
 
-  initBindings = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(FormularGuiActions.INIT_BINDINGS.started)
-      .mergeMap((payload, n) => {
-        return this.formGuiService.initBindings(store.getState().formularEditor.form).then(form => {
-          const act = FormularGuiActions.INIT_BINDINGS.done({ params: {}, result: undefined });
-
-          return act;
-        }).catch(err => {
-          const act = FormularGuiActions.INIT_BINDINGS.done({ params: {}, result: undefined });
-
-          return act;
-        });
-      });
-  }
-
   updateFormGuiValues = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(FormularGuiActions.INIT_BINDINGS.done)
+    return action.ofType(FormularGuiActions.FILL_VALUES.started)
       .mergeMap((payload, n) => {
         return this.formGuiService.updateFormGuiValues(store.getState().formularEditor.form).then((form: Form) => {
           const act = FormularGuiActions.FILL_VALUES.done({ params: {}, result: form });
@@ -46,9 +31,10 @@ export class FormularGuiEpics {
   updateCCText = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(FormularGuiActions.UPDATE_CC_TEXT)
       .mergeMap(({ payload }, n) => {
-        return this.formGuiService.updateCCText(payload.text, payload.ccid).then(res => {
-          return res;
-        });
-      });
+        return this.formGuiService.updateCCText(payload.text, payload.ccid)
+          .catch(err => {
+            this.log.error(err);
+          });
+      }).ignoreElements();
   }
 }

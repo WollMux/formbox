@@ -73,7 +73,7 @@ export class FormularEditorService {
       const control = desc.prototype.constructor();
       control.id = Math.random().toString().slice(2);
       if (desc.cc) {
-        return this.createControl(control.id).then(ccid => {
+        return this.createControl().then(ccid => {
           (control as FormControl).ccid = ccid;
 
           return Promise.resolve(control);
@@ -89,8 +89,8 @@ export class FormularEditorService {
   /**
    * Legt ein ContentControl in Word an.
    */
-  private async createControl(id: string): Promise<number> {
-    return this.office.insertContentControl(id, 'formbox');
+  private async createControl(): Promise<number> {
+    return this.office.insertContentControl('', 'formgui',undefined, undefined, true, true);
   }
 
 }
