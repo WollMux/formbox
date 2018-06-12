@@ -18,12 +18,6 @@ export class FormularGuiActions {
 
   constructor(private ngRedux: NgRedux<FormularEditorState>) { }
 
-  initBindings(): any {
-    const action = FormularGuiActions.INIT_BINDINGS.started({});
-
-    return this.ngRedux.dispatch(action);
-  }
-
   fillValues(): any {
     const action = FormularGuiActions.FILL_VALUES.started({});
 
