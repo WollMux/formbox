@@ -11,7 +11,7 @@ import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 })
 export class FormularGuiTabsComponent extends FormularGuiBase<Tabs> {
 
-  constructor(log: Logger) {
-    super(log);
+  constructor(private log: Logger) {
+    super();
   }
 }
