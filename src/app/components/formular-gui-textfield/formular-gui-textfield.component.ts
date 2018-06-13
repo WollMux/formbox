@@ -12,12 +12,12 @@ import { FormularGuiActions } from '../../store/actions/formular-gui-actions';
 })
 export class FormularGuiTextfieldComponent extends FormularGuiBase<Textfield> {
 
-  constructor(log: Logger, private formGuiActions: FormularGuiActions) {
-    super(log);
+  constructor(private log: Logger, private formGuiActions: FormularGuiActions) {
+    super();
   }
 
   onModelChange(text, ccid): void {
-    this.formGuiActions.updateCCText(text, ccid);
+    this.formGuiActions.updateContentControlText(text, ccid);
   }
 
 }
