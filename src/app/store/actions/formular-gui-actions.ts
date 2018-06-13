@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import actionCreatorFactory, { Action } from 'typescript-fsa';
 import { NgRedux } from '@angular-redux/store';
 import { Form } from '../../data/forms/form';
-import { Control } from '../../data/forms/control';
 import { FormularEditorState } from '../states/formular-editor-state';
 
 const actionCreator = actionCreatorFactory();
@@ -12,9 +11,8 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class FormularGuiActions {
-  static INIT_BINDINGS = actionCreator.async<any, {}>('INIT_BINDINGS');
   static FILL_VALUES = actionCreator.async<any, Form>('FILL_VALUES');
-  static UPDATE_CC_TEXT = actionCreator<{ text: string, ccid: number }>('UPDATE_CC_TEXT');
+  static UPDATE_CONTENT_CONTROL_TEXT = actionCreator<{ text: string, ccid: number }>('UPDATE_CONTENT_CONTROL_TEXT');
 
   constructor(private ngRedux: NgRedux<FormularEditorState>) { }
 
@@ -24,8 +22,8 @@ export class FormularGuiActions {
     return this.ngRedux.dispatch(action);
   }
 
-  updateCCText(text: string, ccid: number): any {
-    const action = FormularGuiActions.UPDATE_CC_TEXT({ text: text, ccid: ccid });
+  updateContentControlText(text: string, ccid: number): any {
+    const action = FormularGuiActions.UPDATE_CONTENT_CONTROL_TEXT({ text: text, ccid: ccid });
 
     return this.ngRedux.dispatch(action);
   }

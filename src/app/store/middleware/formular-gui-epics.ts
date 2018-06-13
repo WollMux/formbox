@@ -15,7 +15,7 @@ export class FormularGuiEpics {
     private formGuiService: FormularGuiService
   ) { }
 
-  updateFormGuiValues = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+  updateingFormGuiValues = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(FormularGuiActions.FILL_VALUES.started)
       .mergeMap((payload, n) => {
         return this.formGuiService.updateFormGuiValues(store.getState().formularEditor.form).then((form: Form) => {
@@ -28,8 +28,8 @@ export class FormularGuiEpics {
       });
   }
 
-  updateCCText = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
-    return action.ofType(FormularGuiActions.UPDATE_CC_TEXT)
+  updateingContentControlText = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(FormularGuiActions.UPDATE_CONTENT_CONTROL_TEXT)
       .mergeMap(({ payload }, n) => {
         return this.formGuiService.updateCCText(payload.text, payload.ccid)
           .catch(err => {
