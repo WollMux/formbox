@@ -11,8 +11,8 @@ import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 })
 export class FormularGuiComboboxComponent extends FormularGuiBase<Combobox> {
 
-  constructor(log: Logger) {
-    super(log);
+  constructor(private log: Logger) {
+    super();
   }
 
 }
