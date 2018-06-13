@@ -66,7 +66,7 @@ export class RootEpic {
     this.slvEpics.inserting,
     this.slvEpics.deleting,
     this.initEpics.initialisingSLV,
-    this.formularGuiEpics.updateFormGuiValues,
-    this.formularGuiEpics.updateCCText
+    this.formularGuiEpics.updateingFormGuiValues,
+    this.formularGuiEpics.updateingContentControlText
   )
 }
