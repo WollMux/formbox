@@ -68,6 +68,7 @@ import { InitEpics } from './store/middleware/init-epics';
 import { FormularGuiService } from './services/formular-gui.service';
 import { FormularGuiEpics } from './store/middleware/formular-gui-epics';
 import { FormularGuiActions } from './store/actions/formular-gui-actions';
+import { composeWithDevTools } from 'remote-redux-devtools';
 
 @NgModule({
   declarations: [
@@ -151,7 +152,8 @@ export class AppModule {
     if (environment.production || !environment.test) {
       ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
     } else {
-      ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
+      const composeEnhancers = composeWithDevTools({ realtime: true });
+      ngRedux.provideStore(createStore(rootReducer, INITIAL_STATE, composeEnhancers(applyMiddleware(...middleware))));
     }
 
     this.init.initSLV();
