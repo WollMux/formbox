@@ -3,6 +3,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { Textfield } from '../../data/forms/textfield';
 import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
+import { FormularGuiActions } from '../../store/actions/formular-gui-actions';
 
 @Component({
   selector: 'app-formular-gui-textfield',
@@ -11,8 +12,12 @@ import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 })
 export class FormularGuiTextfieldComponent extends FormularGuiBase<Textfield> {
 
-  constructor(log: Logger) {
-    super(log);
+  constructor(private log: Logger, private formGuiActions: FormularGuiActions) {
+    super();
+  }
+
+  onModelChange(text, ccid): void {
+    this.formGuiActions.updateContentControlText(text, ccid);
   }
 
 }

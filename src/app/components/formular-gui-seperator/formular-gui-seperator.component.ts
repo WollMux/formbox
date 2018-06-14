@@ -11,8 +11,8 @@ import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 })
 export class FormularGuiSeperatorComponent extends FormularGuiBase<Separator> {
 
-  constructor(log: Logger) {
-    super(log);
+  constructor(private log: Logger) {
+    super();
   }
 
 }

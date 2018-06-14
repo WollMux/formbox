@@ -90,7 +90,7 @@ export class FormularEditorService {
    * Legt ein ContentControl in Word an.
    */
   private async createControl(): Promise<number> {
-    return this.office.insertContentControl('', 'formbox');
+    return this.office.insertContentControl('', 'formgui', undefined, undefined, true, true);
   }
 
 }

@@ -103,7 +103,7 @@ export class OfficeService {
   /**
    * Kopiert den Inhalt des aktuellen Dokuments in ein neues temporäres
    * Dokument.
-   * 
+   *
    * @param target Dokument, das mit createDocument erzeugt wurde.
    */
   async copyDocument(target: Word.DocumentCreated): Promise<void> {
@@ -238,12 +238,12 @@ export class OfficeService {
   }
 
   /**
-   * Eweitert eine Range auf den gesamten Absatz. Wenn keine Range übergeben 
+   * Eweitert eine Range auf den gesamten Absatz. Wenn keine Range übergeben
    * wird, wird die aktuelle Selektion verwendet.
-   * 
+   *
    * @returns Range für den Absatz. Die Range wird automatisch getrackt, weil
-   * man sonst nichts damit anfangen kann. Wenn die Range nicht mehr benötigt 
-   * wird, muss sie mit {@link untrack} freigegeben werden. 
+   * man sonst nichts damit anfangen kann. Wenn die Range nicht mehr benötigt
+   * wird, muss sie mit {@link untrack} freigegeben werden.
    */
   async expandRangeToParagraph(range?: Word.Range): Promise<Word.Range> {
     return Word.run(context => {
@@ -262,9 +262,9 @@ export class OfficeService {
 
   /**
    * Prüft ob eine Range in einem ContentControl ist.
-   * 
+   *
    * @param range Wenn keine Range übergeben wird, wird die aktuelle Selektion verwendet
-   * 
+   *
    * @returns id, title, tag des ContentControls oder undefined, wenn kein ContentControl gefunden wird.
    */
   async isInsideContentControl(range?: Word.Range): Promise<{ id: number, title: string, tag: string, text: string }> {
@@ -290,7 +290,7 @@ export class OfficeService {
 
   /**
    * Gibt alle ContentControls in einem Range zurück.
-   * 
+   *
    * @param range Wenn kein Range angegeben wird, wird die aktuelle Selektion
    *  verwendet.
    */
@@ -311,7 +311,9 @@ export class OfficeService {
    * Ist ein Text im Dokument selektiert, wird das Control um den selektierten
    * Text herum angelegt.
    */
-  async insertContentControl(title: string, tag: string, style?: string, range?: Word.Range): Promise<number> {
+  async insertContentControl(
+    title: string, tag: string, style?: string, range?: Word.Range,
+    cannotEdit?: boolean, cannotDelete?: boolean): Promise<number> {
     return Word.run(range, context => {
       const doc = context.document;
       const rng = (range) ? range : doc.getSelection();
@@ -321,6 +323,8 @@ export class OfficeService {
       cc.title = title;
       cc.tag = tag;
       cc.color = color;
+      cc.cannotEdit = cannotEdit;
+      cc.cannotDelete = cannotDelete;
       // cc.style = style;
       context.load(cc, 'id');
 
@@ -349,6 +353,22 @@ export class OfficeService {
   }
 
   /**
+   * Setzt anhand einer bestehenden Bindung den Text des Content-Controls.
+   *
+   * @param text Zu setzender Text Content-Control.
+   * @param ccid ID des Content-Controls
+   */
+  async setData(text: string, ccid: string): Promise<any> {
+    return Office.context.document.bindings.getByIdAsync(ccid, (result: Office.AsyncResult) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        const bind: Office.Binding = result.value;
+
+        return bind.setDataAsync(text);
+      }
+    });
+  }
+
+  /**
    * Ändert Titel und Tag des angegebenen ContentControls.
    *
    * @param id Interne Id des Controls im Dokument.
@@ -368,9 +388,24 @@ export class OfficeService {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
-      cc.insertText(text, Word.InsertLocation.replace);
+      cc.load('cannotEdit');
 
-      return context.sync().then(() => Promise.resolve());
+      return context.sync().then(() => {
+        if (cc.cannotEdit) {
+          cc.cannotEdit = false;
+          cc.insertText(text, Word.InsertLocation.replace);
+          cc.cannotEdit = true;
+          context.sync();
+
+          return Promise.resolve();
+        }
+
+        cc.insertText(text, Word.InsertLocation.replace);
+
+        return Promise.resolve();
+      }).catch(error => {
+        this.log.error(error);
+      });
     });
   }
 
@@ -466,16 +501,17 @@ export class OfficeService {
     }).then(title => this.addBindingFromNamedItem(title));
   }
 
-  async addBindingFromNamedItem(name: string): Promise<string> {
+  async addBindingFromNamedItem(name: string, bindingId?: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text, (result: Office.AsyncResult) => {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          const bind: Office.Binding = result.value;
-          resolve(bind.id);
-        } else {
-          reject(result.error.message);
-        }
-      });
+      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text,
+        { id: bindingId }, (result: Office.AsyncResult) => {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            const bind: Office.Binding = result.value;
+            resolve(bind.id);
+          } else {
+            reject(result.error.message);
+          }
+        });
     });
   }
 
@@ -535,7 +571,7 @@ export class OfficeService {
 
   /**
    * Fügt Custom XML in das aktuelle Dokument ein.
-   * 
+   *
    * @returns Die ID des neuen CustomXML-Objekts
    */
   async addXml(xml: string): Promise<string> {
@@ -548,7 +584,7 @@ export class OfficeService {
 
   /**
    * Gibt einen CustomXML-Objekt zurück.
-   * 
+   *
    * @param id ID des CustomXML-Objekts.
    */
   async getXmlById(id: string): Promise<string> {
@@ -563,8 +599,8 @@ export class OfficeService {
 
   /**
    * Gibt ein oder mehrere CustomXML-Objekte zurück, die einen bestimmten
-   * Namespace verwenden. 
-   * 
+   * Namespace verwenden.
+   *
    * @param ns Namespace im XML-Dokument.
    */
   async getXmlIdsByNamespace(ns: string): Promise<string[]> {
@@ -581,7 +617,7 @@ export class OfficeService {
 
   /**
    * Löscht ein CustomXML-Objekt.
-   * 
+   *
    * @param id ID des CustomXML-Objekts.
    */
   async deleteXmlById(id: string): Promise<void> {
@@ -594,8 +630,8 @@ export class OfficeService {
 
   /**
    * Löscht alle CustomXML-Objekte, die einen bestimmten
-   * Namespace verwenden. 
-   * 
+   * Namespace verwenden.
+   *
    * @param ns Namespace im XML-Dokument.
    */
   async deleteXmlByNamespace(ns: string): Promise<void> {
@@ -623,8 +659,16 @@ export class OfficeService {
     });
   }
 
+  async getBindingById(ccid: string): Promise<Office.AsyncResult> {
+    return new Promise<Office.AsyncResult>((resolve, reject) => {
+      Office.context.document.bindings.getByIdAsync(ccid, (result: Office.AsyncResult) => {
+        resolve(result);
+      });
+    });
+  }
+
   /**
-   * Gibt die Selektion im aktuellen Document als Range zurück. 
+   * Gibt die Selektion im aktuellen Document als Range zurück.
    */
   async getSelection(): Promise<Word.Range> {
     return Word.run(context => {
@@ -727,7 +771,7 @@ export class OfficeService {
   }
 
   /**
-   * Macht ein verstecktes Content Control wieder sichtbar. 
+   * Macht ein verstecktes Content Control wieder sichtbar.
    */
   async unhideContentControl(cc: Word.ContentControl): Promise<void> {
     return Word.run(cc, context => {

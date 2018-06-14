@@ -11,8 +11,8 @@ import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { TreeModule } from 'angular-tree-component';
 
-import { FormBoxState, INITIAL_STATE } from './store/states/formbox-state';
 import { AppComponent } from './app.component';
+import { LDAPMockService } from './services/mocks/ldap.mock.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { DexieStorage } from './storage/dexie-storage';
 import { TemplateService } from './services/template.service';
@@ -22,7 +22,9 @@ import { rootReducer } from './store/reducers/root-reducer';
 import { TemplateEpics } from './store/middleware/template-epics';
 import { createEpicMiddleware } from 'redux-observable';
 import { TemplateActions } from './store/actions/template-actions';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { composeWithDevTools } from 'remote-redux-devtools';
+import { devToolsEnhancer } from 'redux-devtools-extension';
 import { environment } from '../environments/environment';
 import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
 import { AbsenderlisteService } from './services/absenderliste.service';
@@ -39,7 +41,7 @@ import { AbsenderAuswahlComponent } from './components/absender-auswahl/absender
 import { StorageEpics } from './store/middleware/storage-epics';
 import { StorageActions } from './store/actions/storage-actions';
 import { LdapFilterValidatorDirective } from './directives/ldap-filter-validator.directive';
-import { LDAPMockService } from './services/mocks/ldap.mock.service';
+import { FormBoxState, INITIAL_STATE } from './store/states/formbox-state';
 import { ExpressionEditorComponent } from './components/expression-editor/expression-editor.component';
 import { ExpressionEditorCommandsEpics } from './store/middleware/expression-editor-commands-epics';
 import { DocumentCommandEditorComponent } from './components/document-command-editor/document-command-editor.component';
@@ -65,6 +67,9 @@ import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverf
 import { SachleitendeverfuegungActions } from './store/actions/sachleitendeverfuegung-actions';
 import { InitActions } from './store/actions/init-actions';
 import { InitEpics } from './store/middleware/init-epics';
+import { FormularGuiService } from './services/formular-gui.service';
+import { FormularGuiEpics } from './store/middleware/formular-gui-epics';
+import { FormularGuiActions } from './store/actions/formular-gui-actions';
 
 @NgModule({
   declarations: [
@@ -123,6 +128,9 @@ import { InitEpics } from './store/middleware/init-epics';
     FormularEditorActions,
     FormularEditorEpics,
     FormularEditorService,
+    FormularGuiActions,
+    FormularGuiEpics,
+    FormularGuiService,
     SachleitendeVerfuegungService,
     SachleitendeverfuegungActions,
     SachleitendeverfuegungEpics,
@@ -142,11 +150,9 @@ export class AppModule {
     const middleware = [
       createEpicMiddleware(this.rootEpic.epics())
     ];
-    if (environment.production || !environment.test) {
-      ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
-    } else {
-      ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
-    }
+
+    const composeEnhancers = composeWithDevTools({ realtime: true });
+    ngRedux.provideStore(createStore(rootReducer, INITIAL_STATE, composeEnhancers(applyMiddleware(...middleware))));
 
     this.init.initSLV();
   }
