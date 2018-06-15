@@ -7,15 +7,19 @@ import { INITIAL_STATE, SachleitendeverfuegungState } from '../states/sachleiten
 import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung-actions';
 import { SachleitendeVerfuegung } from '../../data/slv/sachleitende-verfuegung';
 
-const insertVerfuegungspunkt =
-  (state: SachleitendeverfuegungState, vp: { id: number, idNext?: number, text?: string, binding?: string, delete: boolean })
-    : SachleitendeverfuegungState => {
-    const slv = new SachleitendeVerfuegung(state.slv.verfuegungspunkte);
-    slv.insertBeforeVerfuegunspunkt(vp.id, vp.idNext, vp.text, vp.binding);
-    const newState = tassign(state, { slv: slv });
+const insertVerfuegungspunkt = (
+  state: SachleitendeverfuegungState,
+  vp: { id: number, idNext?: number, text?: string, binding?: string, delete: boolean, abdruck?: boolean }
+): SachleitendeverfuegungState => {
+  const slv = new SachleitendeVerfuegung(state.slv.verfuegungspunkte);
+  const v = slv.insertBeforeVerfuegunspunkt(vp.id, vp.idNext, vp.text, vp.binding);
+  if (vp.abdruck && v.ordinal > 1) {
+    v.abdruck = vp.abdruck;
+  }
+  const newState = tassign(state, { slv: slv });
 
-    return newState;
-  };
+  return newState;
+};
 
 const insertVerfuegungspunktDone =
   (state: SachleitendeverfuegungState, vp: { id: number, binding?: Observable<string> })

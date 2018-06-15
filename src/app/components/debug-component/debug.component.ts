@@ -56,4 +56,8 @@ export class DebugComponent implements OnInit {
   async onVP(): Promise<void> {
     this.slvActions.toggle();
   }
+
+  async onAbdruck(): Promise<void> {
+    this.slvActions.toggleAbdruck();
+  }
 }

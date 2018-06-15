@@ -31,7 +31,7 @@ export class SachleitendeverfuegungEpics {
   toggling = (action: ActionsObservable<any>) => {
     return action.ofType(SachleitendeverfuegungActions.TOGGLE)
       .switchMap(({ payload }, n: number) => {
-        return Observable.from(this.slv.toggleVerfuegungspunkt())
+        return Observable.from(this.slv.toggleVerfuegungspunkt(payload.abdruck))
           .switchMap(vp => {
             let act;
             if (vp.delete) {

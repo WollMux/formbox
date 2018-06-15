@@ -45,9 +45,16 @@ export class KomfortdruckComponent implements OnInit {
       delete this.subscriptions[vp.ordinal];
     }
 
-    this.subscriptions[vp.ordinal] = vp.controlText.subscribe(text => {
-      const s = text.split('\t');
-      this.actions.updateUeberschrift(vp.id, s.pop());
-    });
+    if (vp.controlText) {
+      this.subscriptions[vp.ordinal] = vp.controlText.subscribe(text => {
+        let s = SachleitendeVerfuegung.splitVerfuegungspunktText(text);
+        const p = SachleitendeVerfuegung.generatePrefix(vp.ordinal, vp.abdruck);
+        const n = s.indexOf(p);
+        if (n !== -1) {
+          s = s.slice(0, n) + s.slice(n + p.length);
+        }
+        this.actions.updateUeberschrift(vp.id, s);
+      });
+    }
   }
 }

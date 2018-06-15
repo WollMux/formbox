@@ -18,6 +18,7 @@ import 'rxjs/add/observable/forkJoin';
 import { InitActions } from '../actions/init-actions';
 import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung-actions';
 import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
+import { SachleitendeVerfuegung } from '../../data/slv/sachleitende-verfuegung';
 
 @Injectable()
 export class InitEpics {
@@ -34,7 +35,7 @@ export class InitEpics {
           return Promise.all(
             vps.map(it => {
               return this.slv.bindVerfuegungspunkt(it.id).then(bid => {
-                this.slvActions.insertVerfuegungspunkt(it.id, this.slv.splitVerfuegungspunkText(it.text), bid);
+                this.slvActions.insertVerfuegungspunkt(it.id, SachleitendeVerfuegung.splitVerfuegungspunktText(it.text), bid);
               });
             })
           );
