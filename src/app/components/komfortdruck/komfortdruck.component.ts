@@ -13,8 +13,10 @@ import { Verfuegungspunkt } from '../../data/slv/verfuegungspunkt';
   styleUrls: ['./komfortdruck.component.css']
 })
 export class KomfortdruckComponent implements OnInit {
+  @select(['appstate', 'busy']) busy: Observable<boolean>;
   @select(['slv', 'slv']) slv: Observable<SachleitendeVerfuegung>;
 
+  isBusy = false;
   copies: number[] = [];
   subscriptions: { [ordinal: number]: Subscription } = {};
 
@@ -25,6 +27,8 @@ export class KomfortdruckComponent implements OnInit {
     this.slv.subscribe(slv => {
       this.copies = slv.verfuegungspunkte.map(it => 1);
     });
+
+    this.busy.subscribe(b => this.isBusy = b);
   }
 
   /**
@@ -47,13 +51,15 @@ export class KomfortdruckComponent implements OnInit {
 
     if (vp.controlText) {
       this.subscriptions[vp.ordinal] = vp.controlText.subscribe(text => {
-        let s = SachleitendeVerfuegung.splitVerfuegungspunktText(text);
-        const p = SachleitendeVerfuegung.generatePrefix(vp.ordinal, vp.abdruck);
-        const n = s.indexOf(p);
-        if (n !== -1) {
-          s = s.slice(0, n) + s.slice(n + p.length);
+        if (!this.isBusy) {
+          let s = SachleitendeVerfuegung.splitVerfuegungspunktText(text);
+          const p = SachleitendeVerfuegung.generatePrefix(vp.ordinal, vp.abdruck);
+          const n = s.indexOf(p);
+          if (n !== -1) {
+            s = s.slice(0, n) + s.slice(n + p.length);
+          }
+          this.actions.updateUeberschrift(vp.id, s);
         }
-        this.actions.updateUeberschrift(vp.id, s);
       });
     }
   }

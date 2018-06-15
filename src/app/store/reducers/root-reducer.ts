@@ -10,6 +10,7 @@ import { dialogReducer } from './dialog-reducer';
 import { formularEditorReducer } from './formular-editor-reducer';
 import { formularGuiReducer } from './formular-gui-reducer';
 import { sachleitendeverfuegungReducer } from './sachleitendeverfuegung-reducer';
+import { appStateReducer } from './app-state-reducer';
 
 /**
  * Erzeugt aus mehreren Reducern einen Root-Reducer, der beim Start der
@@ -18,6 +19,7 @@ import { sachleitendeverfuegungReducer } from './sachleitendeverfuegung-reducer'
  */
 export const rootReducer: Reducer<FormBoxState> =
   combineReducers({
+    appstate: appStateReducer,
     absenderliste: absenderlisteReducer,
     template: templateReducer,
     ldap: ldapReducer,

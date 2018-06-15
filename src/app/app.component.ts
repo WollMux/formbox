@@ -29,6 +29,7 @@ import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegun
 export class AppComponent implements OnInit {
   title = 'app';
 
+  @select(['appstate', 'busy']) busy: Observable<boolean>;
   @select(['template', 'status']) templateStatus: Observable<LoadingStatus>;
   @select(['absenderliste', 'selected']) absender: Observable<Absender>;
 

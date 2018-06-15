@@ -20,6 +20,7 @@ export class SachleitendeverfuegungActions {
   static DELETE_VERFUEGUNGSPUNKT = actionCreator.async<number, number>('DELETE_VERFUEGUNGSPUNKT');
   static RENUMBER = actionCreator.async<any, any>('RENUMBER');
   static UPDATE_UEBERSCHRIFT = actionCreator<{ id: number, ueberschrift: string }>('UPDATE_UEBERSCHRIFT');
+  static INSERT_ZULEITUNG = actionCreator.async<any, { id: number, vpId: number }>('INSERT_ZULEITUNG');
 
   constructor(private ngRedux: NgRedux<SachleitendeverfuegungState>) { }
 
@@ -50,6 +51,12 @@ export class SachleitendeverfuegungActions {
 
   toggleAbdruck(): Action<any> {
     const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: true });
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  insertZuleitung(): Action<any> {
+    const action = SachleitendeverfuegungActions.INSERT_ZULEITUNG.started({});
 
     return this.ngRedux.dispatch(action);
   }

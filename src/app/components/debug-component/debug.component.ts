@@ -60,4 +60,8 @@ export class DebugComponent implements OnInit {
   async onAbdruck(): Promise<void> {
     this.slvActions.toggleAbdruck();
   }
+
+  async onZuleitung(): Promise<void> {
+    this.slvActions.insertZuleitung();
+  }
 }
