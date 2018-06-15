@@ -7,15 +7,19 @@ export class Verfuegungspunkt {
   ordinal: number;
   zuleitungszeilen: string[] = [];
   binding: string;
+  abdruck = false;
 
   private _ueberschrift: string;
   private _controlText: Observable<string>;
   private _controlTextObserver: Subscription;
 
-  constructor(id: number, ueberschrift: string, binding: string) {
+  constructor(id: number, ueberschrift: string, binding: string, abdruck?: boolean) {
     this.id = id;
     this.ueberschrift = ueberschrift;
     this.binding = binding;
+    if (abdruck) {
+      this.abdruck = abdruck;
+    }
   }
 
   get ueberschrift(): string {

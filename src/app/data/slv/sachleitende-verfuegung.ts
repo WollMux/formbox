@@ -1,7 +1,30 @@
+import * as _ from 'underscore.string';
+import * as romanize from 'romanize';
+
 import { Verfuegungspunkt } from './verfuegungspunkt';
 
 export class SachleitendeVerfuegung {
   private _verfuegungspunkte: Verfuegungspunkt[] = [];
+
+  /**
+   * Gibt die Überschrift eines Verfügunspunktes ohne die römische Ziffer zurück. 
+   */
+  static splitVerfuegungspunktText = (text: string): string => {
+    const arr = text.split('\t');
+
+    return arr.pop();
+  }
+
+  static generatePrefix = (ordinal: number, abdruck: boolean): string => {
+    let s = '';
+    if (abdruck) {
+      s = 'Abdruck von ';
+      s += _.toSentence(Array.from<number>(Array(ordinal - 1).keys())
+        .map(it => `${romanize(it + 1)}.`), ', ', ' und ');
+    }
+
+    return s;
+  }
 
   constructor(vp?: Verfuegungspunkt[]) {
     if (vp) {

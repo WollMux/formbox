@@ -32,7 +32,8 @@ export class SachleitendeVerfuegungService {
   /**
    * Erzeugt oder entfernt einen Verfügungspunkt an der aktuellen Cursorposition.
    */
-  async toggleVerfuegungspunkt(): Promise<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean }> {
+  async toggleVerfuegungspunkt(abdruck = false):
+    Promise<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean, abdruck?: boolean }> {
     this.log.debug('SachleitendeVerfuegungService.toggleVerfuegungspunkt()');
 
     return this.findCurrentVerfuegungspunkt().then(cc => {
@@ -40,7 +41,7 @@ export class SachleitendeVerfuegungService {
         return Promise.resolve({ id: cc.id, text: cc.text, delete: true });
       } else {
         return this.insertVerfuegungspunkt().then(vp =>
-          ({ id: vp.id, idNext: vp.idNext, text: vp.text, binding: vp.binding, delete: false }));
+          ({ id: vp.id, idNext: vp.idNext, text: vp.text, binding: vp.binding, delete: false, abdruck: abdruck }));
       }
     });
   }
@@ -95,15 +96,6 @@ export class SachleitendeVerfuegungService {
   }
 
   /**
-   * Gibt die Überschrift eines Verfügunspunktes ohne die römische Ziffer zurück. 
-   */
-  splitVerfuegungspunkText(text: string): string {
-    const s = text.split('\t');
-
-    return s.pop();
-  }
-
-  /**
    * Liefert eine Liste der Ids aller Verfügungspunkte zurück.
    */
   async getVerfuegungspunkte(): Promise<number[]> {
@@ -130,7 +122,7 @@ export class SachleitendeVerfuegungService {
   }
 
   /**
-   * Nummeriert die Verfügungspunkte neu durch und schriebt römische Ziffern
+   * Nummeriert die Verfügungspunkte neu durch und schreibt römische Ziffern
    * an den Beginn der Überschrift. 
    */
   async renumber(slv: SachleitendeVerfuegung): Promise<void> {
@@ -138,8 +130,10 @@ export class SachleitendeVerfuegungService {
 
     for (const vp of slv.verfuegungspunkte) {
       p.push(new Promise(() => {
-        const numeral = romanize(vp.ordinal);
-        this.updateVerfuegungspunktText(vp.id, vp.ueberschrift, numeral);
+        const numeral = vp.getRomanNumeral();
+        const ueberschrift = `${SachleitendeVerfuegung.generatePrefix(vp.ordinal, vp.abdruck)} ${vp.ueberschrift}`;
+
+        this.updateVerfuegungspunktText(vp.id, ueberschrift.trim(), numeral);
       }));
     }
 

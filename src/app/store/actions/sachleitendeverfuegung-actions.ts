@@ -12,11 +12,11 @@ const actionCreator = actionCreatorFactory();
  */
 @Injectable()
 export class SachleitendeverfuegungActions {
-  static TOGGLE = actionCreator<any>('TOGGLE');
+  static TOGGLE = actionCreator<{ abdruck: boolean }>('TOGGLE');
   static PRINT = actionCreator<number[]>('PRINT');
   static INSERT_VERFUEGUNGSPUNKT = actionCreator
-    .async<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean }, { id: number, binding?: Observable<string> }>
-    ('INSERT_VERFUEGUNGSPUNKT');
+    .async<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean, abdruck?: boolean },
+    { id: number, binding?: Observable<string> }>('INSERT_VERFUEGUNGSPUNKT');
   static DELETE_VERFUEGUNGSPUNKT = actionCreator.async<number, number>('DELETE_VERFUEGUNGSPUNKT');
   static RENUMBER = actionCreator.async<any, any>('RENUMBER');
   static UPDATE_UEBERSCHRIFT = actionCreator<{ id: number, ueberschrift: string }>('UPDATE_UEBERSCHRIFT');
@@ -24,7 +24,7 @@ export class SachleitendeverfuegungActions {
   constructor(private ngRedux: NgRedux<SachleitendeverfuegungState>) { }
 
   toggle(): Action<any> {
-    const action = SachleitendeverfuegungActions.TOGGLE({});
+    const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: false });
 
     return this.ngRedux.dispatch(action);
   }
@@ -46,6 +46,11 @@ export class SachleitendeverfuegungActions {
     const action = SachleitendeverfuegungActions.UPDATE_UEBERSCHRIFT({ id, ueberschrift });
 
     return this.ngRedux.dispatch(action);
+  }
 
+  toggleAbdruck(): Action<any> {
+    const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: true });
+
+    return this.ngRedux.dispatch(action);
   }
 }
