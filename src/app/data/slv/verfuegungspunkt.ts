@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class Verfuegungspunkt {
   id: number;
   ordinal: number;
-  zuleitungszeilen: string[] = [];
+  zuleitungszeilen: number[] = [];
   binding: string;
   abdruck = false;
 
@@ -43,7 +43,7 @@ export class Verfuegungspunkt {
     this._controlText = value;
   }
 
-  addZuleitungszeile(zuleitung: string): void {
+  addZuleitungszeile(zuleitung: number): void {
     this.zuleitungszeilen.push(zuleitung);
   }
 

@@ -20,6 +20,7 @@ import 'rxjs/add/observable/empty';
 import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung-actions';
 import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
 import { FormBoxState } from '../states/formbox-state';
+import { AppActions } from '../actions/app-actions';
 
 @Injectable()
 export class SachleitendeverfuegungEpics {
@@ -48,11 +49,27 @@ export class SachleitendeverfuegungEpics {
       });
   }
 
+  insertingZuleitung = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(SachleitendeverfuegungActions.INSERT_ZULEITUNG.started)
+      .mergeMap(({ payload }, n: number) => {
+        return this.slv.insertZuleitungszeile().then(it => {
+          const act = SachleitendeverfuegungActions.INSERT_ZULEITUNG.done({ params: payload, result: { id: it.id, vpId: it.vpId } });
+
+          return act;
+        });
+
+      });
+  }
+
   printing = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(SachleitendeverfuegungActions.PRINT)
-      .do(({ payload }) => {
-        this.slv.print(store.getState().slv.slv, payload);
-      }).ignoreElements();
+      .mergeMap(({ payload }, n: number) => {
+        return this.slv.print(store.getState().slv.slv, payload).then(() => {
+          const act = AppActions.CONTINUE({});
+
+          return act;
+        });
+      });
   }
 
   inserting = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {

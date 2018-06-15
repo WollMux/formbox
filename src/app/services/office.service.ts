@@ -313,7 +313,7 @@ export class OfficeService {
    * Text herum angelegt.
    */
   async insertContentControl(
-    title: string, tag: string, style?: string, range?: Word.Range,
+    title: string, tag: string, placeholder?: string, style?: string, range?: Word.Range,
     cannotEdit?: boolean, cannotDelete?: boolean): Promise<number> {
     return Word.run(range, context => {
       const doc = context.document;
@@ -326,6 +326,7 @@ export class OfficeService {
       cc.color = color;
       cc.cannotEdit = cannotEdit;
       cc.cannotDelete = cannotDelete;
+      cc.placeholderText = placeholder;
       // cc.style = style;
       context.load(cc, 'id');
 
@@ -340,9 +341,9 @@ export class OfficeService {
    * @param tag Tag des ContentControl
    * @param style Name einer Formatvorlage
    */
-  async insertContentControlAroundParagraph(title: string, tag: string, style?: string): Promise<number> {
+  async insertContentControlAroundParagraph(title: string, tag: string, placeholder?: string, style?: string): Promise<number> {
     return this.expandRangeToParagraph().then(range => {
-      return this.insertContentControl(title, tag, style, range).then(id => {
+      return this.insertContentControl(title, tag, placeholder, style, range).then(id => {
         this.untrack(range);
 
         return Promise.resolve(id);
@@ -455,6 +456,24 @@ export class OfficeService {
 
       return doc.context.sync().then(() => {
         return controls.items.map(it => ({ id: it.id, title: it.title, tag: it.tag, text: it.text }));
+      });
+    });
+  }
+
+  async getPreviousContentControl(tag?: string): Promise<number> {
+    return Word.run(context => {
+      const doc = context.document;
+      const range = doc.getSelection().getRange(Word.RangeLocation.start).expandTo(doc.body.getRange(Word.RangeLocation.start));
+      const cc = range.contentControls;
+      cc.load('items');
+
+      return context.sync().then(() => {
+        const c = cc.items.reverse().find(it => it.tag === tag);
+        if (c) {
+          return c.id;
+        } else {
+          return undefined;
+        }
       });
     });
   }

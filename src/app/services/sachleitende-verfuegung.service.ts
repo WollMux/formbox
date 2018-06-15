@@ -46,6 +46,18 @@ export class SachleitendeVerfuegungService {
     });
   }
 
+  async insertZuleitungszeile(): Promise<{ id: number, vpId: number }> {
+    return this.getPreviousVerfuegungspunkt().then(vpId => {
+      if (vpId) {
+        return this.office.insertContentControl('', 'SLVZuleitung', 'Zuleitungszeile').then(id => {
+          return Promise.resolve({ id: id, vpId: vpId });
+        });
+      } else {
+        return Promise.reject('Cursor ist nicht in einem Verfügungspunkt');
+      }
+    });
+  }
+
   /**
    * Sucht nach einem ContentControl mit dem Tag 'SLV' im Absatz, in dem der
    * Cursor steht.
@@ -102,6 +114,12 @@ export class SachleitendeVerfuegungService {
     return this.office.getAllContentControls().then(c => {
       return Promise.resolve(c.filter(it => it.tag === 'SLV').map(it => it.id));
     });
+  }
+
+  async getPreviousVerfuegungspunkt(): Promise<number> {
+    this.log.debug('SachleitendeVerfuegungService.getPreviousVerfuegungspunkt()');
+
+    return this.office.getPreviousContentControl('SLV');
   }
 
   /**
@@ -213,13 +231,19 @@ export class SachleitendeVerfuegungService {
    * @param Anzahl der Kopien pro Verfügungspunkt
    */
   async print(slv: SachleitendeVerfuegung, copies: number[]): Promise<void> {
-    this.newDocument().then(async doc => {
+    return this.newDocument().then(async doc => {
       let index = 0;
       for (const vp of slv.verfuegungspunkte) {
         if (copies[index] > 0) {
           const hidden = slv.verfuegungspunkte.filter(it => it.ordinal > vp.ordinal);
           await Promise.all(hidden.map(it => this.hideVerfuegungspunkt(it.id))).then(() => {
-            return this.copyCurrentDocument(doc, true, (index === 0), copies[index]);
+            return this.copyCurrentDocument(doc, true, (index === 0), copies[index]).then(async () => {
+              if (vp.zuleitungszeilen.length !== 0) {
+                for (const z of vp.zuleitungszeilen) {
+                  await this.copyCurrentDocument(doc, true, false, 1);
+                }
+              }
+            });
           }).then(() => {
             return Promise.all(hidden.map(it => this.unhideVerfuegungspunkt(it.id)));
           });
