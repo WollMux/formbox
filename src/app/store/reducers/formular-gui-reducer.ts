@@ -7,7 +7,7 @@ import { FormularGuiActions } from '../actions/formular-gui-actions';
 import { Form } from '../../data/forms/form';
 
 const updateValues = (state: FormularEditorState, form: Form): FormularEditorState => {
-    return tassign({...state, form: form });
+    return tassign(state, {form: new Form(form)});
 };
 
 export const formularGuiReducer: Reducer<FormularEditorState> = reducerWithInitialState(INITIAL_STATE)

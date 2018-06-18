@@ -85,7 +85,13 @@ export class FormXmlParserService {
 
   private ontext = text => {
     // Zur Laufzeit kann nicht geprüft werden, ob ein Property existiert. Wir hoffen also das Beste.
-    if (this.currentProperty) {
+    if (!this.currentProperty) {
+      return;
+    }
+
+    if (!isNaN(text)) {
+      this.currentContainer[ this.currentProperty ] = Number(text);
+    } else {
       this.currentContainer[ this.currentProperty ] = text;
     }
   }
