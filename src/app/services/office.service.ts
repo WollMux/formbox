@@ -333,6 +333,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt eine ContentControl um einen Absatz im Dokument.
+   * 
+   * @param title Titel des ContentControls
+   * @param tag Tag des ContentControl
+   * @param style Name einer Formatvorlage
+   */
   async insertContentControlAroundParagraph(title: string, tag: string, style?: string): Promise<number> {
     return this.expandRangeToParagraph().then(range => {
       return this.insertContentControl(title, tag, style, range).then(id => {
@@ -343,6 +350,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt den Text, der von einem ContentControl umschlossen wird, zurück.
+   * 
+   * @param id Id des ContentControls
+   */
   async getContentControlText(id: number): Promise<string> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -385,6 +397,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Ersetzt den Text, der von einem ContentControl umschlossen wird.
+   * 
+   * @param id Id des ContentControls
+   * @param text Text, der eingefügt werden soll
+   */
   async replaceTextInContentControl(id: number, text: string): Promise<void> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -967,6 +985,10 @@ export class OfficeService {
     return doc.evaluate(xpath, scope, doc.createNSResolver(scope), type, undefined);
   }
 
+  /**
+   * Erzeugt ein Binding für ein benanntes Objekt. Für ein ContentControl
+   * ist der Name der Titel.  
+   */
   private addBindingFromNamedItem = async (name: string): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
       Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text, (result: Office.AsyncResult) => {
