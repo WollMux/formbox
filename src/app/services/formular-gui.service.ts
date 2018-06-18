@@ -17,20 +17,15 @@ export class FormularGuiService {
         private log: Logger
     ) { }
 
-    async updateFormGuiValues(form: Form): Promise<Form> {
-        form.controls.forEach(control => {
+    async updateFormGuiValues(form: Form): Promise<void> {
+       return Promise.all(
+        form.controls.map(control => {
             if (control instanceof FormControl) {
-                return this.office.getAllContentControls().then(cc => {
-                    return cc.filter(it => it.tag === 'formgui').map(it => {
-                        if (it.id === control.ccid) {
-                            control.value = it.text;
-                        }
-                    });
+                return this.office.getContentControlText(control.ccid).then(text => {
+                    control.value = text;
                 });
             }
-        });
-
-        return form;
+        })).then(() => Promise.resolve());
     }
 
     async updateCCText(text: string, ccid: number): Promise<void> {
