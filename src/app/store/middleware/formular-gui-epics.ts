@@ -23,14 +23,14 @@ export class FormularGuiEpics {
 
           return act;
         }).catch(err => {
-          const act = FormularGuiActions.FILL_VALUES.done({ params: {}, result: undefined });
+          this.log.error(err);
         });
       });
   }
 
-  updateingContentControlText = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+  updateingContentControlText = (action: ActionsObservable<any>) => {
     return action.ofType(FormularGuiActions.UPDATE_CONTENT_CONTROL_TEXT)
-      .mergeMap(({ payload }, n) => {
+      .do(({ payload }) => {
         return this.formGuiService.updateCCText(payload.text, payload.ccid)
           .catch(err => {
             this.log.error(err);
