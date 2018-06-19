@@ -280,4 +280,8 @@ export class OfficeMockService {
   async removeEventHandlersFromBinding(id: string): Promise<void> {
     return Promise.resolve();
   }
+
+  async replaceTextInContentControl(id: number, text: string): Promise<void> {
+    return Promise.resolve();
+  }
 }
