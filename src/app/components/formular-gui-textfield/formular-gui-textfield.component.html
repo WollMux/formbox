@@ -1,2 +1,6 @@
-<label for="control.id">{{ control.title }}</label>
-<input [id]="control.id" [type]="control.type" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.ccid)">
+<div class="form-group">
+    <label for="control.id" class="col-xs-2 control-label">{{ control.title }}</label>
+    <div class="col-xs-10">
+        <input [id]="control.id" class="form-control" [type]="control.type" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.ccid)" [placeholder]="control.title">
+    </div>
+</div>

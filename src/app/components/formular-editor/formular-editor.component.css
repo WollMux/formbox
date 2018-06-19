@@ -9,3 +9,7 @@
 .glyphicon-nav-bar:hover {
   color: black;
 }
+
+.node-content-wrapper:hover {
+  background: none;
+}
