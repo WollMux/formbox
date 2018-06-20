@@ -149,10 +149,12 @@ export class AppModule {
     const middleware = [
       createEpicMiddleware(this.rootEpic.epics())
     ];
+
     if (environment.production || !environment.test) {
       ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
     } else {
-      const composeEnhancers = composeWithDevTools({ realtime: true });
+      const composeEnhancers = composeWithDevTools({ realtime: true, hostname: environment.reduxRemoteUrl,
+                                                     port: environment.reduxRemotePort, secure: environment.reduxRemoteSecure });
       ngRedux.provideStore(createStore(rootReducer, INITIAL_STATE, composeEnhancers(applyMiddleware(...middleware))));
     }
 
