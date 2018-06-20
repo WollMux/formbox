@@ -3,6 +3,7 @@ import { Logger } from '@nsalaun/ng-logger';
 
 import { Combobox } from '../../data/forms/combobox';
 import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
+import { FormularGuiActions } from '../../store/actions/formular-gui-actions';
 
 @Component({
   selector: 'app-formular-gui-combobox',
@@ -11,8 +12,11 @@ import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 })
 export class FormularGuiComboboxComponent extends FormularGuiBase<Combobox> {
 
-  constructor(private log: Logger) {
+  constructor(private log: Logger, private formGuiActions: FormularGuiActions) {
     super();
   }
 
+  onModelChange(text, ccid): void {
+    this.formGuiActions.updateContentControlText(text, ccid);
+  }
 }
