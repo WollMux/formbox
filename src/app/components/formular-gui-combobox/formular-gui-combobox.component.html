@@ -1,4 +1,4 @@
 <label for="control.id">{{ control.title }}</label>
-  <select [id]="control.id" class="chosen-select" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.value)">
+  <select [id]="control.id" class="chosen-select" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.ccid)">
     <option *ngFor="let option of control.options" [id]="option.id" [value]="option.value">{{ option.value }}</option>
 </select>
