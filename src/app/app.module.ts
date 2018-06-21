@@ -70,6 +70,7 @@ import { FormularGuiEpics } from './store/middleware/formular-gui-epics';
 import { FormularGuiActions } from './store/actions/formular-gui-actions';
 import { KomfortdruckComponent } from './components/komfortdruck/komfortdruck.component';
 import { OnCreateDirective } from './directives/on-create.directive';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { OnCreateDirective } from './directives/on-create.directive';
     NgDragDropModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     NgLoggerModule.forRoot(environment.loglevel),
+    TooltipModule.forRoot(),
     HttpModule,
     BrowserModule,
     NgReduxModule,
