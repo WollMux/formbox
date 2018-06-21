@@ -69,8 +69,12 @@ span.icon-hightlight:hover {
     color: rgb(63, 63, 63);
 }
 
-.glyphicon-nav-bar:hover {
+.glyphicon-nav-bar:focus {
     color: #FCC700;
+}
+
+.button-active {
+    background-color: #fff;
 }
 
 .navbar-bottom {
