@@ -50,7 +50,7 @@ Remote-Server starten: `remotedev --hostname=0.0.0.0 --port=12556 --protocol=htt
 
 Hinweis: Evtl. muss der Port durch Portfreigabe/Firewall freigegeben werden.
 
-Formbox baut beim Start eine Verbindung (Websockets) mit dem remotedev-server auf, remotedev-server reicht die entsprechenden Daten an die "Redux Remote DevTools" auf dem Client weiter.
+Formbox baut beim Start eine Verbindung (Websockets) mit dem remotedev-server auf. Remotedev-server reicht die entsprechenden Daten an die Client-Anwendung "Redux Remote DevTools" weiter.
 
 #### Konfiguration Redux-Remote-DevTool
 
@@ -60,8 +60,8 @@ Formbox baut beim Start eine Verbindung (Websockets) mit dem remotedev-server au
  `Port: 12556`
  `Use Secure connection: AN`
 
- Formbox benötigt für eine erfolgreiche Verbindung zum remotedev-server ebenfalls Verbindungsdaten und
- werden über environment-Variablen gesetzt.
+ Für eine erfolgreiche Verbindung zum remotedev-server benötigt Formbox ebenfalls Verbindungsdaten welche
+ über environment-Variablen gesetzt werden.
 
 ## Dokumentation
 
