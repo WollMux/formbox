@@ -801,34 +801,6 @@ export class OfficeService {
     });
   }
 
-  /**
-   * Versteckt ein Content Control.
-   */
-  async hideContentControl(cc: Word.ContentControl): Promise<void> {
-    return Word.run(cc, context => {
-      const range = cc.getRange(Word.RangeLocation.whole);
-
-      return context.sync(range);
-    }).then(range => {
-      return this.hideRange(range);
-    })
-      .then(() => Promise.resolve());
-  }
-
-  /**
-   * Macht ein verstecktes Content Control wieder sichtbar.
-   */
-  async unhideContentControl(cc: Word.ContentControl): Promise<void> {
-    return Word.run(cc, context => {
-      const range = cc.getRange(Word.RangeLocation.whole);
-
-      return context.sync(range);
-    }).then(range => {
-      return this.unhideRange(range);
-    })
-      .then(() => Promise.resolve());
-  }
-
   private deleteContentControlTitle = async (id: number): Promise<void> => {
     return Word.run(context => {
       const doc = this.getDocument(context);
