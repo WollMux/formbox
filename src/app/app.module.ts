@@ -68,6 +68,8 @@ import { InitEpics } from './store/middleware/init-epics';
 import { FormularGuiService } from './services/formular-gui.service';
 import { FormularGuiEpics } from './store/middleware/formular-gui-epics';
 import { FormularGuiActions } from './store/actions/formular-gui-actions';
+import { KomfortdruckComponent } from './components/komfortdruck/komfortdruck.component';
+import { OnCreateDirective } from './directives/on-create.directive';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { FormularGuiActions } from './store/actions/formular-gui-actions';
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
     DocumentTreeviewComponent,
-    DebugComponent
+    DebugComponent,
+    KomfortdruckComponent,
+    OnCreateDirective
   ],
   imports: [
     AccordionModule.forRoot(),

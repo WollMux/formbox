@@ -35,11 +35,11 @@ export class OfficeService {
   /**
    * Gibt getrackte Office-Objekte wieder frei.
    */
-  async untrack(o: any): Promise<{}> {
+  async untrack(o: any): Promise<void> {
     return Word.run(o, context => {
       o.untrack();
 
-      return context.sync();
+      return context.sync().then(() => Promise.resolve());
     });
   }
 
@@ -69,6 +69,7 @@ export class OfficeService {
   async newDocument(): Promise<Word.DocumentCreated> {
     return Word.run(async context => {
       const doc = context.application.createDocument();
+      context.trackedObjects.add(doc);
       context.load(doc);
 
       return context.sync().then(() => {
@@ -84,7 +85,7 @@ export class OfficeService {
    * Funktion mehr. Nachdem das Dokument angezeigt wird, kann das aktuelle
    * Addon keine Änderungen daran mehr vornehmen.
    */
-  async showDocument(document?: Word.DocumentCreated): Promise<void> {
+  async showDocument(document?: Word.DocumentCreated): Promise<Word.DocumentCreated> {
     return Word.run(context => {
       let doc = document;
       if (!doc) {
@@ -95,13 +96,13 @@ export class OfficeService {
       if (doc) {
         doc.open();
 
-        return doc.context.sync().then(() => Promise.resolve());
+        return doc.context.sync().then(() => Promise.resolve(document));
       }
     });
   }
 
   /**
-   * Kopiert den Inhalt des aktuellen Dokuments in ein neues temporäres
+   * Kopiert den Inhalt des aktuellen Dokuments in ein temporäres
    * Dokument.
    *
    * @param target Dokument, das mit createDocument erzeugt wurde.
@@ -116,7 +117,7 @@ export class OfficeService {
       return context.sync().then(() => {
         target.body.insertOoxml(ooxml.value, Word.InsertLocation.end);
 
-        return context.sync().then(() => Promise.resolve());
+        return target.context.sync().then(() => Promise.resolve());
       });
     });
   }
@@ -332,6 +333,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt eine ContentControl um einen Absatz im Dokument.
+   * 
+   * @param title Titel des ContentControls
+   * @param tag Tag des ContentControl
+   * @param style Name einer Formatvorlage
+   */
   async insertContentControlAroundParagraph(title: string, tag: string, style?: string): Promise<number> {
     return this.expandRangeToParagraph().then(range => {
       return this.insertContentControl(title, tag, style, range).then(id => {
@@ -342,6 +350,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt den Text, der von einem ContentControl umschlossen wird, zurück.
+   * 
+   * @param id Id des ContentControls
+   */
   async getContentControlText(id: number): Promise<string> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -384,6 +397,12 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Ersetzt den Text, der von einem ContentControl umschlossen wird.
+   * 
+   * @param id Id des ContentControls
+   * @param text Text, der eingefügt werden soll
+   */
   async replaceTextInContentControl(id: number, text: string): Promise<void> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -440,6 +459,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt eine Liste aller  Content Controls zurück, die nach einem bestimmten
+   * Content Control definiert sind. Wird keine Id angegeben, werden alle
+   * Content Controls zurückgegeben.
+   * 
+   * @param id Id des Content Controls von dem aus gesucht werden soll.
+   */
   async getNextContentControls(id?: number): Promise<{ id: number, title: string, tag: string }[]> {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -470,14 +496,23 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Gibt die Range zwischen zwei Content Controls zurück, beginnend 
+   * vor dem ersten Content Control. 
+   */
   async getRangeBetweenContentControls(id: number, idNext: number): Promise<Word.Range> {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc1 = doc.contentControls.getByIdOrNullObject(id);
-      const cc2 = doc.contentControls.getByIdOrNullObject(idNext);
-
       const rng1 = cc1.getRange(Word.RangeLocation.before);
-      const rng2 = cc2.getRange(Word.RangeLocation.before);
+
+      let rng2;
+      if (idNext) {
+        const cc2 = doc.contentControls.getByIdOrNullObject(idNext);
+        rng2 = cc2.getRange(Word.RangeLocation.before);
+      } else {
+        rng2 = doc.body.getRange(Word.RangeLocation.end);
+      }
 
       const rng = rng1.expandToOrNullObject(rng2);
       rng.track();
@@ -488,6 +523,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt ein Databinding für ein Content Control. Der Titel des Content 
+   * Controls wird auf eine zufällige Id geändert.
+   * 
+   * @param id Id des Content Controls.
+   * @param prefix Präfix, der dem Titel vorangestellt wird.
+   */
   async bindToContentControl(id: number, prefix: string): Promise<string> {
     return Word.run(context => {
       const cc = context.document.contentControls.getByIdOrNullObject(id);
@@ -501,20 +543,11 @@ export class OfficeService {
     }).then(title => this.addBindingFromNamedItem(title));
   }
 
-  async addBindingFromNamedItem(name: string, bindingId?: string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text,
-        { id: bindingId }, (result: Office.AsyncResult) => {
-          if (result.status === Office.AsyncResultStatus.Succeeded) {
-            const bind: Office.Binding = result.value;
-            resolve(bind.id);
-          } else {
-            reject(result.error.message);
-          }
-        });
-    });
-  }
-
+  /**
+   * Löscht ein bestehendes Databinding eines Content Controls.
+   * 
+   * @param id Id des Bindings.
+   */
   async deleteBinding(id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Office.context.document.bindings.releaseByIdAsync(id, (result: Office.AsyncResult) => {
@@ -527,6 +560,13 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Erzeugt einen EventHandler für ein bestehendes Binding eines Content
+   * Controls.
+   * 
+   * @param id Id des Bindings
+   * @param callback Callbackfunktion für BindingDataChanged
+   */
   async addEventHandlerToBinding(id: string, callback: (text: string) => void): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Office.context.document.bindings.getByIdAsync(id, (result: Office.AsyncResult) => {
@@ -550,6 +590,11 @@ export class OfficeService {
     });
   }
 
+  /**
+   * Lösche alle EventHandler eines Bindings
+   * 
+   * @param id Id des Bindings.
+   */
   async removeEventHandlersFromBinding(id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       Office.context.document.bindings.getByIdAsync(id, (result: Office.AsyncResult) => {
@@ -756,34 +801,6 @@ export class OfficeService {
     });
   }
 
-  /**
-   * Versteckt ein Content Control.
-   */
-  async hideContentControl(cc: Word.ContentControl): Promise<void> {
-    return Word.run(cc, context => {
-      const range = cc.getRange(Word.RangeLocation.whole);
-
-      return context.sync(range);
-    }).then(range => {
-      return this.hideRange(range);
-    })
-      .then(() => Promise.resolve());
-  }
-
-  /**
-   * Macht ein verstecktes Content Control wieder sichtbar.
-   */
-  async unhideContentControl(cc: Word.ContentControl): Promise<void> {
-    return Word.run(cc, context => {
-      const range = cc.getRange(Word.RangeLocation.whole);
-
-      return context.sync(range);
-    }).then(range => {
-      return this.unhideRange(range);
-    })
-      .then(() => Promise.resolve());
-  }
-
   private deleteContentControlTitle = async (id: number): Promise<void> => {
     return Word.run(context => {
       const doc = this.getDocument(context);
@@ -938,5 +955,22 @@ export class OfficeService {
     const doc = scope.ownerDocument;
 
     return doc.evaluate(xpath, scope, doc.createNSResolver(scope), type, undefined);
+  }
+
+  /**
+   * Erzeugt ein Binding für ein benanntes Objekt. Für ein ContentControl
+   * ist der Name der Titel.  
+   */
+  private addBindingFromNamedItem = async (name: string): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+      Office.context.document.bindings.addFromNamedItemAsync(name, Office.BindingType.Text, (result: Office.AsyncResult) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const bind: Office.Binding = result.value;
+          resolve(bind.id);
+        } else {
+          reject(result.error.message);
+        }
+      });
+    });
   }
 }
