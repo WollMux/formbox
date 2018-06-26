@@ -48,7 +48,7 @@ export class SachleitendeVerfuegungService {
 
   async insertZuleitungszeile(): Promise<{ id: number, vpId: number }> {
     return this.getPreviousVerfuegungspunkt().then(vpId => {
-      if (vpId) {
+      if (vpId !== undefined) {
         return this.office.insertContentControl('', 'SLVZuleitung', 'Zuleitungszeile').then(id => {
           return Promise.resolve({ id: id, vpId: vpId });
         });

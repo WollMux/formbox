@@ -49,7 +49,7 @@ describe('FormularEditorService', () => {
     const spy = spyOn(service['office'], 'insertContentControl');
     const control = await service.createFormControl('checkbox');
     expect(control).toBeDefined();
-    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, true, true);
+    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, undefined, true, true);
   })));
 
   it('createFormControl visibility', async(inject([FormularEditorService], async (service: FormularEditorService) => {
@@ -73,14 +73,14 @@ describe('FormularEditorService', () => {
     const spy = spyOn(service['office'], 'insertContentControl');
     const control = await service.createFormControl('textarea');
     expect(control).toBeDefined();
-    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, true, true);
+    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, undefined, true, true);
   })));
 
   it('createFormControl textfield', async(inject([FormularEditorService], async (service: FormularEditorService) => {
     const spy = spyOn(service['office'], 'insertContentControl');
     const control = await service.createFormControl('textfield');
     expect(control).toBeDefined();
-    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, true, true);
+    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, undefined, true, true);
   })));
 
   it('createFormControl hbox', async(inject([FormularEditorService], async (service: FormularEditorService) => {
@@ -92,7 +92,7 @@ describe('FormularEditorService', () => {
     const spy = spyOn(service['office'], 'insertContentControl');
     const control = await service.createFormControl('combobox');
     expect(control).toBeDefined();
-    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, true, true);
+    expect(spy).toHaveBeenCalledWith('', 'formgui', undefined, undefined, undefined, true, true);
   })));
 
   it('createFormControl separator', async(inject([FormularEditorService], async (service: FormularEditorService) => {

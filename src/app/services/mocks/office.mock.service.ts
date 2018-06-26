@@ -284,4 +284,8 @@ export class OfficeMockService {
   async replaceTextInContentControl(id: number, text: string): Promise<void> {
     return Promise.resolve();
   }
+
+  async getPreviousContentControl(tag?: string): Promise<number> {
+    return Promise.resolve(0);
+  }
 }

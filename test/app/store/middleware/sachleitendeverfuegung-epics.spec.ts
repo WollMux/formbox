@@ -36,7 +36,7 @@ describe('Sachleitende Verfuegung epics', () => {
       (epics: SachleitendeverfuegungEpics, service: SachleitendeVerfuegungService) => {
         const spy = spyOn(service, 'toggleVerfuegungspunkt').and.returnValue(Promise.resolve({ id: 1, text: 'SLV 1', delete: false }));
 
-        const action = SachleitendeverfuegungActions.TOGGLE({});
+        const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: false });
         const p = epics.toggling(ActionsObservable.of(action));
 
         p.scan((arr, value) => [...arr, value], [])
@@ -54,7 +54,7 @@ describe('Sachleitende Verfuegung epics', () => {
       (epics: SachleitendeverfuegungEpics, service: SachleitendeVerfuegungService) => {
         const spy = spyOn(service, 'toggleVerfuegungspunkt').and.returnValue(Promise.resolve({ id: 1, text: 'SLV 1', delete: true }));
 
-        const action = SachleitendeverfuegungActions.TOGGLE({});
+        const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: false });
         const p = epics.toggling(ActionsObservable.of(action));
 
         p.subscribe(result => {

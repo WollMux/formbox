@@ -69,6 +69,6 @@ export class RootEpic {
     this.initEpics.initialisingSLV,
     this.formularGuiEpics.updateingFormGuiValues,
     this.formularGuiEpics.updateingContentControlText,
-    this.slvEpics.insertingZuleitung,
+    this.slvEpics.insertingZuleitung
   )
 }
