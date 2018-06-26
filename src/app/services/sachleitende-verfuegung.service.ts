@@ -40,12 +40,16 @@ export class SachleitendeVerfuegungService {
       if (cc && cc.tag === 'SLV') {
         return Promise.resolve({ id: cc.id, text: cc.text, delete: true });
       } else {
-        return this.insertVerfuegungspunkt().then(vp =>
+        return this.insertVerfuegungspunkt(abdruck).then(vp =>
           ({ id: vp.id, idNext: vp.idNext, text: vp.text, binding: vp.binding, delete: false, abdruck: abdruck }));
       }
     });
   }
 
+  /**
+   * Fügt eine Zuleitungszeile in einen Verfügungspunkt ein. Wenn der Cursor
+   * nicht in einem Verfügungspunkt steht, wird das Promise rejected.
+   */
   async insertZuleitungszeile(): Promise<{ id: number, vpId: number }> {
     return this.getPreviousVerfuegungspunkt().then(vpId => {
       if (vpId !== undefined) {
@@ -257,14 +261,15 @@ export class SachleitendeVerfuegungService {
     });
   }
 
-  private async insertVerfuegungspunkt(): Promise<{ id: number, text: string, idNext: number, binding: string }> {
+  private async insertVerfuegungspunkt(abdruck: boolean): Promise<{ id: number, text: string, idNext: number, binding: string }> {
     this.log.debug('SachleitendeVerfuegungService.insertVerfuegungspunkt()');
 
-    return this.office.insertContentControlAroundParagraph('', 'SLV', SachleitendeVerfuegungService.FORMATVORLAGE).then(id => {
-      return this.bindVerfuegungspunkt(id).then(bid => ({ id: id, binding: bid }))
-        .then(vp => this.office.getContentControlText(id).then(text => ({ id: id, binding: vp.binding, text: text })))
-        .then(vp => this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext, binding: vp.binding })));
-    });
+    return this.office.insertContentControlAroundParagraph(
+      '', 'SLV', 'Verfügungspunkt', SachleitendeVerfuegungService.FORMATVORLAGE, abdruck).then(id => {
+        return this.bindVerfuegungspunkt(id).then(bid => ({ id: id, binding: bid }))
+          .then(vp => this.office.getContentControlText(id).then(text => ({ id: id, binding: vp.binding, text: text })))
+          .then(vp => this.getNextVerfuegungspunkt(id).then(idNext => ({ id: vp.id, text: vp.text, idNext: idNext, binding: vp.binding })));
+      });
   }
 
   private async newDocument(): Promise<Word.DocumentCreated> {

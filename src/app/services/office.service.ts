@@ -341,9 +341,11 @@ export class OfficeService {
    * @param tag Tag des ContentControl
    * @param style Name einer Formatvorlage
    */
-  async insertContentControlAroundParagraph(title: string, tag: string, placeholder?: string, style?: string): Promise<number> {
+  async insertContentControlAroundParagraph(
+    title: string, tag: string, placeholder?: string, style?: string,
+    cannotEdit?: boolean, cannotDelete?: boolean): Promise<number> {
     return this.expandRangeToParagraph().then(range => {
-      return this.insertContentControl(title, tag, placeholder, style, range).then(id => {
+      return this.insertContentControl(title, tag, placeholder, style, range, cannotEdit, cannotDelete).then(id => {
         this.untrack(range);
 
         return Promise.resolve(id);
@@ -438,6 +440,8 @@ export class OfficeService {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
       cc.style = 'Normal';
+      cc.cannotEdit = false;
+      cc.cannotDelete = false;
       cc.delete(true);
 
       return context.sync().then(() => Promise.resolve());
