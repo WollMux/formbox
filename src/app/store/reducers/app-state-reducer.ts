@@ -7,7 +7,6 @@ import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung
 import { AppActions } from '../actions/app-actions';
 
 const busy = (state: AppState, value: boolean): AppState => {
-  debugger;
   return tassign(state, { busy: value });
 };
 

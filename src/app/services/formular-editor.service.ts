@@ -21,18 +21,18 @@ import { FormControl } from '../data/forms/form-control';
 @Injectable()
 export class FormularEditorService {
 
-  private types: Map<string, {prototype: any, cc: boolean}> = new Map([
-    ['label', {prototype: new Label(), cc: false}],
-    ['button', {prototype: Button.prototype, cc: false}],
-    ['checkbox', {prototype: Checkbox.prototype, cc: true}],
-    ['visibility', {prototype: Checkbox.prototype, cc: false}],
-    ['tabs', {prototype: Tabs.prototype, cc: false}],
-    ['tab', {prototype: Tab.prototype, cc: false}],
-    ['textarea', {prototype: Textarea.prototype, cc: true}],
-    ['textfield', {prototype: Textfield.prototype, cc: true}],
-    ['hbox', {prototype: Hbox.prototype, cc: false}],
-    ['combobox', {prototype: Combobox.prototype, cc: true}],
-    ['separator', {prototype: Separator.prototype, cc: false}]
+  private types: Map<string, { prototype: any, cc: boolean }> = new Map([
+    ['label', { prototype: new Label(), cc: false }],
+    ['button', { prototype: Button.prototype, cc: false }],
+    ['checkbox', { prototype: Checkbox.prototype, cc: true }],
+    ['visibility', { prototype: Checkbox.prototype, cc: false }],
+    ['tabs', { prototype: Tabs.prototype, cc: false }],
+    ['tab', { prototype: Tab.prototype, cc: false }],
+    ['textarea', { prototype: Textarea.prototype, cc: true }],
+    ['textfield', { prototype: Textfield.prototype, cc: true }],
+    ['hbox', { prototype: Hbox.prototype, cc: false }],
+    ['combobox', { prototype: Combobox.prototype, cc: true }],
+    ['separator', { prototype: Separator.prototype, cc: false }]
   ]);
 
   constructor(
@@ -90,7 +90,7 @@ export class FormularEditorService {
    * Legt ein ContentControl in Word an.
    */
   private async createControl(): Promise<number> {
-    return this.office.insertContentControl('', 'formgui', undefined, undefined, true, true);
+    return this.office.insertContentControl('', 'formgui', undefined, undefined, undefined, true, true);
   }
 
 }
