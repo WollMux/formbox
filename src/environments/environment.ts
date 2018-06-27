@@ -10,6 +10,7 @@ export const environment = {
   production: false,
   formboxapi: 'https://localhost:4201',
   loglevel: Level.LOG,
+  reduxRemoteName: 'BJR',
   reduxRemoteUrl: 'kvm-javabuild.tvc.muenchen.de',
   reduxRemotePort: 12556,
   reduxRemoteSecure: true
