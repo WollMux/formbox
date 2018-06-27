@@ -41,20 +41,12 @@ export class DebugComponent implements OnInit {
     });
   }
 
-  onHide(): void {
-    this.sachleitendeVerfuegung.subscribe(it => {
-      this.slv.hideVerfuegungspunkt(it.verfuegungspunkte[0].id);
-    });
-  }
-
-  onUnhide(): void {
-    this.sachleitendeVerfuegung.subscribe(it => {
-      this.slv.unhideVerfuegungspunkt(it.verfuegungspunkte[0].id);
-    });
-  }
-
   async onVP(): Promise<void> {
     this.slvActions.toggle();
+  }
+
+  async onVP1(): Promise<void> {
+    this.slvActions.insertVerfuegunspunkt1();
   }
 
   async onAbdruck(): Promise<void> {

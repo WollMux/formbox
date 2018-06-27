@@ -4,6 +4,7 @@ import * as romanize from 'romanize';
 import { Verfuegungspunkt } from './verfuegungspunkt';
 
 export class SachleitendeVerfuegung {
+  verfuegungspunkt1: number;
   private _verfuegungspunkte: Verfuegungspunkt[] = [];
 
   /**
@@ -34,7 +35,10 @@ export class SachleitendeVerfuegung {
   }
 
   clone(): SachleitendeVerfuegung {
-    return new SachleitendeVerfuegung(this._verfuegungspunkte);
+    const slv = new SachleitendeVerfuegung(this._verfuegungspunkte);
+    slv.verfuegungspunkt1 = this.verfuegungspunkt1;
+
+    return slv;
   }
 
   get verfuegungspunkte(): Verfuegungspunkt[] {
@@ -43,6 +47,13 @@ export class SachleitendeVerfuegung {
 
   addVerfuegungspunkt(id: number, ueberschrift: string, binding: string): Verfuegungspunkt {
     return this.insertBeforeVerfuegunspunkt(id, undefined, ueberschrift, binding);
+  }
+
+  insertFirst(id: number, ueberschrift = '', binding = ''): Verfuegungspunkt {
+    const vp = new Verfuegungspunkt(id, ueberschrift, binding);
+    this._verfuegungspunkte.unshift(vp);
+
+    return vp;
   }
 
   insertBeforeVerfuegunspunkt(id: number, idNext: number, ueberschrift: string, binding: string): Verfuegungspunkt {
@@ -74,6 +85,10 @@ export class SachleitendeVerfuegung {
 
   getVerfuegungspunkt(id: number): Verfuegungspunkt {
     return this._verfuegungspunkte.find(vp => vp.id === id);
+  }
+
+  hasVerfuegungspunkt1(): boolean {
+    return this.verfuegungspunkt1 !== undefined;
   }
 
   private renumber(): void {
