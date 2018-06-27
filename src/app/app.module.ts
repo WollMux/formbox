@@ -159,8 +159,9 @@ export class AppModule {
     if (environment.production || environment.test) {
       ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
     } else {
-      const composeEnhancers = composeWithDevTools({ realtime: true, maxAge: 999, hostname: environment.reduxRemoteUrl,
-                                                     port: environment.reduxRemotePort, secure: environment.reduxRemoteSecure });
+      const composeEnhancers = composeWithDevTools({ name: environment.reduxRemoteName, realtime: true,
+                                                     hostname: environment.reduxRemoteUrl, port: environment.reduxRemotePort,
+                                                     secure: environment.reduxRemoteSecure });
       ngRedux.provideStore(createStore(rootReducer, INITIAL_STATE, composeEnhancers(applyMiddleware(...middleware))));
     }
 
