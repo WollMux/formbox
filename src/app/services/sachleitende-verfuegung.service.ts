@@ -23,14 +23,17 @@ export class SachleitendeVerfuegungService {
    * Gibt eine Liste der ContentControls zurück, die als Verfügungspunkte
    * markiert sind. 
    */
-  async getVerfuegungspunkteInDocument(): Promise<{ id: number, text: string }[]> {
+  async getVerfuegungspunkteInDocument(): Promise<{ id: number, text: string, verfuegungspunkt1: boolean }[]> {
     return this.office.getAllContentControls().then(cc => {
-      return cc.filter(it => it.tag === 'SLV').map(it => ({ id: it.id, text: it.text }));
+      return cc.filter(it => it.tag === 'SLV' || it.tag === 'SLVVerfuegungspunkt1')
+        .map(it => ({ id: it.id, text: it.text, verfuegungspunkt1: it.tag === 'SLVVerfuegungspunkt1' }));
     });
   }
 
   /**
    * Erzeugt oder entfernt einen Verfügungspunkt an der aktuellen Cursorposition.
+   * 
+   * @param abdruck True, wenn es sich um eine Abdruckzeile handelt.
    */
   async toggleVerfuegungspunkt(abdruck = false):
     Promise<{ id: number, idNext?: number, text: string, binding?: string, delete: boolean, abdruck?: boolean }> {
@@ -43,6 +46,35 @@ export class SachleitendeVerfuegungService {
         return this.insertVerfuegungspunkt(abdruck).then(vp =>
           ({ id: vp.id, idNext: vp.idNext, text: vp.text, binding: vp.binding, delete: false, abdruck: abdruck }));
       }
+    });
+  }
+
+  /**
+   * Setzt oder löscht den Text im Spezialfeld Verfügungspunkt1.
+   * 
+   * @param id Id des Felds Verfügungspunkt1
+   * 
+   * @returns True, falls der Text gelöscht wurde.
+   */
+  async toggleVerfuegungspunkt1(id: number): Promise<{ id: number, delete: boolean }> {
+    this.log.debug('SachleitendeVerfuegungService.toggleVerfuegungspunkt1()');
+
+    return this.office.getContentControlText(id).then(text => {
+      if (text && text.length > 0) {
+        return this.office.replaceTextInContentControl(id, '').then(() => Promise.resolve({ id: id, delete: true }));
+      } else {
+        return this.office.replaceTextInContentControl(id, 'I.').then(() => Promise.resolve({ id: id, delete: false }));
+      }
+    });
+  }
+
+  /**
+   * Prüft, ob an der aktuellen Cursorposition ein Verfügungspunkt 1 angelegt
+   * würde.
+   */
+  async isVerfuegungspunkt1(): Promise<boolean> {
+    return this.getPreviousVerfuegungspunkt().then(id => {
+      return Promise.resolve(id === undefined);
     });
   }
 
@@ -60,6 +92,14 @@ export class SachleitendeVerfuegungService {
         return Promise.reject('Cursor ist nicht in einem Verfügungspunkt');
       }
     });
+  }
+
+  /**
+   * Fügt ein Spezialfeld für den ersten Verfügungspunkt ein. Das Spezialfeld
+   * enthält nur die römische Ziffer des Verfügungspunkts.
+   */
+  async insertVerfuegungspunkt1(): Promise<number> {
+    return this.office.insertContentControl('', 'SLVVerfuegungspunkt1', '', undefined, undefined, true);
   }
 
   /**
@@ -108,7 +148,7 @@ export class SachleitendeVerfuegungService {
       s = text;
     }
 
-    return this.office.replaceTextInContentControl(id, s);
+    return this.office.replaceTextInContentControl(id, s.trim());
   }
 
   /**
@@ -200,6 +240,10 @@ export class SachleitendeVerfuegungService {
    * der User den Text in den ContentControls anpasst. 
    */
   createObservableFromVerfuegungspunkt(vp: Verfuegungspunkt): Observable<string> {
+    if (!vp.binding) {
+      return undefined;
+    }
+
     const ret = Observable.create(ob => {
       const cb = (text: string) => {
         ob.next(text);

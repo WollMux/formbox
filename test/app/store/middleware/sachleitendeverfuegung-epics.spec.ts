@@ -14,8 +14,12 @@ import { Observable } from 'rxjs/Observable';
 import { SachleitendeVerfuegung } from '../../../../src/app/data/slv/sachleitende-verfuegung';
 import { FormBoxState, INITIAL_STATE } from '../../../../src/app/store/states/formbox-state';
 import { OfficeMockService } from '../../../../src/app/services/mocks/office.mock.service';
+import configureStore from 'redux-mock-store'; // tslint:disable-line no-implicit-dependencies
+
 
 describe('Sachleitende Verfuegung epics', () => {
+  let mockStore;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -29,15 +33,17 @@ describe('Sachleitende Verfuegung epics', () => {
         { provide: OfficeService, useClass: OfficeMockService }
       ]
     });
+    mockStore = configureStore();
   });
 
   it('toggle on Verfuegungspunkt',
     async(inject([SachleitendeverfuegungEpics, SachleitendeVerfuegungService],
       (epics: SachleitendeverfuegungEpics, service: SachleitendeVerfuegungService) => {
+        const store = mockStore(INITIAL_STATE);
         const spy = spyOn(service, 'toggleVerfuegungspunkt').and.returnValue(Promise.resolve({ id: 1, text: 'SLV 1', delete: false }));
 
         const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: false });
-        const p = epics.toggling(ActionsObservable.of(action));
+        const p = epics.toggling(ActionsObservable.of(action), store);
 
         p.scan((arr, value) => [...arr, value], [])
           .takeLast(1)
@@ -52,10 +58,11 @@ describe('Sachleitende Verfuegung epics', () => {
   it('toggle off Verfuegungspunkt',
     async(inject([SachleitendeverfuegungEpics, SachleitendeVerfuegungService],
       (epics: SachleitendeverfuegungEpics, service: SachleitendeVerfuegungService) => {
+        const store = mockStore(INITIAL_STATE);
         const spy = spyOn(service, 'toggleVerfuegungspunkt').and.returnValue(Promise.resolve({ id: 1, text: 'SLV 1', delete: true }));
 
         const action = SachleitendeverfuegungActions.TOGGLE({ abdruck: false });
-        const p = epics.toggling(ActionsObservable.of(action));
+        const p = epics.toggling(ActionsObservable.of(action), store);
 
         p.subscribe(result => {
           expect(spy).toHaveBeenCalled();

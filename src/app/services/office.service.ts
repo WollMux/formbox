@@ -413,18 +413,12 @@ export class OfficeService {
       cc.load('cannotEdit');
 
       return context.sync().then(() => {
-        if (cc.cannotEdit) {
-          cc.cannotEdit = false;
-          cc.insertText(text, Word.InsertLocation.replace);
-          cc.cannotEdit = true;
-          context.sync();
-
-          return Promise.resolve();
-        }
-
+        const cannotEdit = cc.cannotEdit;
+        cc.cannotEdit = false;
         cc.insertText(text, Word.InsertLocation.replace);
+        cc.cannotEdit = cannotEdit;
 
-        return Promise.resolve();
+        return context.sync().then(() => Promise.resolve());
       }).catch(error => {
         this.log.error(error);
       });
@@ -573,13 +567,17 @@ export class OfficeService {
    */
   async deleteBinding(id: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      Office.context.document.bindings.releaseByIdAsync(id, (result: Office.AsyncResult) => {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          resolve();
-        } else {
-          reject(result.error.message);
-        }
-      });
+      if (id) {
+        Office.context.document.bindings.releaseByIdAsync(id, (result: Office.AsyncResult) => {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            resolve();
+          } else {
+            reject(result.error.message);
+          }
+        });
+      } else {
+        resolve();
+      }
     });
   }
 

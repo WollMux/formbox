@@ -21,6 +21,7 @@ export class SachleitendeverfuegungActions {
   static RENUMBER = actionCreator.async<any, any>('RENUMBER');
   static UPDATE_UEBERSCHRIFT = actionCreator<{ id: number, ueberschrift: string }>('UPDATE_UEBERSCHRIFT');
   static INSERT_ZULEITUNG = actionCreator.async<any, { id: number, vpId: number }>('INSERT_ZULEITUNG');
+  static INSERT_VERFUEGUNGSPUNKT1 = actionCreator.async<any, number>('INSERT_VERFUEGUNGSPUNKT1');
 
   constructor(private ngRedux: NgRedux<SachleitendeverfuegungState>) { }
 
@@ -57,6 +58,12 @@ export class SachleitendeverfuegungActions {
 
   insertZuleitung(): Action<any> {
     const action = SachleitendeverfuegungActions.INSERT_ZULEITUNG.started({});
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  insertVerfuegunspunkt1(): Action<any> {
+    const action = SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT1.started({});
 
     return this.ngRedux.dispatch(action);
   }

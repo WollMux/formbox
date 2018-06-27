@@ -29,17 +29,29 @@ export class InitEpics {
   ) { }
 
   initialisingSLV = (action: ActionsObservable<any>) => {
-    return action.ofType(InitActions.INIT_SLV)
-      .do(() => {
+    return action.ofType(InitActions.INIT_SLV.started)
+      .mergeMap(() => {
         return this.slv.getVerfuegungspunkteInDocument().then(vps => {
           return Promise.all(
             vps.map(it => {
-              return this.slv.bindVerfuegungspunkt(it.id).then(bid => {
-                this.slvActions.insertVerfuegungspunkt(it.id, SachleitendeVerfuegung.splitVerfuegungspunktText(it.text), bid);
-              });
-            })
-          );
+              if (it.verfuegungspunkt1) {
+                return { id: it.id, text: it.text, binding: undefined, verfuegungspunkt1: it.verfuegungspunkt1 };
+              } else {
+                return this.slv.bindVerfuegungspunkt(it.id)
+                  .then(binding =>
+                    ({
+                      id: it.id,
+                      text: SachleitendeVerfuegung.splitVerfuegungspunktText(it.text),
+                      binding: binding,
+                      verfuegungspunkt1: it.verfuegungspunkt1
+                    }));
+              }
+            }));
+        }).then(vps => {
+          const act = InitActions.INIT_SLV.done({ params: {}, result: vps });
+
+          return act;
         });
-      }).ignoreElements();
+      });
   }
 }

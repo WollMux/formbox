@@ -29,11 +29,21 @@ export class SachleitendeverfuegungEpics {
     private slv: SachleitendeVerfuegungService
   ) { }
 
-  toggling = (action: ActionsObservable<any>) => {
+  toggling = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(SachleitendeverfuegungActions.TOGGLE)
       .switchMap(({ payload }, n: number) => {
-        return Observable.from(this.slv.toggleVerfuegungspunkt(payload.abdruck))
-          .switchMap(vp => {
+        const slv = store.getState().slv.slv;
+
+        return Observable.from(
+          this.slv.isVerfuegungspunkt1().then((ret): any => {
+            if (ret && slv.verfuegungspunkt1 !== undefined) {
+              return this.slv.toggleVerfuegungspunkt1(slv.verfuegungspunkt1);
+            } else {
+              return this.slv.toggleVerfuegungspunkt(payload.abdruck);
+            }
+          })
+        )
+          .switchMap((vp: any) => {
             let act;
             if (vp.delete) {
               act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.started(vp.id);
@@ -57,7 +67,17 @@ export class SachleitendeverfuegungEpics {
 
           return act;
         });
+      });
+  }
 
+  insertVerfuegungspunkt1 = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
+    return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT1.started)
+      .mergeMap(({ payload }, n: number) => {
+        return this.slv.insertVerfuegungspunkt1().then(it => {
+          const act = SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT1.done({ params: payload, result: it });
+
+          return act;
+        });
       });
   }
 
@@ -76,7 +96,10 @@ export class SachleitendeverfuegungEpics {
     return action.ofType(SachleitendeverfuegungActions.INSERT_VERFUEGUNGSPUNKT.started)
       .mergeMap(({ payload }, n: number) => {
         const vp = store.getState().slv.slv.getVerfuegungspunkt(payload.id);
-        const binding = this.slv.createObservableFromVerfuegungspunkt(vp);
+        let binding;
+        if (vp.id !== store.getState().slv.slv.verfuegungspunkt1) {
+          binding = this.slv.createObservableFromVerfuegungspunkt(vp);
+        }
 
         const act = SachleitendeverfuegungActions
           .INSERT_VERFUEGUNGSPUNKT.done({ params: payload, result: { id: vp.id, binding: binding } });
@@ -92,13 +115,17 @@ export class SachleitendeverfuegungEpics {
 
         return Observable.from(this.slv.updateVerfuegungspunktText(vp.id, vp.ueberschrift)).
           switchMap(() => {
-            return Observable.from(this.slv.removeVerfuegungspunkt(vp.id, vp.binding))
-              .switchMap(() => {
-                const act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.done({ params: vp.id, result: vp.id });
-                const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
+            const act = SachleitendeverfuegungActions.DELETE_VERFUEGUNGSPUNKT.done({ params: vp.id, result: vp.id });
+            const act2 = SachleitendeverfuegungActions.RENUMBER.started({});
 
-                return Observable.concat(Observable.of(act), Observable.of(act2));
-              });
+            if (vp.id === store.getState().slv.slv.verfuegungspunkt1) {
+              return Observable.concat(Observable.of(act), Observable.of(act2));
+            } else {
+              return Observable.from(this.slv.removeVerfuegungspunkt(vp.id, vp.binding))
+                .switchMap(() => {
+                  return Observable.concat(Observable.of(act), Observable.of(act2));
+                });
+            }
           });
       });
   }
