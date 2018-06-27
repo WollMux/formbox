@@ -5,6 +5,7 @@ export const environment = {
   test: true,
   formboxapi: 'https://localhost:4201',
   loglevel: Level.LOG,
+  reduxRemoteName: undefined,
   reduxRemoteUrl: undefined,
   reduxRemotePort: undefined,
   reduxRemoteSecure: undefined
