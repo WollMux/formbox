@@ -38,6 +38,7 @@ export class RootEpic {
     this.templateEpics.executingCommandDone,
     this.templateEpics.insertingFragment,
     this.templateEpics.gettingFragments,
+    this.templateEpics.openingTemplateFromFileSystem,
     this.absenderlisteEpics.loadingAbsenderState,
     this.absenderlisteEpics.changingAbsender,
     this.absenderlisteEpics.savingPAL,

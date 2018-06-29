@@ -48,30 +48,6 @@ export class AppComponent implements OnInit {
     private log: Logger) {
   }
 
-  async openFile(event) {
-    console.log("openFile: " + event);
-    var input = event.target.files;
-
-    var result = this.readFile(event.target.files[0]);
-    result
-      .then(res => {
-        let fileContent = res;
-        console.log(fileContent);
-        document.getElementById("FileContentBase64").innerHTML = fileContent;
-      })
-      .catch(error => {});
-  }
-
-  readFile(file): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.readAsDataURL(file);
-    });
-  }
-
   async ngOnInit(): Promise<void> {
     this.log.debug('AppComponent.ngOnInit');
 
