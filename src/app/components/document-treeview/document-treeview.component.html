@@ -5,6 +5,10 @@
 </div>
 
 <div class="row">
+    <input id="FileContentBase64" type="file" (change)="openFile($event)" placeholder="Upload file..." />
+</div>
+
+<div class="row">
   <div class="col-sm-12">
     <div class="panel-heading text-center column">Dokumente</div>
     <tree-root [nodes]="documentTree | async" [options]="options" [focused]="true">

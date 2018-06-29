@@ -19,6 +19,7 @@ export class TemplateActions {
   static LOAD_TEMPLATE = actionCreator.async<string, any>('LOAD_TEMPLATE');
   static GET_TEMPLATE = actionCreator<string>('GET_TEMPLATE');
   static OPEN_TEMPLATE = actionCreator<string>('OPEN_TEMPLATE');
+  static OPEN_TEMPLATE_FROM_FS = actionCreator.async<any, any>('OPEN_TEMPLATE_FROM_FS');
   static DOCUMENT_SHOWN = actionCreator<any>('DOCUMENT_SHOWN');
 
   static INSERT_FRAGMENT = actionCreator.async<{ id: number, name: string }, number>('INSERT_FRAGMENT');
@@ -32,6 +33,12 @@ export class TemplateActions {
 
   loadTemplate(name: string): Action<string> {
     const action = TemplateActions.LOAD_TEMPLATE.started(name);
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  openTemplateFromFS(base64: string): Action<string> {
+    const action = TemplateActions.OPEN_TEMPLATE_FROM_FS.started(base64);
 
     return this.ngRedux.dispatch(action);
   }

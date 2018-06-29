@@ -106,6 +106,17 @@ export class TemplateEpics {
       });
   }
 
+  openingTemplateFromFileSystem = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.OPEN_TEMPLATE_FROM_FS.started)
+    .mergeMap(({ payload }, n: number) => {
+      return this.templates.openDocument(payload).then(() => {
+        const act = TemplateActions.GET_NEXT_COMMAND({});
+
+        return act;
+      });
+    });
+  }
+
   /**
    * Gibt das nächste Dokumentenkommando zurück, das noch nicht verarbeitet
    * wurde.

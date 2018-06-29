@@ -45,6 +45,22 @@ export class DocumentTreeviewComponent implements OnInit {
     private dialogActions: DialogActions
   ) { }
 
+  openFile = async (event: any) => {
+    this.readFile(event.target.files[0]).then(res => {
+      this.templateActions.openTemplateFromFS(res);
+    }).catch(error => this.log.error(error));
+  }
+
+  readFile(file): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+    });
+  }
+
   async ngOnInit(): Promise<void> {
     this.treeActions.getTemplateList();
   }
@@ -90,7 +106,7 @@ export class DocumentTreeviewComponent implements OnInit {
         url = `${baseUrl}/assets/html_thumbs/externer_briefkopf.html`;
         break;
 
-        default:
+      default:
         break;
     }
 
