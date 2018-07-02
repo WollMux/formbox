@@ -47,7 +47,12 @@ export class DocumentTreeviewComponent implements OnInit {
 
   openFile = async (event: any) => {
     this.readFile(event.target.files[0]).then(res => {
-      this.templateActions.openTemplateFromFS(res);
+      // readFile konvertiert mit MIME-Type am Anfang des Strings,
+      // officejs createDocument(base64) kann aber nicht mit Angabe des MIME-Types umgehen,
+      // daher wird MIME-Type entfernt.
+      const formattedBase64String = res.replace('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,', '')
+                            .replace('data:application/vnd.openxmlformats-officedocument.wordprocessingml.template;base64,', '');
+      this.templateActions.openTemplateFromFS(formattedBase64String);
     }).catch(error => this.log.error(error));
   }
 
