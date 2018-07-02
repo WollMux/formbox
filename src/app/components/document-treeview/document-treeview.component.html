@@ -5,12 +5,12 @@
 </div>
 
 <div class="row">
-    <input id="FileContentBase64" type="file" (change)="openFile($event)" placeholder="Upload file..." />
-</div>
-
-<div class="row">
   <div class="col-sm-12">
     <div class="panel-heading text-center column">Dokumente</div>
+    <label class="btn btn-default">
+        &ouml;ffnen
+        <input id="FileContentBase64" class="" type="file" (change)="openFile($event)" hidden/>
+      </label>
     <tree-root [nodes]="documentTree | async" [options]="options" [focused]="true">
       <ng-template #treeNodeFullTemplate let-node let-index="index" let-templates="templates">
         <div class="tree-node tree-node-level-{{ node.level }}" [class.tree-node-expanded]="node.isExpanded && node.hasChildren">
