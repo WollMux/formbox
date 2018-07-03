@@ -60,9 +60,10 @@ Formbox baut beim Start eine Verbindung (Websockets) mit dem remotedev-server au
  `Port: 12556`
  `Use Secure connection: AN`
 
- Für eine erfolgreiche Verbindung zum remotedev-server benötigt Formbox ebenfalls Verbindungsdaten welche
- über environment-Variablen gesetzt werden.
- Durch setzen der environment-Variable 'reduxRemoteName' kann im RemoteDev-Tool die entsprechende Instanz (bei 'Autoselect instances') gewählt werden.
+Für eine erfolgreiche Verbindung zum remotedev-server benötigt Formbox ebenfalls Verbindungsdaten welche
+über environment-Variablen gesetzt werden.
+Durch setzen der environment-Variable 'reduxRemoteName' kann ein Name für die Instanz vergeben werden,
+die entsprechende Instanz kann anschließend im Redux Remote-DevTool bei 'Autoselect instances' ausgewählt werden.
 
 ## Dokumentation
 
