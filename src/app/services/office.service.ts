@@ -1,3 +1,4 @@
+// tslint:disable:max-file-line-count
 // tslint:disable-next-line:no-reference
 /// <reference path="../../../node_modules/@microsoft/office-js/dist/office.d.ts" />
 import { Injectable } from '@angular/core';
