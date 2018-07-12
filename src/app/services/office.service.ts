@@ -325,8 +325,12 @@ export class OfficeService {
       cc.color = color;
       cc.cannotEdit = cannotEdit;
       cc.cannotDelete = cannotDelete;
-      cc.placeholderText = placeholder;
-      // cc.style = style;
+      if (placeholder) {
+        cc.placeholderText = placeholder;
+      }
+      if (style) {
+        cc.style = style;
+      }
       context.load(cc, 'id');
 
       return context.sync().then(() => cc.id);
