@@ -6,7 +6,6 @@ import * as uniqid from 'uniqid';
 import * as wgxpath from 'wicked-good-xpath';
 import { XMLSerializer } from 'xmldom';
 
-
 // tslint:disable-next-line:no-require-imports
 const randomColor = require('randomcolor');
 
