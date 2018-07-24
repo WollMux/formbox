@@ -1,11 +1,11 @@
 // tslint:disable-next-line:no-reference
 /// <reference path="../../../node_modules/@microsoft/office-js/dist/office.d.ts" />
-
 import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
-import { XMLSerializer } from 'xmldom';
 import * as uniqid from 'uniqid';
 import * as wgxpath from 'wicked-good-xpath';
+import { XMLSerializer } from 'xmldom';
+
 
 // tslint:disable-next-line:no-require-imports
 const randomColor = require('randomcolor');
@@ -433,7 +433,6 @@ export class OfficeService {
     return Word.run(context => {
       const doc = this.getDocument(context);
       const cc = doc.contentControls.getById(id);
-      cc.style = 'Normal';
       cc.cannotEdit = false;
       cc.cannotDelete = false;
       cc.delete(true);
