@@ -7,6 +7,10 @@ pipeline {
 
     tools {nodejs 'node6.11.3'}
 
+    environment {
+      FIREFOX_BIN = "/opt/firefox/firefox"
+    }
+
     stages {
         stage('Build') {
             steps {
