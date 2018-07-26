@@ -19,6 +19,7 @@ exports.config = {
       args: [ '--headless' ]
     }
   },
+  firefoxPath: process.env.FIREFOX_BIN,
   directConnect: true,
   framework: 'jasmine',
   jasmineNodeOpts: {
