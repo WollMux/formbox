@@ -13,13 +13,14 @@ exports.config = {
     'browserName': 'firefox',
     'marionette': true,
     'firefoxOptions': {
+      binary: process.env.FIREFOX_BIN,
       args: [ '--headless' ]
     },
     'moz:firefoxOptions': {
+      binary: process.env.FIREFOX_BIN,
       args: [ '--headless' ]
     }
   },
-  firefoxPath: process.env.FIREFOX_BIN,
   directConnect: true,
   framework: 'jasmine',
   jasmineNodeOpts: {
