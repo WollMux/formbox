@@ -38,7 +38,7 @@
     "@nsalaun/ng-logger": "^5.0.0",
     "angular-tree-component": "^7.1.0",
     "angular2-fontawesome": "^0.9.3",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "core-js": "^2.5.3",
     "dateformat": "^3.0.3",
     "dexie": "^2.0.2",
