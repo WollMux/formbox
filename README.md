@@ -1,5 +1,7 @@
 # Formbox
 
+**Achtung: Dieses Projekt wird aktuell nicht gepflegt!!!**
+
 ## Dokumentation
 
 * [Installation](docs/installation.md)
