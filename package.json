@@ -47,7 +47,7 @@
     "ng-drag-drop": "^4.0.0",
     "ngx-bootstrap": "^2.0.2",
     "ngx-tabs": "0.0.13",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.13.1",
     "randomcolor": "^0.5.3",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
