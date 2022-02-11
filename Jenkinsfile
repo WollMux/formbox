@@ -7,6 +7,10 @@ pipeline {
 
     tools {nodejs 'node6.11.3'}
 
+    environment {
+      FIREFOX_BIN = "/opt/firefox/firefox"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -17,12 +21,19 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-                    sh 'npm run test-jenkins || error=true'
-                    sh 'npm run webdriver-update -- --standalone false --chrome false'
-                    sh 'npm run e2e'
-                    sh 'if [ $error ]; then exit -1; fi'
-                }
+                sh 'npm run test-jenkins'
+                sh 'npm run webdriver-update -- --standalone false --chrome false'
+                sh '''#!/bin/bash
+                CHECK="init"
+                while [ -n "$CHECK" ]; do
+                  PORT=$(shuf -i 50000-51000 -n 1)
+                  CHECK=$(netstat -a)
+                  if [[ $CHECK != *"$PORT"* ]]; then
+                    CHECK=""
+                  fi
+                done
+                npm run e2e -- --port $PORT
+                '''
             }
             post {
                 always {

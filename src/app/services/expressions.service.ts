@@ -68,11 +68,11 @@ export class ExpressionsService {
   /**
    * Parst eine Expression und führt sie gleich aus.
    */
-  eval(expr: string, id?: number): any {
+  eval(expr: string, id?: number): Promise<any> {
     const fn = this.parse(expr);
     this.ctx.id = id;
 
-    return fn.call(this.ctx);
+    return Promise.resolve(fn.call(this.ctx));
   }
 }
 
@@ -87,17 +87,21 @@ class Context {
   constructor(private templates: TemplateService) { /*Empty */ }
 
   insertFrag(name: string): Promise<void> {
-    const of = this.getOverrideFrag(name) || name;
+    const of = this.getOverrideFrag(name);
 
-    return this.templates.getFragmentUrl(of).then(url => {
-      return this.templates.insertFragment(this.id, url.url);
-    });
+    if (of.trim() === '') {
+      return this.templates.deleteDocumentCommand(this.id);
+    } else {
+      return this.templates.getFragmentUrl(of).then(url => {
+        return this.templates.insertFragment(this.id, url.url);
+      });
+    }
   }
 
   overrideFrag(overrides: { oldFrag: string, newFrag: string }[]): Promise<void> {
     this.overrideFrags.push(...overrides);
 
-    return Promise.resolve();
+    return this.templates.deleteDocumentCommand(this.id);
   }
 
   date = (): Date => {
@@ -110,6 +114,6 @@ class Context {
       return of.newFrag;
     }
 
-    return undefined;
+    return fragId;
   }
 }

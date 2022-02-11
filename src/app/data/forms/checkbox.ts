@@ -15,4 +15,8 @@ export class Checkbox extends FormControl {
 
     return xml;
   }
+
+  deepCopy(): Checkbox {
+    return new Checkbox(this);
+  }
 }

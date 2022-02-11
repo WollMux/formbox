@@ -33,14 +33,15 @@ export class ExpressionEditorComponent implements OnInit {
     this.actions.create('0', Number.MAX_SAFE_INTEGER);
   }
 
-  onDeleteDocumentCommand(n: number): boolean {
-    this.actions.delete(n);
+  onDeleteDocumentCommand(event: Event, id: number): boolean {
+    event.stopPropagation();
+    this.actions.delete(id);
 
     return false;
   }
 
-  onSelectDocumentCommand(n: number): boolean {
-    this.actions.select(n);
+  onSelectDocumentCommand(id: number): boolean {
+    this.actions.select(id);
 
     return false;
   }

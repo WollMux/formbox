@@ -45,12 +45,33 @@ export class DocumentTreeviewComponent implements OnInit {
     private dialogActions: DialogActions
   ) { }
 
+  openFile = async (event: any) => {
+    this.readFile(event.target.files[0]).then(res => {
+      // readFile konvertiert mit MIME-Type am Anfang des Strings,
+      // officejs createDocument(base64) kann aber nicht mit Angabe des MIME-Types umgehen,
+      // daher wird MIME-Type entfernt.
+      const formattedBase64String = res.replace('data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,', '')
+                            .replace('data:application/vnd.openxmlformats-officedocument.wordprocessingml.template;base64,', '');
+      this.templateActions.openTemplateFromFS(formattedBase64String);
+    }).catch(error => this.log.error(error));
+  }
+
+  readFile(file): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+    });
+  }
+
   async ngOnInit(): Promise<void> {
     this.treeActions.getTemplateList();
   }
 
   showThumb = (node: ITreeNode) => {
-    this.showDialog(node.data.name);
+    this.showDialog(node.data.id);
   }
 
   nodeClicked = (node: ITreeNode) => {
@@ -58,7 +79,7 @@ export class DocumentTreeviewComponent implements OnInit {
       return;
     }
 
-    this.templateActions.insertFragment(0, node.data.name);
+    this.templateActions.loadTemplate(node.data.id);
   }
 
   getNodeIsExpandedClass = (node: ITreeNode): any => {
@@ -90,7 +111,7 @@ export class DocumentTreeviewComponent implements OnInit {
         url = `${baseUrl}/assets/html_thumbs/externer_briefkopf.html`;
         break;
 
-        default:
+      default:
         break;
     }
 

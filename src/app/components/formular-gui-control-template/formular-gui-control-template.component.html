@@ -1,0 +1,11 @@
+<ng-container [ngSwitch]="control.constructor.name">
+  <app-formular-gui-button *ngSwitchCase="'Button'" [control]="control"></app-formular-gui-button>
+  <app-formular-gui-textfield *ngSwitchCase="'Textfield'" [control]="control"></app-formular-gui-textfield>
+  <app-formular-gui-label *ngSwitchCase="'Label'" [control]="control"></app-formular-gui-label>
+  <app-formular-gui-checkbox *ngSwitchCase="'Checkbox'" [control]="control"></app-formular-gui-checkbox>
+  <app-formular-gui-textarea *ngSwitchCase="'Textarea'" [control]="control"></app-formular-gui-textarea>
+  <app-formular-gui-combobox *ngSwitchCase="'Combobox'" [control]="control"></app-formular-gui-combobox>
+  <app-formular-gui-tabs *ngSwitchCase="'Tabs'" [control]="control"></app-formular-gui-tabs>
+  <app-formular-gui-hbox *ngSwitchCase="'Hbox'" [control]="control"></app-formular-gui-hbox>
+  <app-formular-gui-seperator *ngSwitchCase="'Separator'"></app-formular-gui-seperator>
+</ng-container>

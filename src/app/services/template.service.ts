@@ -74,14 +74,14 @@ export class TemplateService {
    * Speichert Änderungen an einem Dokumentenkommando im aktuellen Dokument.
    */
   async updateDocumentCommand(id: number, cmd: string, order: number): Promise<void> {
-    await this.office.updateContentControl(id, `= ${cmd}`, order.toString());
+    return this.office.updateContentControl(id, `= ${cmd}`, order.toString());
   }
 
   /**
    * Löscht ein Dokumentenkommando anhand der Id aus dem aktuellen Dokument.
    */
   async deleteDocumentCommand(id: number): Promise<void> {
-    await this.office.deleteContentControl(id);
+    return this.office.deleteContentControl(id);
   }
 
   /**
@@ -108,7 +108,7 @@ export class TemplateService {
   async getFileAsBase64(url: string): Promise<string> {
     this.log.debug(`TemplateService.getFileAsBase64(${url})`);
 
-    return this.http.get(`${this.formboxapi}/${url}`, { responseType: ResponseContentType.ArrayBuffer })
+    return this.http.get(`${url}`, { responseType: ResponseContentType.ArrayBuffer })
       .toPromise()
       .then(res => {
         return this.encode(res.arrayBuffer());
@@ -124,13 +124,13 @@ export class TemplateService {
   async openDocument(base64: string): Promise<void> {
     this.log.debug('TemplateService.openDocument(...)');
 
-    await this.office.openDocument(base64);
+    return this.office.openDocument(base64).then(() => Promise.resolve());
   }
 
   async showDocument(): Promise<void> {
     this.log.debug('TemplateService.showDocument()');
 
-    await this.office.showDocument();
+    return this.office.showDocument().then(doc => this.office.untrack(doc));
   }
 
   /**
@@ -142,8 +142,8 @@ export class TemplateService {
   async insertFragment(id: number, url: string): Promise<void> {
     this.log.debug(`TemplateService.insertFragment(${id}, ${url})`);
 
-    await this.getFileAsBase64(url).then(async s => {
-      await this.office.insertFragment(id, s);
+    return this.getFileAsBase64(url).then(s => {
+      return this.office.insertFragment(id, s);
     });
   }
 
@@ -156,7 +156,7 @@ export class TemplateService {
   async insertValue(id: number, value: string): Promise<void> {
     this.log.debug(`TemplateService.insertValue(${id}, ${value})`);
 
-    await this.office.insertValue(id, value);
+    return this.office.insertValue(id, value);
   }
 
   /**
@@ -166,7 +166,7 @@ export class TemplateService {
   async selectContentControlById(contentControlId: number): Promise<void> {
     this.log.debug(`TemplateService.selectContentControlById(${contentControlId})`);
 
-    await this.office.selectContentControlById(contentControlId);
+    return this.office.selectContentControlById(contentControlId);
   }
 
   /**

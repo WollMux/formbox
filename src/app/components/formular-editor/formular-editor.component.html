@@ -1,0 +1,97 @@
+<ng-container *ngIf="(form | async); else createFormTemplate">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="nav-bar-container text-center">
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-tag"
+          [treeDrag]="{type: 'label'}" [treeDragEnabled]="true" title="Label"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-font"
+          [treeDrag]="{type: 'textfield'}" [treeDragEnabled]="true" title="Textfeld"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-text-size"
+          [treeDrag]="{type: 'textarea'}" [treeDragEnabled]="true" title="Textarea"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-check"
+          [treeDrag]="{type: 'checkbox'}" [treeDragEnabled]="true" title="Checkbox"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-th-list"
+          [treeDrag]="{type: 'combobox'}" [treeDragEnabled]="true" title="Combobox"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-play"
+          [treeDrag]="{type: 'button'}" [treeDragEnabled]="true" title="Button"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-eye-open"
+          [treeDrag]="{type: 'visibility'}" [treeDragEnabled]="true" title="Sichtbarkeit"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-credit-card"
+          [treeDrag]="{type: 'tabs'}" [treeDragEnabled]="true" title="Tabs"></div>
+        <div class="btn navbar-btn glyphicon glyphicon-nav-bar glyphicon-folder-close"
+          [treeDrag]="{type: 'hbox'}" [treeDragEnabled]="true" title="Horizontale Box"></div>
+        <div class="btn navbar-btn" [treeDrag]="{type: 'separator'}" [treeDragEnabled]="true" title="Separator">
+          <img src="assets/formular-editor/Separator.png"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <tree-root #tree [nodes]="[(form | async)]" [options]="options">
+        <ng-template #treeNodeTemplate let-node let-index="index">
+          <!-- TreeView Anzeige -->
+          <ng-container [ngSwitch]="node.data.constructor.name">
+            <div *ngSwitchCase="'Separator'">
+              <i>Separator</i>
+            </div>
+            <div *ngSwitchCase="'Tabs'">
+              <i>Tabs</i>
+              <span class="glyphicon glyphicon-plus pull-right" (click)="addTab(node)" title="Tab hinzufügen"></span>
+            </div>
+            <div *ngSwitchCase="'Hbox'">
+              <i>Horizontale Box</i>
+            </div>
+            <div *ngSwitchDefault>
+              <span>{{ node.data.title }}</span>
+              <span class="glyphicon glyphicon-pencil pull-right" (click)="showEditor(node.data.id)" title="Bearbeiten"></span>
+            </div>
+          </ng-container>
+
+          <!-- Editoren -->
+          <ng-container *ngIf="(isEdit | async)?.indexOf(node.data.id) >= 0">
+            <div [ngSwitch]="node.data.constructor.name">
+              <app-formular-editor-label *ngSwitchCase="'Label'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-label>
+              <app-formular-editor-checkbox *ngSwitchCase="'Checkbox'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-checkbox>
+              <app-formular-editor-textfield *ngSwitchCase="'Textfield'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-textfield>
+              <app-formular-editor-tab *ngSwitchCase="'Tab'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-tab>
+              <app-formular-editor-button *ngSwitchCase="'Button'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-button>
+              <app-formular-editor-form *ngSwitchCase="'Form'" [control]="node.data" (update)="update($event, node)" (close)="hideEditor(node.data.id)"></app-formular-editor-form>
+              <app-formular-editor-textarea *ngSwitchCase="'Textarea'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-textarea>
+              <app-formular-editor-combobox *ngSwitchCase="'Combobox'" [control]="node.data" (update)="update($event)" (close)="hideEditor(node.data.id)"></app-formular-editor-combobox>
+            </div>
+          </ng-container>
+        </ng-template>
+
+        <!-- Template der Knoten-Wrapper -->
+        <ng-template #treeNodeWrapperTemplate let-node let-index="index">
+          <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+            <tree-node-expander [node]="node"></tree-node-expander>
+            <div class="node-content-wrapper"
+              [class.node-content-wrapper-active]="node.isActive"
+              [class.node-content-wrapper-focused]="node.isFocused"
+              (click)="node.mouseAction('click', $event)"
+              (dblclick)="node.mouseAction('dblClick', $event)"
+              (contextmenu)="node.mouseAction('contextMenu', $event)"
+              (treeDrop)="node.onDrop($event)"
+              [treeAllowDrop]="node.allowDrop"
+              [treeDrag]="node"
+              [treeDragEnabled]="node.allowDrag()">
+
+              <tree-node-content [node]="node" [index]="index" [template]="treeNodeTemplate"></tree-node-content>
+            </div>
+            <span class="glyphicon glyphicon-remove pull-right" (click)="remove(node)" *ngIf="!node.isRoot" title="Löschen"></span>
+          </div>
+        </ng-template>
+      </tree-root>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #createFormTemplate>
+  <div class="row">
+    <div class="col-sm-12">
+      <button type="button" class="btn btn-primary" (click)="createForm()">Formular erstellen</button>
+    </div>
+  </div>
+</ng-template>

@@ -15,4 +15,8 @@ export class Textfield extends FormControl {
 
     return xml;
   }
+
+  deepCopy(): Textfield {
+    return new Textfield(this);
+  }
 }

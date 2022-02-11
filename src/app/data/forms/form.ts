@@ -7,11 +7,11 @@ export class Form {
   title: string;
   controls: Control[] = [];
 
-  constructor(c?: Form) {
-    if (c) {
-      this.id = c.id;
-      this.title = c.title;
-      this.controls = c.controls;
+  constructor(form?: Form) {
+    if (form) {
+      this.id = form.id;
+      this.title = form.title;
+      this.controls = form.controls.map(c => c.deepCopy());
     }
   }
 

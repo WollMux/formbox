@@ -32,16 +32,43 @@ Zum schnellen Erstellen von den für Redux benötigten Klassen gibt es einen Gen
 
 Mit dem Befehl werden Dateien für State, Actions, Reducers, und Epics angelegt.
 Das Argument `<name>` wird dabei als Basis für die Namen der Dateien und Klassen
-verwendet.  
+verwendet.
 
-## Redux Developer Tool
+## Redux Remote Developer Tool
 
-FormBox unterstützt die [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension) für Firefox und Chrome. Dafür muss FormBox im Browser gestartet werden.
-Wenn die Extension installiert ist, hat das Kontextmenü des Browsers einen Eintrag 'Redux DevTools' über den man die DevTools öffnen kann.
+FormBox unterstützt die [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension) für Firefox und Chrome.
+Wenn die Extension installiert ist, hat das Kontextmenü des Browsers einen Eintrag `'Redux DevTools' -> 'Open Remote DevTools'` über den man die DevTools öffnen kann.
+
+Damit Redux-Remote-Debugging funktioniert muss eine Instanz von remotedev-server auf einem Server mit NodeJs-Installation gestartet werden.
+
+Folgende NPM-Pakete müssen global installiert werden:
+
+ `npm install -g remotedev-server`
+ `npm install -g socketcluster`
+
+Remote-Server starten: `remotedev --hostname=0.0.0.0 --port=12556 --protocol=https --key=/pfad_cert_key/cert.key --cert=/pfad_cert_crt/cert.crt &`
+
+Hinweis: Evtl. muss der Port durch Portfreigabe/Firewall freigegeben werden.
+
+Formbox baut beim Start eine Verbindung (Websockets) mit dem remotedev-server auf. Remotedev-server reicht die entsprechenden Daten an die Client-Anwendung "Redux Remote DevTools" weiter.
+
+#### Konfiguration Redux-Remote-DevTool
+
+###### Settings:
+
+ `Hostname: SERVER_URL`
+ `Port: 12556`
+ `Use Secure connection: AN`
+
+Für eine erfolgreiche Verbindung zum remotedev-server benötigt Formbox ebenfalls Verbindungsdaten welche
+über environment-Variablen gesetzt werden.
+Durch setzen der environment-Variable 'reduxRemoteName' kann ein Name für die Instanz vergeben werden,
+die entsprechende Instanz kann anschließend im Redux Remote-DevTool bei 'Autoselect instances' ausgewählt werden.
 
 ## Dokumentation
 
 * [Redux](https://redux.js.org/)
+* [Redux RemoteDev-Server](https://github.com/zalmoxisus/remotedev-server)
 * [angular-redux/store](https://github.com/angular-redux/store)
 * [Tutorial](https://github.com/angular-redux/store/blob/master/articles/intro-tutorial.md)
 * [Ribosome](http://sustrik.github.io/ribosome/) (Codegenerator)

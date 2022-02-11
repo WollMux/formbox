@@ -6,8 +6,8 @@ body {
 .btn-primary,
 .btn-primary:active,
 .btn-primary:visited {
-    background-color: #FCC700;
-    border-color: #ffed9e;
+    background-color: rgb(13,51,255);
+    color: rgb(255, 255, 255);
 }
 
 .list-group {
@@ -32,17 +32,17 @@ body {
 }
 
 .btn-primary:hover {
-    color: #555;
-    background-color: #ffed9e;
-    border-color: #ffed9e;
+    background-color: rgb(69, 97, 255);
+    border-color: rgb(69, 97, 255);
 }
 
 span.icon-hightlight:hover {
     color: red;
 }
 
-.container {
-    background-color: #ffed9e
+.body {
+    background-color: #ffed9e;
+    margin-right: 15px;
 }
 
 .footer {
@@ -69,98 +69,18 @@ span.icon-hightlight:hover {
     color: rgb(63, 63, 63);
 }
 
-.glyphicon-nav-bar:hover {
+.glyphicon-nav-bar:focus {
     color: #FCC700;
 }
 
-.nav-bar-container {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #FCC700;
-}
-
-.btn:hover {
+.button-active {
     background-color: #fff;
 }
 
-
-/* overlay Tooltip example*/
-
-.tip {
-    text-decoration: none
-}
-
-.tip:hover {
-    position: relative
-}
-
-.tip span {
-    display: none
-}
-
-.tip:hover span {
-    padding: 5px 10px 5px 5px;
-    display: block;
-    z-index: 100;
-    background-color: #555;
-    left: 0px;
-    margin: 10px;
-    width: auto;
-    position: absolute;
-    top: 50px;
-    text-decoration: none
-}
-
-
-/* funktioniert nicht in dokument-treeview-component.css ?*/
-
-.angular-tree-component {
+.navbar-bottom {
     background-color: #fde57b;
 }
 
-.container {
-    background-color: #ffed9e
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-}
-
-.footer-nav-pills>li {
-    float: left;
-}
-
-.lhm-logo {
-    padding-left: 20px;
-}
-
-.glyphicon {
-    cursor: pointer;
-}
-
-.glyphicon-nav-bar {
-    font-size: 24px;
-    color: rgb(63, 63, 63);
-}
-
-.glyphicon-nav-bar:hover {
-    color: #FCC700;
-}
-
-.nav-bar-container {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #FCC700;
-}
-
-.btn:hover {
-    background-color: #fff;
-}
-
-
 /* overlay Tooltip example*/
 
 .tip {
@@ -188,6 +108,40 @@ span.icon-hightlight:hover {
     text-decoration: none
 }
 
+.container {
+    background-color: #ffed9e
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+}
+
+.footer-nav-pills>li {
+    float: left;
+}
+
+.glyphicon {
+    cursor: pointer;
+}
+
+.glyphicon-nav-bar {
+    font-size: 24px;
+    color: rgb(63, 63, 63);
+}
+
+.glyphicon-nav-bar:hover {
+    color: #FCC700;
+}
+
+.nav-bar-container {
+    padding: 10px;
+    background-color: #FCC700;
+}
+
+/* funktioniert nicht in dokument-treeview-component.css ?*/
 .angular-tree-component {
     background-color: #fde57b;
     padding-left: 20px;
@@ -201,4 +155,27 @@ span.icon-hightlight:hover {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+
+.flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.hbox {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.flex-item {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
 }

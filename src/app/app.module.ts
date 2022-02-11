@@ -3,12 +3,13 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { DevToolsExtension, NgRedux, NgReduxModule } from '@angular-redux/store';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { NgDragDropModule } from 'ng-drag-drop';
 import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { TreeModule } from 'angular-tree-component';
 
 import { FormBoxState, INITIAL_STATE } from './store/states/formbox-state';
 import { AppComponent } from './app.component';
@@ -50,13 +51,27 @@ import { FormDataService } from './services/form-data.service';
 import { FormXmlParserService } from './services/form-xml-parser.service';
 import { DocumentTreeviewComponent } from './components/document-treeview/document-treeview.component';
 import { DebugComponent } from './components/debug-component/debug.component';
-import { TreeModule } from 'angular-tree-component';
 import { DocumentTreeViewEpics } from './store/middleware/document-treeview-epics';
 import { DocumentTreeViewActions } from './store/actions/document-treeview-actions';
 import { DialogActions } from './store/actions/dialog-actions';
 import { DialogEpics } from './store/middleware/dialog-epics';
 import { DialogService } from './services/dialog.service';
 import { BarService } from './services/bar.service';
+import { FormularEditorActions } from './store/actions/formular-editor-actions';
+import { FormularEditorEpics } from './store/middleware/formular-editor-epics';
+import { FormularEditorService } from './services/formular-editor.service';
+import { SachleitendeVerfuegungService } from './services/sachleitende-verfuegung.service';
+import { SachleitendeverfuegungEpics } from './store/middleware/sachleitendeverfuegung-epics';
+import { SachleitendeverfuegungActions } from './store/actions/sachleitendeverfuegung-actions';
+import { InitActions } from './store/actions/init-actions';
+import { InitEpics } from './store/middleware/init-epics';
+import { FormularGuiService } from './services/formular-gui.service';
+import { FormularGuiEpics } from './store/middleware/formular-gui-epics';
+import { FormularGuiActions } from './store/actions/formular-gui-actions';
+import { KomfortdruckComponent } from './components/komfortdruck/komfortdruck.component';
+import { OnCreateDirective } from './directives/on-create.directive';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { composeWithDevTools } from 'remote-redux-devtools';
 
 @NgModule({
   declarations: [
@@ -71,21 +86,22 @@ import { BarService } from './services/bar.service';
     ExpressionInsertFragComponent,
     ExpressionOverrideFragComponent,
     DocumentTreeviewComponent,
-    DebugComponent
+    DebugComponent,
+    KomfortdruckComponent,
+    OnCreateDirective
   ],
   imports: [
     AccordionModule.forRoot(),
     NgDragDropModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     NgLoggerModule.forRoot(environment.loglevel),
-    FormsModule,
+    TooltipModule.forRoot(),
     HttpModule,
     BrowserModule,
     NgReduxModule,
     FormsModule,
     Angular2FontawesomeModule,
-    TreeModule,
-    ReactiveFormsModule
+    TreeModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -113,7 +129,18 @@ import { BarService } from './services/bar.service';
     { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService },
     FormDataService,
     FormXmlParserService,
-    BarService
+    BarService,
+    FormularEditorActions,
+    FormularEditorEpics,
+    FormularEditorService,
+    FormularGuiActions,
+    FormularGuiEpics,
+    FormularGuiService,
+    SachleitendeVerfuegungService,
+    SachleitendeverfuegungActions,
+    SachleitendeverfuegungEpics,
+    InitActions,
+    InitEpics
   ],
   bootstrap: [AppComponent]
 })
@@ -122,14 +149,22 @@ export class AppModule {
   constructor(
     private ngRedux: NgRedux<FormBoxState>,
     private devTools: DevToolsExtension,
-    private rootEpic: RootEpic) {
+    private rootEpic: RootEpic,
+    private init: InitActions
+  ) {
     const middleware = [
       createEpicMiddleware(this.rootEpic.epics())
     ];
-    if (environment.production || !environment.test) {
+
+    if (environment.production || environment.test) {
       ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
     } else {
-      ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware, devTools.enhancer());
+      const composeEnhancers = composeWithDevTools({ name: environment.reduxRemoteName, realtime: true,
+                                                     hostname: environment.reduxRemoteUrl, port: environment.reduxRemotePort,
+                                                     secure: environment.reduxRemoteSecure });
+      ngRedux.provideStore(createStore(rootReducer, INITIAL_STATE, composeEnhancers(applyMiddleware(...middleware))));
     }
+
+    this.init.initSLV();
   }
 }

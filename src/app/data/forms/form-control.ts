@@ -4,6 +4,8 @@ export abstract class FormControl extends TitelControl {
   ccid: number = undefined;
   readonly?: boolean = undefined;
   autofill?: string = undefined;
+  // nur für FormularGui relevant, deshalb nicht in Formularbeschreibung.
+  value?: string = undefined;
 
   constructor(c?: FormControl) {
     super(c);

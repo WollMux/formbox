@@ -21,7 +21,7 @@ describe('Expression Editor epics', () => {
       ],
       providers: [
         { provide: TemplateService, useClass: TemplateMockService },
-        { provide: OfficeService, useClass:OfficeMockService },
+        { provide: OfficeService, useClass: OfficeMockService },
         TemplateActions,
         ExpressionEditorCommandsActions,
         ExpressionEditorCommandsEpics

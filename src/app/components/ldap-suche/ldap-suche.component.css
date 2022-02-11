@@ -5,18 +5,15 @@
 
 .panel-default {
 	background-color: #fde57b;
+	border-color: none;
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #656565;
-	border-color: #656565;
+	background-color: rgb(13,51,255);
 }
 
 .btn-primary:hover {
-    color: #656565;
-    background-color: #FCC700;
-	border-color: #FCC700;
+    background-color: rgb(69, 97, 255);
 }
 
 .form-group > label {
@@ -25,5 +22,9 @@
 
 .ng-invalid .btn-primary:hover {
 	background-color: #656565;
-	color: #fff;
+}
+
+.ng-invalid .btn-primary {
+	background-color: #656565;
+	border-color: #656565;
 }

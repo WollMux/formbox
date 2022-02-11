@@ -1,0 +1,2 @@
+<label for="control.id">{{ control.title }}</label>
+<textarea [id]="control.id" class="form-control" [rows]="control.lines" [ngModel]="control.value" (ngModelChange)="onModelChange($event, control.ccid)"></textarea>

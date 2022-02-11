@@ -58,9 +58,6 @@
     user-select: none;
 }
 
-.panel-heading {
-    background-color: #FCC700;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 2rem;
+[hidden] {
+    display: none !important;
 }

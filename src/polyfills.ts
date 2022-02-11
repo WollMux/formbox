@@ -75,3 +75,9 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * Need to import at least one locale-data with intl.
  */
 // import 'intl/locale-data/jsonp/en';
+
+//Polyfill für asynchrone Iteratoren in Typescript
+if (Symbol['asyncIterator'] === undefined) {
+  ((Symbol as any)['asyncIterator']) = Symbol.for('asyncIterator');
+}
+

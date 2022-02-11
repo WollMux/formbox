@@ -106,6 +106,17 @@ export class TemplateEpics {
       });
   }
 
+  openingTemplateFromFileSystem = (action: ActionsObservable<any>) => {
+    return action.ofType(TemplateActions.OPEN_TEMPLATE_FROM_FS.started)
+    .mergeMap(({ payload }, n: number) => {
+      return this.templates.openDocument(payload).then(() => {
+        const act = TemplateActions.GET_NEXT_COMMAND({});
+
+        return act;
+      });
+    });
+  }
+
   /**
    * Gibt das nächste Dokumentenkommando zurück, das noch nicht verarbeitet
    * wurde.
@@ -137,11 +148,11 @@ export class TemplateEpics {
     return action.ofType(TemplateActions.INSERT_FRAGMENT.started)
       .mergeMap(({ payload }, n: number) => {
         return this.templates.getFragmentUrl(payload.name).then(it => {
-          return this.templates.insertFragment(payload.id, it.url).then(() => {
-            const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
+          return this.templates.insertFragment(payload.id, it.url);
+        }).then(() => {
+          const act = TemplateActions.INSERT_FRAGMENT.done({ params: payload, result: payload.id });
 
-            return act;
-          });
+          return act;
         });
       });
   }
@@ -155,18 +166,13 @@ export class TemplateEpics {
   executingCommand = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.EXECUTE_COMMAND.started)
       .mergeMap(({ payload }, n: number) => {
-        const val = this.expr.eval(payload.cmd, payload.id);
-        if (val && val instanceof Promise) {
-          return val.then(() => {
-            return TemplateActions.EXECUTE_COMMAND.done({params: payload, result: payload.id});
-          });
-        } else if (val) {
-          return this.templates.insertValue(payload.id, val).then(() => {
-            return TemplateActions.EXECUTE_COMMAND.done({params: payload, result: payload.id});
-          });
-        }
-
-        return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+        return this.expr.eval(payload.cmd, payload.id).then(val => {
+          if (val) {
+            this.templates.insertValue(payload.id, val);
+          }
+        }).then(() => {
+          return Promise.resolve(TemplateActions.EXECUTE_COMMAND.done({ params: payload, result: payload.id }));
+        });
       });
   }
 

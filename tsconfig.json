@@ -16,8 +16,10 @@
     ],
     "lib": [
       "es2017",
-      "dom"
-    ]
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "typedocOptions": {
     "mode": "modules",
